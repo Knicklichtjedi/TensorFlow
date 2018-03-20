@@ -1,9 +1,9 @@
-# Visual Studio Solutions bin and obj folders
+# Visual Studio
 bin/
 obj/
 .vs/
 
-# PyCharm IntelliJ folders
+# Jetbrains PyCharm folders
 .idea/
 
 # Byte-compiled / optimized / DLL files
