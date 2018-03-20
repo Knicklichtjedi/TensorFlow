@@ -16,11 +16,14 @@ import exifread
 # os
 import datetime
 import os
+from os.path import abspath
 import errno
 
 """Define image dimensions and postprocessing values"""
 image_dimension = 28
-image_dimension_small = 25
+image_dimension_small = 27
+
+border = 2
 
 image_dimension_t = (image_dimension, image_dimension)
 image_dimension_t_small = (image_dimension_small, image_dimension_small)
@@ -107,7 +110,10 @@ def create_com_image(img_read, filename, folder):
 
         # print(f"Accessing {x_true}, {y_true} and moving to {x_moved}, {y_moved}")
 
-        true_positions_list_moved.append((x_moved, y_moved))
+        # Create a border around the image before centering it
+        if (border-1 > x_true < image_dimension_small-border) \
+                and (border-1 > y_true < image_dimension_small-border):
+            true_positions_list_moved.append((x_moved, y_moved))
 
     for element in true_positions_list_moved:
         max_dim = image_dimension - 1
