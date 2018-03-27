@@ -1,3 +1,6 @@
+# Filtered images (data)
+filtered/
+
 # Visual Studio
 bin/
 obj/
