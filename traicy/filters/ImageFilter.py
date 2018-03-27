@@ -148,8 +148,8 @@ def create_com_image(img_read, filename, folder):
         y_moved = round(y_true + y_movement)
 
         # Create a border around the image before centering it
-        if (border-1 > x_true < image_dimension_small-border) \
-                and (border-1 > y_true < image_dimension_small-border):
+        if (border-1 < x_moved < image_dimension_small-border) \
+                and (border-1 < y_moved < image_dimension_small-border):
             true_positions_list_moved.append((x_moved, y_moved))
 
     #  Check if new pixel position is outside of the array dimensions
