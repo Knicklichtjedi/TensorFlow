@@ -19,7 +19,6 @@ import os
 from os.path import abspath
 import errno
 
-
 # Define image dimensions and postprocessing values
 image_dimension = 28
 image_dimension_small = 27
@@ -32,6 +31,29 @@ image_dimension_t_small = (image_dimension_small, image_dimension_small)
 canny_strength = 0.5
 binary_gaussian_strength = 0.5
 binary_filter_threshold = 0.5
+
+
+
+def borders(ndarray, filename, folder):
+    newfilename = folder + filename + '_borders.png'
+    new_color = (0, 0, 0)
+
+    for x in range(0, 27):
+        for y in range(0, 1):
+            ndarray[x, y] = new_color
+
+        for y in range(26, 27):
+            ndarray[x, y] = new_color
+
+    for y in range(0, 27):
+        for x in range(0, 1):
+            ndarray[x, y] = new_color
+
+        for x in range(26, 27):
+            ndarray[x, y] = new_color
+
+    imsave(newfilename, ndarray)
+    return ndarray
 
 
 def create_canny_image(img_read, filename, folder):
@@ -148,8 +170,8 @@ def create_com_image(img_read, filename, folder):
         y_moved = round(y_true + y_movement)
 
         # Create a border around the image before centering it
-        if (border-1 > x_true < image_dimension_small-border) \
-                and (border-1 > y_true < image_dimension_small-border):
+        if (border - 1 > x_true < image_dimension_small - border) \
+                and (border - 1 > y_true < image_dimension_small - border):
             true_positions_list_moved.append((x_moved, y_moved))
 
     #  Check if new pixel position is outside of the array dimensions
@@ -289,8 +311,11 @@ def read_images():
         # create binary image
         img_binary = create_binary_image(img_rotated, filename, sub_folder)
 
+        # get black borders inside of image
+        img_borders = borders(img_binary, filename, sub_folder)
+
         # align binary image to center of mass
-        img_com = create_com_image(img_binary, filename, sub_folder)
+        img_com = create_com_image(img_borders, filename, sub_folder)
 
         # create two filtered images
         img_canny = create_canny_image(img_com, filename, sub_folder)
