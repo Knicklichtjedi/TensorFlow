@@ -19,7 +19,6 @@ import os
 from os.path import abspath
 import errno
 
-
 # Define image dimensions and postprocessing values
 image_dimension = 28
 image_dimension_small = 27
@@ -32,6 +31,33 @@ image_dimension_t_small = (image_dimension_small, image_dimension_small)
 canny_strength = 0.5
 binary_gaussian_strength = 0.5
 binary_filter_threshold = 0.5
+
+
+
+def borders(ndarray, filename, folder):
+
+    nd = imread(folder + filename + '_binary.png')
+    newfilename = folder + filename + '_borders.png'
+    new_color = 0
+
+    xrange = image_dimension_small
+
+    for x in range(0, xrange):
+        for y in range(0, border):
+            nd[x, y] = new_color
+
+        for y in range(xrange - border, xrange):
+            nd[x, y] = new_color
+
+    for y in range(0, xrange):
+        for x in range(0, border):
+            nd[x, y] = new_color
+
+        for x in range(xrange - border, xrange):
+            nd[x, y] = new_color
+
+    imsave(newfilename, nd)
+    return nd
 
 
 def create_canny_image(img_read, filename, folder):
@@ -148,8 +174,10 @@ def create_com_image(img_read, filename, folder):
         y_moved = round(y_true + y_movement)
 
         # Create a border around the image before centering it
+
         if (border-1 < x_moved < image_dimension_small-border) \
                 and (border-1 < y_moved < image_dimension_small-border):
+
             true_positions_list_moved.append((x_moved, y_moved))
 
     #  Check if new pixel position is outside of the array dimensions
@@ -289,8 +317,11 @@ def read_images():
         # create binary image
         img_binary = create_binary_image(img_rotated, filename, sub_folder)
 
+        # get black borders inside of image
+        img_borders = borders(img_binary, filename, sub_folder)
+
         # align binary image to center of mass
-        img_com = create_com_image(img_binary, filename, sub_folder)
+        img_com = create_com_image(img_borders, filename, sub_folder)
 
         # create two filtered images
         img_canny = create_canny_image(img_com, filename, sub_folder)
