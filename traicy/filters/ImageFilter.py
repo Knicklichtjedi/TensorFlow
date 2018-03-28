@@ -35,25 +35,29 @@ binary_filter_threshold = 0.5
 
 
 def borders(ndarray, filename, folder):
+
+    nd = imread(folder + filename + '_binary.png')
     newfilename = folder + filename + '_borders.png'
-    new_color = (0, 0, 0)
+    new_color = 0
 
-    for x in range(0, 27):
-        for y in range(0, 1):
-            ndarray[x, y] = new_color
+    xrange = image_dimension_small
 
-        for y in range(26, 27):
-            ndarray[x, y] = new_color
+    for x in range(0, xrange):
+        for y in range(0, border):
+            nd[x, y] = new_color
 
-    for y in range(0, 27):
-        for x in range(0, 1):
-            ndarray[x, y] = new_color
+        for y in range(xrange - border, xrange):
+            nd[x, y] = new_color
 
-        for x in range(26, 27):
-            ndarray[x, y] = new_color
+    for y in range(0, xrange):
+        for x in range(0, border):
+            nd[x, y] = new_color
 
-    imsave(newfilename, ndarray)
-    return ndarray
+        for x in range(xrange - border, xrange):
+            nd[x, y] = new_color
+
+    imsave(newfilename, nd)
+    return nd
 
 
 def create_canny_image(img_read, filename, folder):
@@ -170,8 +174,8 @@ def create_com_image(img_read, filename, folder):
         y_moved = round(y_true + y_movement)
 
         # Create a border around the image before centering it
-        if (border - 1 > x_true < image_dimension_small - border) \
-                and (border - 1 > y_true < image_dimension_small - border):
+        if (border-1 < x_true < image_dimension_small - border) \
+                and (border-1 < y_true< image_dimension_small - border):
             true_positions_list_moved.append((x_moved, y_moved))
 
     #  Check if new pixel position is outside of the array dimensions
