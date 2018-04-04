@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bluetechnix, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\Bluetechnix.dll</HintPath>
+    </Reference>
+    <Reference Include="Fotonic, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\Fotonic.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.dll</HintPath>
     </Reference>
@@ -45,6 +51,18 @@
     </Reference>
     <Reference Include="IronPython.Wpf, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MesaCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MesaCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriCam, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriCam.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriCamSDK, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriCamSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriUEye, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriUEye.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Dynamic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Dynamic.dll</HintPath>
@@ -61,8 +79,21 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="O3DCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\O3DCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="PMDCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\PMDCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="PrimeSense, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\PrimeSense.dll</HintPath>
+    </Reference>
+    <Reference Include="SoftKinetic, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\SoftKinetic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,15 +104,24 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebCam, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\WebCam.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XmlRpc, Version=1.3.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\XmlRpc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\IronPythonConnection.cs" />
+    <Compile Include="Logic\TextToSpeech.cs" />
+    <Compile Include="Logic\WebcamHelper.cs" />
     <Compile Include="View\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
@@ -147,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

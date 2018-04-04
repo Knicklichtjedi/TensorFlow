@@ -28,6 +28,8 @@
 
         <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="gray"></Border>
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Hier kommt dann noch das Webcam-Krams hin"></TextBlock>
+        <Image Grid.Row="2" Grid.Column="0" x:Name="WebcamVideo" Stretch="Fill"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Connect" Name="ConnectButton" Click="ButtonBase_OnClick"></Button>
         
         <Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Content="Starte Objekterkennung" Click="ButtonStartObjectDetection_OnClick">
 

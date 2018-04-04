@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows;
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
-using System.Speech.Synthesis;
+using MetriCam;
+using Traicy.GUI.Logic;
 
 namespace Traicy.GUI.View
 {
@@ -13,68 +12,79 @@ namespace Traicy.GUI.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static SpeechSynthesizer _speaker;
+        private readonly WebCam _camera;
+        private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            //using IronPython
-            ScriptRuntime ironPythonRuntime = Python.CreateRuntime();
-            //string directory = System.IO.Directory.GetParent(Environment.CurrentDirectory).ToString();
-            //dynamic loadIPython = ironPythonRuntime.UseFile(@"../filters/ImageFilter.py");
-            //loadIPython.MethodCall("main");
+            _backgroundWorker.DoWork += Worker_DoWork;
+            _backgroundWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
+            _camera = new WebCam();
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _camera.Disconnect();
+            ConnectButton.Content = "&Connect";
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!_backgroundWorker.CancellationPending)
+            {
+                _camera.Update();
+
+                WebcamHelper helper = new WebcamHelper();
+                WebcamVideo.Source = helper.ImageSourceForBitmap(_camera.CalcBitmap());
+            }
         }
 
         private void ButtonSettings_OnClick(object sender, RoutedEventArgs e)
         {
-            new SettingsWindow().ShowDialog();
-
-
+            ShowSettingsWindow();
         }
 
-        //zusätzliche Methode, kann manchmal nützlich sein
-        private static List<VoiceInfo> GetInstalledVoices()
+        private void ShowSettingsWindow()
         {
-            var listOfVoiceInfo = from voice
-                    in _speaker.GetInstalledVoices()
-                select voice.VoiceInfo;
+            new SettingsWindow().ShowDialog();
+        }
 
-            return listOfVoiceInfo.ToList<VoiceInfo>();
+        private void TakePicture()
+        {
+            Bitmap image = _camera.GetBitmap();
+            string filename = "test.png";
+            image.Save(@"/images/" + filename, ImageFormat.Png);
+            //TODO: Image an Python übergeben oder so lassen, dass Python die Bilder über Ordnerstruktur einliest?
         }
 
         private void ButtonStartObjectDetection_OnClick(object sender, RoutedEventArgs e)
         {
-            TextToSpeechTest();
+            //TakePicture();
+            IronPythonConnection ironPythonConnection = new IronPythonConnection();
+            ironPythonConnection.InitializeIronPython();
+            string prediction = ironPythonConnection.GetPrediction();
+            TextToSpeech textToSpeech = new TextToSpeech();
+            textToSpeech.InvokeAsyncTextToSpeech(prediction);
+
         }
-
-        private static void TextToSpeechTest()
+        
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _speaker = new SpeechSynthesizer();
+            if (!_camera.IsConnected())
+            {
+                _camera.Connect();
+                ConnectButton.Content = "&Disconnect";
+                _backgroundWorker.RunWorkerAsync();
+            }
+            else
+            {
+                _backgroundWorker.CancelAsync();
+            }
 
-            //
-            var voices = GetInstalledVoices();
-
-            //In dem Fall unnötig, aber falls zB vorher OutputToWav eingestellt war
-            _speaker.SetOutputToDefaultAudioDevice();
-            //Geschwindigkeit (-10 - 10)
-            _speaker.Rate = 1;
-            //Lautstärke (0-100)
-            _speaker.Volume = 100;
-            _speaker.SelectVoice("Microsoft Zira Desktop");
-            //Such passende Stimme zu angegebenen Argumenten
-            //_speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
-            //Text wird ausgegeben (abbrechen mit speaker.CancelAsync())
-            //_speaker.SpeakAsync("a ist der Buchstabe!");
-            _speaker.SpeakAsync("I see an T!");
-            _speaker.SpeakAsync("I see an R!");
-            _speaker.SpeakAsync("I see an A!");
-            _speaker.SpeakAsync("I see an I!");
-            _speaker.SpeakAsync("I see an C!");
-            _speaker.SpeakAsync("I see an Y!");
-            _speaker.SpeakAsync("T R A I C Y");
-            _speaker.SpeakAsync("TRAICY");
+            _camera.Connect();
         }
     }
 }
