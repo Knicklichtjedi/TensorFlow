@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Traicy Objekterkennung" Height="1280" Width="1024">
+        Title="Traicy Objekterkennung" Height="600" Width="800"
+        Background="#d9d9d9"
+        Icon="../resources/traicy_logo.png">
     
     
     <Grid>
@@ -13,14 +15,29 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         
         <!--TODO: Settings, Flash Integration / Camera Integration -->
-        <Button Grid.Column="0" Grid.Row="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Content="Starte Objekterkennung">
+        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#4b4b4b"></Border>
+        <Image Source="/resources/traicy_logo.png" Margin="0,5" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"/>
+        <Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Fill="#FFB300" Height="4"/>
 
+        <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="gray"></Border>
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Hier kommt dann noch das Webcam-Krams hin"></TextBlock>
+        
+        <Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Content="Starte Objekterkennung" Click="ButtonStartObjectDetection_OnClick">
+
+        </Button>
+
+        <Button Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Transparent" Background="Transparent" Height="20px" Name="ButtonSettings" Click="ButtonSettings_OnClick">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/resources/settings.png" Width="16" Height="16" Margin="10,0"/>
+            </StackPanel>
         </Button>
     </Grid>
 </Window>
+
