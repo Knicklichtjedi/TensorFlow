@@ -1,55 +1,99 @@
 __name__ = "JSONSettings Parser"
 
+from enum import Enum
 import json
 
-__i_dim = 0
-__i_dim_s = 0
-__i_border = 0
-__f_canny = 0.0
-__f_bin_gauss = 0.0
-__f_bin_thresh = 0.0
+__imported__ = False
+__i_dim__ = 0
+__i_dim_s__ = 0
+__i_border__ = 0
+__f_canny__ = 0.0
+__f_bin_gauss__ = 0.0
+__f_bin_thresh__ = 0.0
+
+__data__ = {}
+
+
+class JSONValues (Enum):
+    IMAGE_DIMENSION = 0
+    IMAGE_DIMENSION_SMALL = 1
+    IMAGE_BORDER = 2
+
+    FILTER_CANNY = 3
+    FILTER_BIN_GAUSS = 4
+    FILTER_BIN_THRESHOLD = 5
 
 
 def parse_data(filename):
     with open(filename, encoding='utf-8') as data_file:
+
         data = json.loads(data_file.read())
+
+        # Change variable access to global
+        global __data__
+        __data__ = data
 
         if data is not None:
 
             # Change variable access to global
-            global i_dim, i_dim_s, i_border, f_canny, f_bin_gauss, f_bin_thresh
+            global __i_dim__, __i_dim_s__, __i_border__, __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __imported__
 
             image_access = data['image']
             filter_access = data['filter']
 
-            i_dim = (image_access[0])['dimension']
-            i_dim_s = (image_access[1])['dimension_small']
-            i_border = (image_access[2])['border']
+            __i_dim__ = image_access['dimension']
+            __i_dim_s__ = image_access['dimension_small']
+            __i_border__ = image_access['border']
 
-            f_canny = (filter_access[0])['canny']
-            f_bin_gauss = (filter_access[1])['binary_gauss']
-            f_bin_thresh = (filter_access[2])['binary_threshold']
+            __f_canny__ = filter_access['canny']
+            __f_bin_gauss__ = filter_access['binary_gauss']
+            __f_bin_thresh__ = filter_access['binary_threshold']
 
-
-def get_dimension():
-    return i_dim
+            __imported__ = True
 
 
-def get_dimension_small():
-    return i_dim_s
+def get_data(json_value, *filename):
+    if __imported__:
+        if json_value == JSONValues.IMAGE_DIMENSION:
+            return __i_dim__
+        if json_value == JSONValues.IMAGE_DIMENSION_SMALL:
+            return __i_dim_s__
+        if json_value == JSONValues.IMAGE_BORDER:
+            return __i_border__
+        if json_value == JSONValues.FILTER_CANNY:
+            return __f_canny__
+        if json_value == JSONValues.FILTER_BIN_GAUSS:
+            return __f_bin_gauss__
+        if json_value == JSONValues.FILTER_BIN_THRESHOLD:
+            return __f_bin_thresh__
+    else:
+        if filename is not None or filename != "":
+            parse_data(filename)
+            return get_data(json_value)
+        else:
+            return "NO DATA FOUND"
 
 
-def get_border():
-    return i_border
+def write_data(filename, json_value, value):
+    if not __imported__:
+        parse_data(filename)
+
+    if json_value == JSONValues.IMAGE_DIMENSION:
+        __data__['image']['dimension'] = value
+    if json_value == JSONValues.IMAGE_DIMENSION_SMALL:
+        __data__['image']['dimension_small'] = value
+    if json_value == JSONValues.IMAGE_BORDER:
+        __data__['image']['border'] = value
+    if json_value == JSONValues.FILTER_CANNY:
+        __data__['filter']['canny'] = value
+    if json_value == JSONValues.FILTER_BIN_GAUSS:
+        __data__['filter']['binary_gauss'] = value
+    if json_value == JSONValues.FILTER_BIN_THRESHOLD:
+        __data__['filter']['binary_threshold'] = value
+
+    with open(filename, 'w') as outfile:
+        json.dump(__data__, outfile, indent=4)
 
 
-def get_canny():
-    return f_canny
 
 
-def get_binary_gauss():
-    return f_bin_gauss
-
-
-def get_binary_threshold():
-    return f_bin_thresh

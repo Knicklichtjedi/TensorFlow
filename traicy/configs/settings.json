@@ -1,13 +1,12 @@
 {
-  "image": [
-    { "dimension": 28 },
-    { "dimension_small": 27},
-    { "border": 2}
-  ],
-
-  "filter": [
-    { "canny": 0.5 },
-    { "binary_gauss": 0.5 },
-    { "binary_threshold": 0.5}
-  ]
+    "image": {
+        "dimension": 35,
+        "dimension_small": 27,
+        "border": 2
+    },
+    "filter": {
+        "canny": 0.5,
+        "binary_gauss": 0.5,
+        "binary_threshold": 0.5
+    }
 }
