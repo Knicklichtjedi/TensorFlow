@@ -2,6 +2,7 @@ __name__ = "JSONSettings Parser"
 
 from enum import Enum
 import json
+import codecs
 
 __imported__ = False
 __i_dim__ = 0
@@ -91,9 +92,5 @@ def write_data(filename, json_value, value):
     if json_value == JSONValues.FILTER_BIN_THRESHOLD:
         __data__['filter']['binary_threshold'] = value
 
-    with open(filename, 'w') as outfile:
-        json.dump(__data__, outfile, indent=4)
-
-
-
-
+    with open(filename, 'wb') as outfile:
+        json.dump(__data__, codecs.getwriter('utf-8')(outfile), indent=4, ensure_ascii=False)

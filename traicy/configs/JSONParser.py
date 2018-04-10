@@ -1,4 +1,5 @@
 import JSONSettings as JSs
+import time
 
 json_settings = JSs.parse_data("settings.json")
 print("Dimension : " + str(JSs.get_data(JSs.JSONValues.IMAGE_DIMENSION)))
@@ -9,6 +10,11 @@ print("Gauss : " + str(JSs.get_data(JSs.JSONValues.FILTER_BIN_GAUSS)))
 print("Threshold : " + str(JSs.get_data(JSs.JSONValues.FILTER_BIN_THRESHOLD)))
 
 # Read data and return a certain value
-print(str(JSs.get_data(JSs.JSONValues.IMAGE_DIMENSION, "settings.json")))
-
+print("Pre-Write " + str(JSs.get_data(JSs.JSONValues.IMAGE_DIMENSION, "settings.json")))
 JSs.write_data("settings.json", JSs.JSONValues.IMAGE_DIMENSION, 35)
+
+time.sleep(1)
+
+print("Post-Write " + str(JSs.get_data(JSs.JSONValues.IMAGE_DIMENSION)))
+JSs.write_data("settings.json", JSs.JSONValues.IMAGE_DIMENSION, 28)
+
