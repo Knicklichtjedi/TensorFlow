@@ -64,7 +64,7 @@ namespace Traicy.GUI.Logic
         {
             ProcessStartInfo start = new ProcessStartInfo
             {
-                FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe",
+                FileName = @"C:\Users\katha\AppData\Local\Programs\Python\Python36\python.exe",
                 Arguments = $"\"{command}\" \"{args}\"",
                 UseShellExecute = false, // don't use windows cmd
                 CreateNoWindow = true,
@@ -85,6 +85,7 @@ namespace Traicy.GUI.Logic
                         {
                             string stderr =
                                 process.StandardError.ReadToEnd(); // Here are the exceptions from our Python script
+                            Logger.Log(stderr);
                             string result = reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
                             return result;
                         }

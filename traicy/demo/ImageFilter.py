@@ -424,11 +424,11 @@ def read_images():
 
 def read_image_from_location(directory):
 
-    path = abspath(__file__ + "/../")
-    data_path = path + "filtered/"
-    filename = "filtered.png"
+    path = abspath(__file__ + "/../../")
+    data_path = path + "/filtered/"
+    filename = "/filtered.png"
 
-    main_folder = data_path + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
+    main_folder = data_path + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S") + "/"
     create_folder(main_folder)
 
     # get rotation of image and read it

@@ -1,2 +1,2 @@
-model_checkpoint_path: "CNN_MNIST_EVA"
-all_model_checkpoint_paths: "CNN_MNIST_EVA"
+model_checkpoint_path: "CNN_MNIST"
+all_model_checkpoint_paths: "CNN_MNIST"
