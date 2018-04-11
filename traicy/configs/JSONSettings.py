@@ -52,6 +52,8 @@ def parse_data(filename):
 
             __imported__ = True
 
+    data_file.close()
+
 
 def get_data(json_value, *filename):
     if __imported__:
@@ -79,18 +81,33 @@ def write_data(filename, json_value, value):
     if not __imported__:
         parse_data(filename)
 
+    global __i_dim__, __i_dim_s__, __i_border__, __f_canny__, __f_bin_gauss__, __f_bin_thresh__
+
     if json_value == JSONValues.IMAGE_DIMENSION:
         __data__['image']['dimension'] = value
+        __i_dim__ = value
+
     if json_value == JSONValues.IMAGE_DIMENSION_SMALL:
         __data__['image']['dimension_small'] = value
+        __i_dim_s__ = value
+
     if json_value == JSONValues.IMAGE_BORDER:
         __data__['image']['border'] = value
+        __i_border__ = value
+
     if json_value == JSONValues.FILTER_CANNY:
         __data__['filter']['canny'] = value
+        __f_canny__ = value
+
     if json_value == JSONValues.FILTER_BIN_GAUSS:
         __data__['filter']['binary_gauss'] = value
+        __f_bin_gauss__ = value
+
     if json_value == JSONValues.FILTER_BIN_THRESHOLD:
         __data__['filter']['binary_threshold'] = value
+        __f_bin_thresh__ = value
 
     with open(filename, 'wb') as outfile:
         json.dump(__data__, codecs.getwriter('utf-8')(outfile), indent=4, ensure_ascii=False)
+        outfile.flush()
+        outfile.close()
