@@ -182,6 +182,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="resources\logo_halb_1-01.png" />
     <Content Include="resources\photo-camera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

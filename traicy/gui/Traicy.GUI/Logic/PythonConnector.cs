@@ -42,13 +42,13 @@ namespace Traicy.GUI.Logic
             var prediction = loadIPython.test(); //call specific function
         }
 
-        public string GetPrediction()
+        public string GetPrediction(string absoluteImagePath)
         {
             //TODO: als Ressourcen-String verwenden
             //string pythonScriptFilePath = @"C:\Users\Eva\Documents\GitHub\TensorFlow\traicy\gui\Traicy.GUI\bin\Debug\filters\Test2.py";
-            string pythonScriptFilePath = @"filters\Test2.py"; //TODO: importierte Python-Module werden nicht erkannt
-
-            var result = StartPythonProcess(pythonScriptFilePath, String.Empty);
+            string pythonScriptFilePath = @"py_scripts\predict_number.py"; //TODO: importierte Python-Module werden nicht erkannt
+            
+            var result = StartPythonProcess(pythonScriptFilePath, absoluteImagePath);
             if (!string.IsNullOrEmpty(result))
             {
                 var parsedString = PythonOutputParser.Parse(result);
@@ -64,7 +64,7 @@ namespace Traicy.GUI.Logic
         {
             ProcessStartInfo start = new ProcessStartInfo
             {
-                FileName = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe",
+                FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe",
                 Arguments = $"\"{command}\" \"{args}\"",
                 UseShellExecute = false, // don't use windows cmd
                 CreateNoWindow = true,

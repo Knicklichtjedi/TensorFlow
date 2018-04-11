@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -33,12 +34,14 @@ namespace Traicy.GUI.Logic
             finally { DeleteObject(handle); }
         }
 
-        public void TakePicture(Bitmap picture)
+        public string TakePicture(Bitmap picture)
         {
             string filename = $"{DateTime.Now:dd_MM_yy hh_mm_ss}.png";
             //TODO: create directory if not exists
-            picture.Save(@"../../images/" + filename, ImageFormat.Png);
-            //TODO: Image an Python übergeben oder so lassen, dass Python die Bilder über Ordnerstruktur einliest?
+            string filePath = $"images\\{filename}";
+            picture.Save(filePath, ImageFormat.Png);
+            string absolutePath = Path.GetFullPath(filePath);
+            return absolutePath;
         }
     }
 }

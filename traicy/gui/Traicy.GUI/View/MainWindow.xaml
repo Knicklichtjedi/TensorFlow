@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="Traicy" Height="720" Width="1280"
         Background="#d9d9d9"
-        Icon="../resources/traicy_logo.png"
+        Icon="pack://application:,,,/Traicy.GUI;component/resources/logo_halb_1-01.png"
         Closing="Window_Closing">
     
     

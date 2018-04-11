@@ -88,18 +88,21 @@ namespace Traicy.GUI.View
 
         private void ButtonStartObjectDetection_OnClick(object sender, RoutedEventArgs e)
         {
-            ButtonStartObjectDetection.Content = "Verarbeitung...";
 
-            //TODO: TakePicture?
-            
-            PythonConnector pythonConnector = new PythonConnector();
-            //pythonConnector.ExecutePythonScript();
-            //pythonConnector.ExecutePythonScript2();
-            string prediction = pythonConnector.GetPrediction();
-            TextToSpeech textToSpeech = new TextToSpeech();
-            textToSpeech.InvokeAsyncTextToSpeech(prediction);
+            if (_camera.IsConnected())
+            {
+                ButtonStartObjectDetection.Content = "Verarbeitung...";
 
-            ButtonStartObjectDetection.Content = "Starte Objekterkennung";
+                var absolutePath = SetImageSource();
+                PythonConnector pythonConnector = new PythonConnector();
+                //pythonConnector.ExecutePythonScript();
+                //pythonConnector.ExecutePythonScript2();
+                string prediction = pythonConnector.GetPrediction(absolutePath);
+                TextToSpeech textToSpeech = new TextToSpeech();
+                textToSpeech.InvokeAsyncTextToSpeech(prediction);
+
+                ButtonStartObjectDetection.Content = "Starte Objekterkennung";
+            }
 
         }
         
@@ -118,16 +121,23 @@ namespace Traicy.GUI.View
             }
         }
 
+        //TODO: löschen?
         private void ButtonTakePicture_OnClick(object sender, RoutedEventArgs e)
         {
             if (_camera.IsConnected())
             {
-                WebcamHelper helper = new WebcamHelper();
-                var picture = _camera.GetBitmap();
-                var webcamFrame = helper.ImageSourceForBitmap(picture);
-                WebCamPicture.Source = webcamFrame;
-                helper.TakePicture(picture);
+                SetImageSource();
             }
+        }
+
+        private string SetImageSource()
+        {
+            WebcamHelper helper = new WebcamHelper();
+            var picture = _camera.GetBitmap();
+            var webcamFrame = helper.ImageSourceForBitmap(picture);
+            WebCamPicture.Source = webcamFrame;
+            var absolutePath = helper.TakePicture(picture);
+            return absolutePath;
         }
 
         //call to avoid exception when closing the window without disconnecting the camera

@@ -30,15 +30,16 @@ namespace Traicy.GUI.Logic
 
             _speaker.SetOutputToDefaultAudioDevice();
             //Geschwindigkeit (-10 - 10)
-            _speaker.Rate = 1;
+            _speaker.Rate = -2;
             //Lautstärke (0-100)
             _speaker.Volume = 100;
-            _speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
+            //_speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
+            //_speaker.SelectVoice("Microsoft Anna"); //englische Version
 
             //Such passende Stimme zu angegebenen Argumenten
             //_speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
             //Text wird ausgegeben (abbrechen mit speaker.CancelAsync())
-            
+
             //_speaker.SpeakAsync("I see an T!");
             //_speaker.SpeakAsync("I see an R!");
             //_speaker.SpeakAsync("I see an A!");
