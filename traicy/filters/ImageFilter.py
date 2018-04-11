@@ -35,10 +35,20 @@ canny_strength = 0.5
 binary_gaussian_strength = 0.5
 binary_filter_threshold = 0.5
 
+green_low = 90
+green_high = 135
 
-def borders(ndarray, filename, folder):
+green_low_factor = green_low / 360
+green_high_factor = green_high / 360
 
-    nd = imread(folder + filename + '_binary.png')
+green_saturation = 0.5
+green_brightness = 0.75
+
+
+def borders(img_read, filename, folder):
+
+    # nd = imread(folder + filename + '_binary.png')
+    nd = img_read
     newfilename = folder + filename + '_borders.png'
     new_color = 0
 
@@ -174,6 +184,30 @@ def create_greenfiltered_image(img_read, filename, folder):
     imsave(folder + filename + "_binary" + '.png', img_as_uint(mask_inv))
 
     return imread(folder + filename + "_binary" + '.png', as_grey=True)
+
+
+def create_chromakey_image(img_read, filename, folder):
+    hsv = rgb2hsv(img_read)
+
+    for pixel_row in hsv:
+        for pixel_col in pixel_row:
+
+            if green_low_factor < pixel_col[0] <= green_high_factor\
+                    and pixel_col[1] > green_saturation \
+                    and pixel_col[2] < green_brightness:
+
+                pixel_col[0] = 0
+                pixel_col[1] = 0
+                pixel_col[2] = 0
+            else:
+
+                pixel_col[0] = 1
+                pixel_col[1] = 1
+                pixel_col[2] = 1
+
+    imsave(folder + filename + '_' + 'binary' + '.png', hsv)
+
+    return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
 
 
 def create_com_image(img_read, filename, folder):
@@ -353,9 +387,9 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 12):
+    for i in range(0, 4):
         filename = f"{i}.jpg"
-        dir_name = data_path + "images_human_raw/" + filename
+        dir_name = data_path + "images_green/" + filename
 
         # create folder and sub folder
         sub_folder = main_folder + f"/{i}" + "/"
@@ -372,19 +406,19 @@ def read_images():
         img_rotated = rotate_image(img_scaled, rotation)
 
         # create binary image
-        img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        #img_binary = create_binary_image(img_rotated, filename, sub_folder)
         # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
-        #  TODO Move to before scaling to fix bad precision with small images
+        img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
         # get black borders inside of image
         img_borders = borders(img_binary, filename, sub_folder)
 
-        # align binary image to center of mass
-        img_com = create_com_image(img_borders, filename, sub_folder)
-
         # create two filtered images
-        img_canny = create_canny_image(img_com, filename, sub_folder)
-        img_skeleton = create_skeleton_image(img_com, filename, sub_folder)
+        # img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
+        img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
+
+        # align binary image to center of mass
+        img_com = create_com_image(img_skeleton, filename, sub_folder)
 
 
 def main():
