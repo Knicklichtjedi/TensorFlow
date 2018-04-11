@@ -119,7 +119,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Logic\IronPythonConnection.cs" />
+    <Compile Include="Logic\Logger.cs" />
+    <Compile Include="Logic\PythonConnector.cs" />
+    <Compile Include="Logic\PythonOutputParser.cs" />
     <Compile Include="Logic\TextToSpeech.cs" />
     <Compile Include="Logic\WebcamHelper.cs" />
     <Compile Include="View\SettingsControl.xaml.cs">
@@ -180,13 +182,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\traicy_logo.png" />
+    <Content Include="resources\photo-camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\no-camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\traicy_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\traicy_logo_font.png" />
+    <Resource Include="resources\traicy_logo_font.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\settings.png" />
+    <Content Include="resources\settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
