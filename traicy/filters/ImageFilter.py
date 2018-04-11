@@ -6,6 +6,9 @@ from skimage.transform import rotate
 from skimage import img_as_ubyte
 from skimage import img_as_uint
 from skimage import filters as filters
+from skimage.color import rgb2hsv, hsv2rgb, rgb2gray
+# openCV
+import cv2
 # scipy
 from scipy.ndimage import measurements
 import numpy as np
@@ -32,11 +35,20 @@ canny_strength = 0.5
 binary_gaussian_strength = 0.5
 binary_filter_threshold = 0.5
 
+green_low = 90
+green_high = 135
+
+green_low_factor = green_low / 360
+green_high_factor = green_high / 360
+
+green_saturation = 0.5
+green_brightness = 0.75
 
 
-def borders(ndarray, filename, folder):
+def borders(img_read, filename, folder):
 
-    nd = imread(folder + filename + '_binary.png')
+    # nd = imread(folder + filename + '_binary.png')
+    nd = img_read
     newfilename = folder + filename + '_borders.png'
     new_color = 0
 
@@ -110,8 +122,10 @@ def create_binary_image(img_read, filename, folder):
         :returns
             array of the new binary image
     """
-    img_gaussian = filters.gaussian(img_read, binary_gaussian_strength)
-    img_threshold = filters.threshold_mean(img_read)
+    img_conv = rgb2gray(img_read)
+
+    img_gaussian = filters.gaussian(img_conv, binary_gaussian_strength)
+    img_threshold = filters.threshold_mean(img_conv)
 
     # Threshold comparison
     img_binary = img_gaussian < img_threshold
@@ -119,6 +133,81 @@ def create_binary_image(img_read, filename, folder):
     imsave(folder + filename + "_binary" + '.png', img_as_uint(img_binary))
 
     return img_binary
+
+
+def create_greenfiltered_image(img_read, filename, folder):
+
+    icol = (36, 202, 59, 76, 255, 255)  # green
+
+    frame = img_read
+    #  cv2.imshow('frame', frame)
+
+    lowHue = icol[0]
+    lowSat = icol[1]
+    lowVal = icol[2]
+    highHue = icol[3]
+    highSat = icol[4]
+    highVal = icol[5]
+
+    # frameBGR = cv2.GaussianBlur(frame, (7, 7), 0)
+    #  cv2.imshow('blurred', frameBGR)
+
+    # img_np = np.copy(frameBGR)
+    # img_conv = img_np.astype(np.uint16)
+    img_hsv = rgb2hsv(frame)
+    # img_shape = img_hsv.reshape()
+
+    imsave(folder + filename + "_binary_hsv" + '.png', hsv2rgb(img_hsv))
+
+    for pixel_row in img_hsv:
+        for pixel_col in pixel_row:
+            pixel_col[0] *= 180
+            pixel_col[1] *= 255
+            pixel_col[2] *= 255
+
+    # hsv = cv2.cvtColor(img_conv, cv2.COLOR_BGR2HSV)
+    colorLow = np.array([lowHue, lowSat, lowVal])
+    colorHigh = np.array([highHue, highSat, highVal])
+    mask = cv2.inRange(img_hsv, colorLow, colorHigh)
+
+    mask2 = cv2.inRange
+    #  cv2.imshow('mask-plain', mask)
+
+    kernal = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernal)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernal)
+    #  cv2.imshow('mask', mask)
+
+    mask_inv = cv2.bitwise_not(mask)
+    #  cv2.imshow('mask_inv', mask_inv)
+
+    imsave(folder + filename + "_binary" + '.png', img_as_uint(mask_inv))
+
+    return imread(folder + filename + "_binary" + '.png', as_grey=True)
+
+
+def create_chromakey_image(img_read, filename, folder):
+    hsv = rgb2hsv(img_read)
+
+    for pixel_row in hsv:
+        for pixel_col in pixel_row:
+
+            if green_low_factor < pixel_col[0] <= green_high_factor\
+                    and pixel_col[1] > green_saturation \
+                    and pixel_col[2] < green_brightness:
+
+                pixel_col[0] = 0
+                pixel_col[1] = 0
+                pixel_col[2] = 0
+            else:
+
+                pixel_col[0] = 1
+                pixel_col[1] = 1
+                pixel_col[2] = 1
+
+    imsave(folder + filename + '_' + 'binary' + '.png', hsv)
+
+    return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
 
 
 def create_com_image(img_read, filename, folder):
@@ -150,7 +239,7 @@ def create_com_image(img_read, filename, folder):
 
     # find all pixels with a value greater than binary_filter_threshold
     # In most cases the pixels will only have values of 0 or 1
-    for pixel_row in img_read:
+    for pixel_row in rgb2gray(img_read):
         for pixel_col in pixel_row:
 
             if pixel_col > binary_filter_threshold:
@@ -228,7 +317,7 @@ def create_scaled_image(img_read, filename, folder):
     img_cropped.save(newfilename, "PNG")
 
     # reload image due to pillow using its own image class
-    return imread(newfilename, as_grey=True)
+    return imread(newfilename)
 
 
 def create_folder(directory):
@@ -280,6 +369,8 @@ def rotate_image(img_read, rotation):
         value_cw = -float((str.split(str(rotation), " ")[1]))
         img_rotated = rotate(img_read, value_cw)
         return img_rotated
+    else:
+        return img_read
 
 
 def read_images():
@@ -296,9 +387,9 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 10):
+    for i in range(0, 4):
         filename = f"{i}.jpg"
-        dir_name = data_path + "images_human_raw/" + filename
+        dir_name = data_path + "images_green/" + filename
 
         # create folder and sub folder
         sub_folder = main_folder + f"/{i}" + "/"
@@ -315,17 +406,19 @@ def read_images():
         img_rotated = rotate_image(img_scaled, rotation)
 
         # create binary image
-        img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        #img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
+        img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
         # get black borders inside of image
         img_borders = borders(img_binary, filename, sub_folder)
 
-        # align binary image to center of mass
-        img_com = create_com_image(img_borders, filename, sub_folder)
-
         # create two filtered images
-        img_canny = create_canny_image(img_com, filename, sub_folder)
-        img_skeleton = create_skeleton_image(img_com, filename, sub_folder)
+        # img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
+        img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
+
+        # align binary image to center of mass
+        img_com = create_com_image(img_skeleton, filename, sub_folder)
 
 
 def main():
