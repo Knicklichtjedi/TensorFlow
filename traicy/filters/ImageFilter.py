@@ -229,7 +229,7 @@ def create_com_image(img_read, filename, folder):
 
     # Calculate center of mass
     center = measurements.center_of_mass(img_read)
-    print(f"center of mass {center} in {img_read.shape}")
+    # print(f"center of mass {center} in {img_read.shape}")
 
     row_counter = 0
     col_counter = 0
@@ -273,7 +273,8 @@ def create_com_image(img_read, filename, folder):
     for element in true_positions_list_moved:
         max_dim = image_dimension - 1
         if element[0] > max_dim or element[1] > max_dim:
-            print("DIMENSION WARNING")
+            # print("DIMENSION WARNING")
+            continue
         else:
             img_copy[int(element[0])][int(element[1])] = 1.0
 
@@ -350,7 +351,7 @@ def get_image_rotation(filename):
 
     for tag in tags.keys():
         if tag == 'Image Orientation':
-            print(f"{tag}, value {tags[tag]}")
+            # print(f"{tag}, value {tags[tag]}")
             return tags[tag]
 
 
@@ -375,7 +376,7 @@ def rotate_image(img_read, rotation):
 
 def read_images():
     """
-        Main method.
+
         Creates a new folder for the process with the necessary sub folder.
         Starts the filtering process for each image.
         Read -> Resize -> Rotate -> Binary -> CenterOfMass -> Canny + Skeleton
@@ -419,6 +420,40 @@ def read_images():
 
         # align binary image to center of mass
         img_com = create_com_image(img_skeleton, filename, sub_folder)
+
+
+def read_image_from_location(directory):
+
+    path = abspath(__file__ + "/../")
+    data_path = path + "filtered/"
+    filename = "filtered.png"
+
+    main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
+    create_folder(main_folder)
+
+    # get rotation of image and read it
+    rotation = get_image_rotation(directory)
+    img_reading = imread(directory, plugin='matplotlib')
+
+    # resize image
+    img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, main_folder)
+
+    # rotate image
+    img_rotated = rotate_image(img_scaled, rotation)
+
+    # create binary image
+    img_binary = create_chromakey_image(img_rotated, filename, main_folder)
+
+    # get black borders inside of image
+    img_borders = borders(img_binary, filename, main_folder)
+
+    # create filtered images
+    img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+
+    # align binary image to center of mass
+    img_com = create_com_image(img_skeleton, filename, main_folder)
+
+    return img_com
 
 
 def main():
