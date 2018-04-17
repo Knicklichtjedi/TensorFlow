@@ -16,6 +16,8 @@ import numpy as np
 from PIL import Image
 # exifread
 import exifread
+#custom modules
+import JSONSettings
 # os
 import datetime
 import os
@@ -26,23 +28,64 @@ import errno
 image_dimension = 28
 image_dimension_small = 27
 
-border = 2
+image_border = 2
 
 image_dimension_t = (image_dimension, image_dimension)
 image_dimension_t_small = (image_dimension_small, image_dimension_small)
 
-canny_strength = 0.5
-binary_gaussian_strength = 0.5
-binary_filter_threshold = 0.5
+filter_canny_strength = 0.5
+filter_binary_gaussian_strength = 0.5
+filter_binary_filter_threshold = 0.5
 
-green_low = 90
-green_high = 135
+filter_green_low = 90
+filter_green_high = 135
 
-green_low_factor = green_low / 360
-green_high_factor = green_high / 360
+filter_green_low_factor = filter_green_low / 360
+filter_green_high_factor = filter_green_high / 360
 
-green_saturation = 0.5
-green_brightness = 0.75
+filter_green_saturation = 0.5
+filter_green_brightness = 0.75
+
+
+def assign_json_values(filename_directory):
+    try:
+        JSONSettings.parse_data(filename_directory)
+
+        global image_dimension, image_dimension_small, image_border
+        global filter_canny_strength, filter_binary_gaussian_strength, filter_binary_filter_threshold
+        global filter_green_low, filter_green_high, filter_green_saturation, filter_green_brightness
+
+        image_dimension = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
+        image_dimension_small = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION_SMALL)
+        image_border = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_BORDER)
+
+        filter_canny_strength = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CANNY)
+        filter_binary_gaussian_strength = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_BIN_GAUSS)
+        filter_binary_filter_threshold = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_BIN_THRESHOLD)
+
+        filter_green_low = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_LOW)
+        filter_green_high = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_HIGH)
+
+        filter_green_saturation = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_SATURATION)
+        filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_BRIGHTNESS)
+
+        reassign_calculated_variables()
+
+    except errno:
+        # TODO Error message
+        return
+
+
+def reassign_calculated_variables():
+
+    global image_dimension, image_dimension_t, image_dimension_small, image_dimension_t_small
+    global filter_green_low_factor, filter_green_high_factor, filter_green_low, filter_green_high
+
+    image_dimension_t = (image_dimension, image_dimension)
+    image_dimension_t_small = (image_dimension_small, image_dimension_small)
+
+    filter_green_low_factor = filter_green_low / 360
+    filter_green_high_factor = filter_green_high / 360
 
 
 def borders(img_read, filename, folder):
@@ -55,17 +98,17 @@ def borders(img_read, filename, folder):
     xrange = image_dimension_small
 
     for x in range(0, xrange):
-        for y in range(0, border):
+        for y in range(0, image_border):
             nd[x, y] = new_color
 
-        for y in range(xrange - border, xrange):
+        for y in range(xrange - image_border, xrange):
             nd[x, y] = new_color
 
     for y in range(0, xrange):
-        for x in range(0, border):
+        for x in range(0, image_border):
             nd[x, y] = new_color
 
-        for x in range(xrange - border, xrange):
+        for x in range(xrange - image_border, xrange):
             nd[x, y] = new_color
 
     imsave(newfilename, nd)
@@ -84,7 +127,7 @@ def create_canny_image(img_read, filename, folder):
     :returns
         array filtered with canny algorithm
     """
-    img_canny = canny(img_read, canny_strength)
+    img_canny = canny(img_read, filter_canny_strength)
     img_conv = img_as_ubyte(img_canny)
 
     imsave(folder + filename + '_' + 'canny' + '.png', img_conv)
@@ -124,7 +167,7 @@ def create_binary_image(img_read, filename, folder):
     """
     img_conv = rgb2gray(img_read)
 
-    img_gaussian = filters.gaussian(img_conv, binary_gaussian_strength)
+    img_gaussian = filters.gaussian(img_conv, filter_binary_gaussian_strength)
     img_threshold = filters.threshold_mean(img_conv)
 
     # Threshold comparison
@@ -192,9 +235,9 @@ def create_chromakey_image(img_read, filename, folder):
     for pixel_row in hsv:
         for pixel_col in pixel_row:
 
-            if green_low_factor < pixel_col[0] <= green_high_factor\
-                    and pixel_col[1] > green_saturation \
-                    and pixel_col[2] < green_brightness:
+            if filter_green_low_factor < pixel_col[0] <= filter_green_high_factor\
+                    and pixel_col[1] > filter_green_saturation \
+                    and pixel_col[2] < filter_green_brightness:
 
                 pixel_col[0] = 0
                 pixel_col[1] = 0
@@ -242,7 +285,7 @@ def create_com_image(img_read, filename, folder):
     for pixel_row in rgb2gray(img_read):
         for pixel_col in pixel_row:
 
-            if pixel_col > binary_filter_threshold:
+            if pixel_col > filter_binary_filter_threshold:
                 # add pixel position in array to list
                 true_positions_list.append((col_counter, row_counter))
 
@@ -264,8 +307,8 @@ def create_com_image(img_read, filename, folder):
 
         # Create a border around the image before centering it
 
-        if (border-1 < x_moved < image_dimension_small-border) \
-                and (border-1 < y_moved < image_dimension_small-border):
+        if (image_border - 1 < x_moved < image_dimension_small - image_border) \
+                and (image_border - 1 < y_moved < image_dimension_small - image_border):
 
             true_positions_list_moved.append((x_moved, y_moved))
 
@@ -382,7 +425,12 @@ def read_images():
         Read -> Resize -> Rotate -> Binary -> CenterOfMass -> Canny + Skeleton
 
     """
+
     path = abspath(__file__ + "/../../")
+    json_path = str(path) + "/configs/settings.json"
+
+    assign_json_values(json_path)
+
     data_path = str(path) + "/data/"
 
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
@@ -423,6 +471,12 @@ def read_images():
 
 
 def read_image_from_location(directory):
+
+    path = abspath(__file__ + "/../../")
+    json_path = str(path) + "/configs/settings.json"
+
+    # get new json values and assign them
+    assign_json_values(json_path)
 
     path = abspath(__file__ + "/../")
     data_path = path + "filtered/"
