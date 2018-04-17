@@ -1,12 +1,16 @@
 {
     "image": {
-        "dimension": 28,
+        "dimension": 35,
         "dimension_small": 27,
         "border": 2
     },
     "filter": {
         "canny": 0.5,
         "binary_gauss": 0.5,
-        "binary_threshold": 0.5
+        "binary_threshold": 0.5,
+        "green_low": 90,
+        "green_high": 135,
+        "green_saturation": 0.5,
+        "green_brightness": 0.75
     }
 }
