@@ -1,7 +1,25 @@
+# Filtered images (data)
+filtered/
+images_green/
+
 # Visual Studio
 bin/
 obj/
 .vs/
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
 
 # Jetbrains PyCharm folders
 .idea/

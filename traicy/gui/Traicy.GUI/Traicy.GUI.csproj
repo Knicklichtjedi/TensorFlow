@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -34,8 +34,67 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bluetechnix, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\Bluetechnix.dll</HintPath>
+    </Reference>
+    <Reference Include="Fotonic, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\Fotonic.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8.1\lib\net45\IronPython.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MesaCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MesaCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriCam, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriCam.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriCamSDK, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriCamSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="MetriUEye, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\MetriUEye.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="O3DCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\O3DCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="PMDCamera, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\PMDCamera.dll</HintPath>
+    </Reference>
+    <Reference Include="PrimeSense, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\PrimeSense.dll</HintPath>
+    </Reference>
+    <Reference Include="SoftKinetic, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\SoftKinetic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -45,16 +104,33 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WebCam, Version=1.4.4.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\WebCam.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XmlRpc, Version=1.3.2.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\MetriCam.1.4.4.1\lib\net40\MetriCam\XmlRpc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Logic\Logger.cs" />
+    <Compile Include="Logic\PythonConnector.cs" />
+    <Compile Include="Logic\PythonOutputParser.cs" />
+    <Compile Include="Logic\TextToSpeech.cs" />
+    <Compile Include="Logic\WebcamHelper.cs" />
+    <Compile Include="View\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -62,10 +138,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Contracts\ISettingProperties.cs" />
+    <Compile Include="Data\SettingProperties.cs" />
+    <Compile Include="Logic\JsonParser.cs" />
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -85,6 +172,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,6 +180,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\logo_halb_1-01.png" />
+    <Content Include="resources\photo-camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\no-camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\traicy_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\traicy_logo_font.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
