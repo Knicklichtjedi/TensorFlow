@@ -63,11 +63,11 @@ def assign_json_values(filename_directory):
         filter_binary_gaussian_strength = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_BIN_GAUSS)
         filter_binary_filter_threshold = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_BIN_THRESHOLD)
 
-        filter_green_low = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
-        filter_green_high = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
+        filter_green_low = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_LOW)
+        filter_green_high = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_HIGH)
 
-        filter_green_saturation = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
-        filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
+        filter_green_saturation = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_SATURATION)
+        filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_BRIGHTNESS)
 
         reassign_calculated_variables()
 
