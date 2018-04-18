@@ -37,8 +37,8 @@ filter_canny_strength = 0.5
 filter_binary_gaussian_strength = 0.5
 filter_binary_filter_threshold = 0.5
 
-filter_green_low = 90
-filter_green_high = 135
+filter_green_low = 50
+filter_green_high = 180
 
 filter_green_low_factor = filter_green_low / 360
 filter_green_high_factor = filter_green_high / 360
@@ -235,9 +235,9 @@ def create_chromakey_image(img_read, filename, folder):
     for pixel_row in hsv:
         for pixel_col in pixel_row:
 
-            if filter_green_low_factor < pixel_col[0] <= filter_green_high_factor\
-                    and pixel_col[1] > filter_green_saturation \
-                    and pixel_col[2] < filter_green_brightness:
+            if filter_green_low_factor < pixel_col[0] <= filter_green_high_factor:
+                    # and pixel_col[1] > filter_green_saturation \
+                    # and pixel_col[2] < filter_green_brightness:
 
                 pixel_col[0] = 0
                 pixel_col[1] = 0
@@ -427,17 +427,16 @@ def read_images():
     """
 
     path = abspath(__file__ + "/../../")
+    data_path = str(path) + "/data/"
     json_path = str(path) + "/configs/settings.json"
 
     assign_json_values(json_path)
 
-    data_path = str(path) + "/data/"
-
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 4):
-        filename = f"{i}.jpg"
+    for i in range(0, 3):
+        filename = f"{i}.png"
         dir_name = data_path + "images_green/" + filename
 
         # create folder and sub folder
@@ -478,11 +477,10 @@ def read_image_from_location(directory):
     # get new json values and assign them
     assign_json_values(json_path)
 
-    path = abspath(__file__ + "/../")
-    data_path = path + "filtered/"
+    data_path = path + "/filtered/"
     filename = "filtered.png"
 
-    main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
+    main_folder = data_path + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S") + "/"
     create_folder(main_folder)
 
     # get rotation of image and read it
