@@ -23,25 +23,25 @@ namespace Traicy.GUI.View
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-            
-            _textToSpeechEnabled = true;
-            ISettingProperties settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json");
 
-            //set image settings
-            DimensionTextBox.Text = settings.ImageSettings.Dimension.ToString();
-            DimensionSmallTextBox.Text = settings.ImageSettings.DimensionSmall.ToString();
-            BorderTextBox.Text = settings.ImageSettings.Border.ToString();
+                _textToSpeechEnabled = true;
+                ISettingProperties settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json");
 
-            //set filter settings
-            CannyTextBox.Text = settings.FilterSettings.Canny.ToString(CultureInfo.CurrentCulture);
-            BinaryGaussTextBox.Text = settings.FilterSettings.BinaryGauss.ToString(CultureInfo.CurrentCulture);
-            BinaryThresholdTextBox.Text = settings.FilterSettings.BinaryThreshold.ToString(CultureInfo.CurrentCulture);
-            GreenLowTextBox.Text = settings.FilterSettings.GreenLow.ToString(CultureInfo.CurrentCulture);
-            GreenHighTextBox.Text = settings.FilterSettings.GreenHigh.ToString(CultureInfo.CurrentCulture);
-            GreenSaturationTextBox.Text = settings.FilterSettings.GreenSaturation.ToString(CultureInfo.CurrentCulture);
-            GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
+                //set image settings
+                DimensionTextBox.Text = settings.ImageSettings.Dimension.ToString();
+                DimensionSmallTextBox.Text = settings.ImageSettings.DimensionSmall.ToString();
+                BorderTextBox.Text = settings.ImageSettings.Border.ToString();
+
+                //set filter settings
+                CannyTextBox.Text = settings.FilterSettings.Canny.ToString(CultureInfo.CurrentCulture);
+                BinaryGaussTextBox.Text = settings.FilterSettings.BinaryGauss.ToString(CultureInfo.CurrentCulture);
+                BinaryThresholdTextBox.Text = settings.FilterSettings.BinaryThreshold.ToString(CultureInfo.CurrentCulture);
+                GreenLowTextBox.Text = settings.FilterSettings.GreenLow.ToString(CultureInfo.CurrentCulture);
+                GreenHighTextBox.Text = settings.FilterSettings.GreenHigh.ToString(CultureInfo.CurrentCulture);
+                GreenSaturationTextBox.Text = settings.FilterSettings.GreenSaturation.ToString(CultureInfo.CurrentCulture);
+                GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
+            }
         }
-    }
 
         private void ToggleSpeechButton_OnClick(object sender, RoutedEventArgs e)
         {

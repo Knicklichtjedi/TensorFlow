@@ -2,7 +2,6 @@
 
 namespace Traicy.GUI.Data
 {
-    [Newtonsoft.Json.JsonObject(Title = "image")]
     public class ImageSettings : IImageSettings
     {
         [Newtonsoft.Json.JsonProperty(PropertyName = "dimension")]

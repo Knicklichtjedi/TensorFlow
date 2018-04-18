@@ -2,7 +2,6 @@
 
 namespace Traicy.GUI.Data
 {
-    [Newtonsoft.Json.JsonObject(Title = "filter")]
     public class FilterSettings : IFilterSettings
     {
         [Newtonsoft.Json.JsonProperty(PropertyName = "canny")]

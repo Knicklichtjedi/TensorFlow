@@ -65,7 +65,8 @@ namespace Traicy.GUI.Logic
             ProcessStartInfo start = new ProcessStartInfo
             {
                 //TODO: this path has to be adjusted manually --> add to settings
-                FileName = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe", //eva
+                //FileName = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe", //eva home
+                FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe", //eva laptop            
                 //FileName = @"C:\Users\katha\AppData\Local\Programs\Python\Python36\python.exe", //katl
                 Arguments = $"\"{command}\" \"{args}\"",
                 UseShellExecute = false, // don't use windows cmd

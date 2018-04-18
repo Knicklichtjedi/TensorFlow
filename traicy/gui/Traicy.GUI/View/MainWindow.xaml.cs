@@ -38,7 +38,7 @@ namespace Traicy.GUI.View
 
             _camera = new WebCam();
 
-           //JsonTest();
+            JsonTest();
         }
 
         private void JsonTest()
