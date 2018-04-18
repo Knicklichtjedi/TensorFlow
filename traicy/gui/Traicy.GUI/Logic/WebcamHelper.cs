@@ -38,6 +38,10 @@ namespace Traicy.GUI.Logic
         {
             string filename = $"{DateTime.Now:dd_MM_yy hh_mm_ss}.png";
             //TODO: create directory if not exists
+            if (!Directory.Exists("images"))
+            {
+                Directory.CreateDirectory("images");
+            }
             string filePath = $"images\\{filename}";
             picture.Save(filePath, ImageFormat.Png);
             string absolutePath = Path.GetFullPath(filePath);

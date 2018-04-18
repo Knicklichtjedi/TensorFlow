@@ -1,9 +1,11 @@
-﻿namespace Traicy.GUI.Contracts
+﻿using Traicy.GUI.Data;
+
+namespace Traicy.GUI.Contracts
 {
-    interface ISettingProperties
+    public interface ISettingProperties
     {
-        //TODO: which properties for settings and filters are needed?
-
-
+        ImageSettings ImageSettings { get; set; }
+        FilterSettings FilterSettings { get; set; }
+        //IGuiSettings GuiSettings { get; set; }
     }
 }
