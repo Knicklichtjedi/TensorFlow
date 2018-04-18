@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Traicy.GUI.View"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300">
-    <Grid>
-        <local:SettingsControl></local:SettingsControl>
-    </Grid>
+        Icon="pack://application:,,,/Traicy.GUI;component/resources/logo_halb_1-01.png"
+        Title="Settings" Height="300" Width="400">
+    <ScrollViewer>
+        <Grid>
+            <local:SettingsControl></local:SettingsControl>
+        </Grid>
+    </ScrollViewer>
 </Window>

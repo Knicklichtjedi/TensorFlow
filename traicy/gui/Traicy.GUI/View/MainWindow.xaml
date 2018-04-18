@@ -23,7 +23,6 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <!--TODO: Settings, Flash Integration / Camera Integration -->
         <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#4b4b4b"></Border>
         <Label Grid.Column="0" Grid.Row="0" Name="TitleText" Foreground="#E1E1E1" Content="Objekterkennung" FontFamily="Raleway Light" FontSize="16pt" VerticalAlignment="Center" Margin="5,0"></Label>
         <Image Source="/resources/traicy_logo.png" Margin="0,5" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"/>

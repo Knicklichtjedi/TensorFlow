@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Traicy.GUI.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -16,9 +15,91 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <TextBlock Text="Sprachausgabe:" HorizontalAlignment="Right" Margin="10,0"></TextBlock>
-        <ToggleButton Grid.Column="1" Grid.Row="0" Height="20px" Name="ToggleSpeechButton" Click="ToggleSpeechButton_OnClick" Content="Aus"></ToggleButton>
+
+        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#4b4b4b"></Border>
+        <Label Grid.Column="0" Grid.Row="0" Name="TitleTextSettings" Foreground="#E1E1E1" Content="Einstellungen" FontFamily="Raleway Light" FontSize="14pt" VerticalAlignment="Center" Margin="5,0"></Label>
+        <Image Source="/resources/traicy_logo.png" Margin="0,5" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"/>
+        <Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Fill="#FFB300" Height="4"/>
+
+        <GroupBox Header="Benutzeroberfläche" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5,10">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Content="Sprachausgabe:" HorizontalAlignment="Right" Margin="10,0"></Label>
+                <ToggleButton Grid.Column="1" Grid.Row="0" Height="20px" Name="ButtonTextToSpeech" Click="ToggleSpeechButton_OnClick" Content="An"></ToggleButton>
+            </Grid>
+
+        </GroupBox>
+        <GroupBox Header="Python Filter" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="5,10">
+            <Grid Margin="5,5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Content="Bildgröße:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="0"></Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Margin="5,5" Name="DimensionTextBox"></TextBox>
+
+                <Label Content="Bildgröße klein:" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1" Margin="5,5"></Label>
+                <TextBox Name="DimensionSmallTextBox" Grid.Column="1" Grid.Row="1" Margin="5,5"></TextBox>
+
+                <Label Content="Bildrand:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="2"></Label>
+                <TextBox Name="BorderTextBox" Grid.Column="1" Grid.Row="2" Margin="5,5"></TextBox>
+
+                <Border Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Height="5" Background="Transparent"></Border>
+
+                <Label Content="Canny:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="4"></Label>
+                <TextBox Name="CannyTextBox" Grid.Column="1" Grid.Row="4" Margin="5,5"></TextBox>
+                <!--<Slider Grid.Column="1" Grid.Row="5" Margin="5,5" Minimum="0" Maximum="100"></Slider>-->
+
+                <Label Content="Gauss binär:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="5"></Label>
+                <TextBox Name="BinaryGaussTextBox" Grid.Column="1" Grid.Row="5" Margin="5,5"></TextBox>
+
+                <Label Content="Schwellenwert binär:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="6"></Label>
+                <TextBox Name="BinaryThresholdTextBox" Grid.Column="1" Grid.Row="6" Margin="5,5"></TextBox>
+
+                <Label Content="unterer Schwellwert grün:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="7"></Label>
+                <TextBox Name="GreenLowTextBox" Grid.Column="1" Grid.Row="7" Margin="5,5"></TextBox>
+
+                <Label Content="oberer Schwellwert grün:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="8"></Label>
+                <TextBox Name="GreenHighTextBox" Grid.Column="1" Grid.Row="8" Margin="5,5"></TextBox>
+
+                <Label Content="Sättigung grün:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="9"></Label>
+                <TextBox Name="GreenSaturationTextBox" Grid.Column="1" Grid.Row="9" Margin="5,5"></TextBox>
+
+                <Label Content="Helligkeit grün:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="10"></Label>
+                <TextBox Name="GreenBrightnessTextBox" Grid.Column="1" Grid.Row="10" Margin="5,5"></TextBox>
+
+            </Grid>
+
+        </GroupBox>
+
+        <Button Name="SaveSettingsButton" Content="Speichere Einstellungen" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Click="SaveSettingsButton_OnClick" Margin="10,10"></Button>
     </Grid>
 </UserControl>

@@ -119,6 +119,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Contracts\IFilterSettings.cs" />
+    <Compile Include="Contracts\IGUISettings.cs" />
+    <Compile Include="Contracts\IImageSettings.cs" />
+    <Compile Include="Data\FilterSettings.cs" />
+    <Compile Include="Data\GuiSettings.cs" />
+    <Compile Include="Data\ImageSettings.cs" />
+    <Compile Include="Logic\EventHandling.cs" />
     <Compile Include="Logic\Logger.cs" />
     <Compile Include="Logic\PythonConnector.cs" />
     <Compile Include="Logic\PythonOutputParser.cs" />

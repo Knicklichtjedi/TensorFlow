@@ -55,10 +55,12 @@ def predict(img_flat, accuracy, x, y_, keep_prob, actual):
 
 
 def predict_image(img):
+    path = abspath(__file__ + "/../")
+
     with tf.Session() as sess:
 
-        saver = tf.train.import_meta_graph('./model/CNN_MNIST.meta')
-        saver.restore(sess, tf.train.latest_checkpoint('./model/'))
+        saver = tf.train.import_meta_graph(path + "/model/CNN_MNIST.meta")
+        saver.restore(sess, tf.train.latest_checkpoint(path + "/model/"))
 
         graph = tf.get_default_graph()
         x = graph.get_tensor_by_name("x:0")

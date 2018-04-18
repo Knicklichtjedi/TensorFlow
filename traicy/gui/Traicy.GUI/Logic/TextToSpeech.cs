@@ -33,7 +33,7 @@ namespace Traicy.GUI.Logic
             _speaker.Rate = -2;
             //Lautstärke (0-100)
             _speaker.Volume = 100;
-            //_speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
+            _speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
             //_speaker.SelectVoice("Microsoft Anna"); //englische Version
 
             //Such passende Stimme zu angegebenen Argumenten

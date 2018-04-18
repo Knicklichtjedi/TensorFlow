@@ -2,6 +2,7 @@ import numpy as np
 import tensorflow as tf
 from skimage.io import imread
 from tensorflow.examples.tutorials.mnist import input_data
+from os.path import abspath
 
 
 def weight_variable(shape):
@@ -85,7 +86,7 @@ def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
     with tf.Session() as sess:
 
         sess.run(tf.global_variables_initializer())
-        saver = tf.train.Saver()
+        saver = tf.train.Saver(save_relative_paths=True)
 
         for i in range(10000):
             batch = mnist.train.next_batch(50)
