@@ -35,14 +35,14 @@ canny_strength = 0.5
 binary_gaussian_strength = 0.5
 binary_filter_threshold = 0.5
 
-green_low = 90
-green_high = 135
+green_low = 50
+green_high = 170
 
 green_low_factor = green_low / 360
 green_high_factor = green_high / 360
 
-green_saturation = 0.5
-green_brightness = 0.75
+#green_saturation = 0.5
+#green_brightness = 0.75
 
 
 def borders(img_read, filename, folder):
@@ -185,6 +185,7 @@ def create_greenfiltered_image(img_read, filename, folder):
 
     return imread(folder + filename + "_binary" + '.png', as_grey=True)
 
+# and pixel_col[1] > green_saturation \
 
 def create_chromakey_image(img_read, filename, folder):
     hsv = rgb2hsv(img_read)
@@ -192,9 +193,8 @@ def create_chromakey_image(img_read, filename, folder):
     for pixel_row in hsv:
         for pixel_col in pixel_row:
 
-            if green_low_factor < pixel_col[0] <= green_high_factor\
-                    and pixel_col[1] > green_saturation \
-                    and pixel_col[2] < green_brightness:
+            if green_low_factor < pixel_col[0] <= green_high_factor:#\
+                  # and pixel_col[2] < green_brightness:
 
                 pixel_col[0] = 0
                 pixel_col[1] = 0
@@ -388,7 +388,7 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 4):
+    for i in range(0, 7):
         filename = f"{i}.jpg"
         dir_name = data_path + "images_green/" + filename
 
