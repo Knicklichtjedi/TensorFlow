@@ -3,6 +3,8 @@ import tensorflow as tf
 from skimage.io import imread
 from skimage.util import img_as_float
 from os.path import abspath
+import time
+
 
 def create_poss():
     a0 = np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -36,17 +38,8 @@ def load_cust_images():
 
 
 def predict(img_flat, accuracy, x, y_, keep_prob, actual):
-    # with tf.Session() as sess:
 
-        # sess.run(tf.global_variables_initializer())
         dict_poss = create_poss()
-
-        # for i in range(0, len(dict_poss)):
-        #   prediction = sess.run(tf.global_variables_initializer(),
-        #                               feed_dict={ x: img_flat,
-        #                                           y_: dict_poss[i].reshape(1, 10),
-        #                                           keep_prob: 1.0})
-        #   if prediction > 0.5: print("Guessing: " + str(prediction) + " " + str(i))
 
         for i in range(0, len(dict_poss)):
             prediction = accuracy.eval(feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
@@ -55,31 +48,10 @@ def predict(img_flat, accuracy, x, y_, keep_prob, actual):
 
 
 def main():
-    # tf.reset_default_graph()
-
-    # x = tf.placeholder(tf.float32, [None, 784], name='x')
-    # y_ = tf.placeholder(tf.float32, [None, 10], name='y_')
-    # accuracy = tf.placeholder(tf.float32, [None, 10], name='accuracy')
-
-    # x = tf.get_variable("x", [1])
-    # y_ = tf.get_variable("y_", [1])
-    # accuracy = tf.get_variable("accuracy", [1])
-
-    # var = tf.get_variable("Variable_7/Adam_1", [10])
-    # x = tf.placeholder(tf.float32, [1, 784], name='x')
-    # y_ = tf.placeholder(tf.float32, [1, 10], name='y_')
-    # keep_prob = tf.placeholder(tf.float32)
-
     with tf.Session() as sess:
-
-        # saver = tf.train.import_meta_graph('model/CNN_MNIST.meta')
-        # saver.restore(sess, save_path='model/CNN_MNIST')
-        # print(sess.run('x:0'))
 
         saver = tf.train.import_meta_graph('./model/CNN_MNIST.meta')
         saver.restore(sess, tf.train.latest_checkpoint('./model/'))
-
-        # print(sess.run('bias:0'))
 
         graph = tf.get_default_graph()
         x = graph.get_tensor_by_name("x:0")
@@ -88,23 +60,10 @@ def main():
 
         op = graph.get_tensor_by_name("accuracy:0")
 
-        # [op for op in tf.get_default_graph().get_operations() if op.type ]
-
-        # saver.restore(sess, "model/CNN_MNIST.ckpt")
-        # sess.run(tf.global_variables_initializer())
-        # graph = tf.get_default_graph()
-        # accuracy = graph.get_tensor_by_name('accuracy:0')
-        #
-        # acc = sess.run(accuracy)
-        #
-        # print(acc)
-
         image_list = load_cust_images()
         dict_poss = create_poss()
         counter = 0
         for i in image_list:
-            # feed_dict = {x: i, y_: dict_poss[counter].reshape(1, 10), keep_prob: 1.0}
-            # print(sess.run(op, feed_dict))
 
             for index in range(0, len(dict_poss)):
                 prediction = op.eval(feed_dict={x: i, y_: dict_poss[index].reshape(1, 10), keep_prob: 1.0})
@@ -115,59 +74,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# ######################################### HUMAN SKELETON
-
-# TRAINING
-# Guessing with 1.0 prob. for 9 while its 0
-# Guessing with 1.0 prob. for 1 while its 1
-# Guessing with 1.0 prob. for 7 while its 2
-# Guessing with 1.0 prob. for 3 while its 3
-# Guessing with 1.0 prob. for 4 while its 4
-# Guessing with 1.0 prob. for 5 while its 5
-# Guessing with 1.0 prob. for 1 while its 6
-# Guessing with 1.0 prob. for 7 while its 7
-# Guessing with 1.0 prob. for 2 while its 8
-# Guessing with 1.0 prob. for 9 while its 9
-
-# ######################################### HUMAN SKELETON
-
-# LOADED
-# Guessing with 1.0 prob. for 9 while its 0
-# Guessing with 1.0 prob. for 1 while its 1
-# Guessing with 1.0 prob. for 7 while its 2
-# Guessing with 1.0 prob. for 3 while its 3
-# Guessing with 1.0 prob. for 4 while its 4
-# Guessing with 1.0 prob. for 5 while its 5
-# Guessing with 1.0 prob. for 1 while its 6
-# Guessing with 1.0 prob. for 7 while its 7
-# Guessing with 1.0 prob. for 2 while its 8
-# Guessing with 1.0 prob. for 7 while its 9
-
-# ######################################### EVA
-
-# TRAINING
-# Guessing with 1.0 prob. for 0 while its 0
-# Guessing with 1.0 prob. for 7 while its 1
-# Guessing with 1.0 prob. for 2 while its 2
-# Guessing with 1.0 prob. for 3 while its 3
-# Guessing with 1.0 prob. for 4 while its 4
-# Guessing with 1.0 prob. for 5 while its 5
-# Guessing with 1.0 prob. for 6 while its 6
-# Guessing with 1.0 prob. for 7 while its 7
-# Guessing with 1.0 prob. for 8 while its 8
-# Guessing with 1.0 prob. for 3 while its 9
-
-# ######################################### EVA
-
-# LOADED
-# Guessing with 1.0 prob. for 0 while its 0
-# Guessing with 1.0 prob. for 7 while its 1
-# Guessing with 1.0 prob. for 2 while its 2
-# Guessing with 1.0 prob. for 3 while its 3
-# Guessing with 1.0 prob. for 4 while its 4
-# Guessing with 1.0 prob. for 5 while its 5
-# Guessing with 1.0 prob. for 6 while its 6
-# Guessing with 1.0 prob. for 7 while its 7
-# Guessing with 1.0 prob. for 8 while its 8
-# Guessing with 1.0 prob. for 3 while its 9

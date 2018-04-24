@@ -1,3 +1,6 @@
+# Exclude DEBUG files
+# traicy/DEBUG/
+
 # Filtered images (data)
 filtered/
 images_green/

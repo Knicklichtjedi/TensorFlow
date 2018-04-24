@@ -6,24 +6,55 @@ from os.path import abspath
 
 
 def weight_variable(shape):
+    """
+    Creates and returns a new weight variable
+        :param shape: desired shape of the variable
+
+        :return: a new weight variable of a certain shape
+    """
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial)
 
 
 def bias_variable(shape):
+    """
+    Creates and returns a new bias variable
+        :param shape: desired shape of the variable
+
+        :return a new bias variable of a certain shape
+    """
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial)
 
 
 def conv2d(x, W):
+    """
+    Convolutes a given 4D Tensor into a 2D Tensor
+        :param x: Tensor to be convoluted
+        :param W: Filter Tensor giving the shape of the returning Tensor
+
+        :return a convoluted 2D Tensor with the shape of W
+    """
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
 
 def max_pool_2x2(x):
+    """
+    Convolutes a given 4D Tensor into a 2D Tensor
+        :param x: Tensor to be convoluted
+        :param W: Filter Tensor giving the shape of the returning Tensor
+
+        :return a convoluted 2D Tensor with the shape of W
+    """
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
 
 def first_c_layer(x):
+    """
+    Creates the first layer of the CNN
+        :param x: Tensor the layer is attached to
+        :return: Tensor following layers are attached to
+    """
     W_conv1 = weight_variable([5, 5, 1, 32])
     b_conv1 = bias_variable([32])
     x_image = tf.reshape(x, [-1, 28, 28, 1])
@@ -33,6 +64,11 @@ def first_c_layer(x):
 
 
 def second_c_layer(h_pool1):
+    """
+    Creates the second layer of the CNN
+        :param h_pool1: Tensor the layer is attached to
+        :return: Tensor following layers are attached to
+    """
     W_conv2 = weight_variable([5, 5, 32, 64])
     b_conv2 = bias_variable([64])
 
@@ -42,6 +78,11 @@ def second_c_layer(h_pool1):
 
 
 def dense_con_layer(h_pool2):
+    """
+    Creates the densly connected layer of the CNN
+        :param h_pool2: Tensor the layer is attached to
+        :return: Tensor following layers are attached to
+    """
     W_fc1 = weight_variable([7 * 7 * 64, 1024])
     b_fc1 = bias_variable([1024])
 
@@ -51,12 +92,22 @@ def dense_con_layer(h_pool2):
 
 
 def dropout_layer(h_fc1):
+    """
+    Creates the dropout layer of the CNN
+        :param h_fc1: Tensor the layer is attached to
+        :return: Tensor following layers are attached to and the probability of a node being kept in the next iteration
+    """
     keep_prob = tf.placeholder(tf.float32, name="keep_prob")
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
     return h_fc1_drop, keep_prob
 
 
 def readout_layer(h_fc1_drop):
+    """
+    Creates the readout of the CNN
+        :param h_fc1_drop: Tensor the layer is attached to
+        :return: Tensor that can be evaluated to get the prediction results
+    """
     W_fc2 = weight_variable([1024, 10])
     b_fc2 = bias_variable([10])
 
@@ -65,6 +116,11 @@ def readout_layer(h_fc1_drop):
 
 
 def create_network(x):
+    """
+    Creates the neural network
+        :param x: Input Tensor for the image
+        :return: last Tensor of the network and the keep propability
+    """
     first = first_c_layer(x)
     second = second_c_layer(first)
     dense = dense_con_layer(second)
@@ -74,6 +130,12 @@ def create_network(x):
 
 
 def training_variables(net, y_):
+    """
+    Creates the training variables
+        :param net: network architecture
+        :param y_: Output Tensor for the prediction
+        :return: training variables
+    """
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=net))
     train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(net, 1), tf.argmax(y_, 1))
@@ -83,6 +145,15 @@ def training_variables(net, y_):
 
 
 def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
+    """
+    Starts the training process
+        :param mnist: training data
+        :param accuracy: last operation in network, used for evaluation
+        :param train_step: optimizer for each training step
+        :param keep_prob: probability to keep a node
+        :param x: Input tensor
+        :param y_: Output Tensor
+    """
     with tf.Session() as sess:
 
         sess.run(tf.global_variables_initializer())
@@ -107,40 +178,38 @@ def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
             predict(i, accuracy, x, y_, keep_prob, counter)
             counter += 1
 
-        # print("5")
-        # dict_poss = create_poss()
-        # for i in range(0, len(dict_poss)):
-        #     print('Manual prediction %g %d' % (accuracy.eval(feed_dict={
-        #                                             x: im1,
-        #                                             y_: dict_poss[i].reshape(1, 10),
-        #                                             keep_prob: 1.0}), i))
-
 
 def save_model(sess, saver):
-
+    """
+    Saves a TensorFlow session into a model
+    """
     saver.save(sess, "./model/CNN_MNIST")
 
 
 def predict(img_flat, accuracy, x, y_, keep_prob, actual):
-    # with tf.Session() as sess:
+    """
+        Predicts a number in a given image and prints the result
+            :param img_flat: image to analyze
+            :param accuracy: last operation in network, used for evaluation
+            :param x: Input Tensor for the prediction
+            :param y_: Output Tensor for the prediction
+            :param keep_prob: probability to keep a node
+            :param actual: actual number
+    """
 
-        # sess.run(tf.global_variables_initializer())
-        dict_poss = create_poss()
+    dict_poss = create_poss()
 
-        # for i in range(0, len(dict_poss)):
-        #   prediction = sess.run(tf.global_variables_initializer(),
-        #                               feed_dict={ x: img_flat,
-        #                                           y_: dict_poss[i].reshape(1, 10),
-        #                                           keep_prob: 1.0})
-        #   if prediction > 0.5: print("Guessing: " + str(prediction) + " " + str(i))
-
-        for i in range(0, len(dict_poss)):
-            prediction = accuracy.eval(feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
-            if prediction - 0.5 > 0:
-                print(f"Guessing with {prediction} prob. for {round(i, 2)} while its {round(actual, 2)}")
+    for i in range(0, len(dict_poss)):
+        prediction = accuracy.eval(feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
+        if prediction - 0.5 > 0:
+            print(f"Guessing with {prediction} prob. for {round(i, 2)} while its {round(actual, 2)}")
 
 
 def create_poss():
+    """
+    Creates an array of possible answers
+        :return: array of possible answers
+    """
     a0 = np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     a1 = np.array([0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
     a2 = np.array([0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
@@ -157,6 +226,10 @@ def create_poss():
 
 
 def load_cust_images():
+    """
+        Loads a bulk of images and returns them as a list
+        :return: list of loaded images
+    """
     image_list = list()
 
     path = abspath(__file__ + "/../../")
@@ -173,9 +246,11 @@ def load_cust_images():
 
 # START PROGRAM
 def main():
+    """
+        Starts the training process
+    """
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    # x = tf.get_variable('x', [None, 784], tf.float32)
-    # y_ = tf.get_variable('y_', [None, 10], tf.float32)
+
     x = tf.placeholder(tf.float32, [None, 784], name='x')
     y_ = tf.placeholder(tf.float32, [None, 10], name='y_')
 
@@ -184,13 +259,8 @@ def main():
 
     start_training(mnist, accuracy, train_step, keep_prob, x, y_)
 
-    # NOW AFTER TRAINING
-    # im1, im2 = load_cust_images()
-    # print("pred 1")
-    # predict(im1, accuracy, x, y_, keep_prob)
-    # predict(im2, accuracy, x, y_, keep_prob)
-
 
 if __name__ == "__main__":
     main()
+
 

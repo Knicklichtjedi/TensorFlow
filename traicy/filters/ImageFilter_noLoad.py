@@ -227,7 +227,11 @@ def create_greenfiltered_image(img_read, filename, folder):
 
     imsave(folder + filename + "_binary" + '.png', img_as_uint(mask_inv))
 
-    return imread(folder + filename + "_binary" + '.png', as_grey=True)
+    img_ndarray = np.array(img_as_uint(mask_inv))
+    img_gray = rgb2gray(hsv2rgb(img_ndarray))
+
+    # return imread(folder + filename + "_binary" + '.png', as_grey=True)
+    return img_gray
 
 
 def create_chromakey_image(img_read, filename, folder):
@@ -249,9 +253,26 @@ def create_chromakey_image(img_read, filename, folder):
                 pixel_col[1] = 1
                 pixel_col[2] = 1
 
-    imsave(folder + filename + '_' + 'binary' + '.png', hsv)
+    img_ndarray = np.array(hsv)
+    img_rgb = hsv2rgb(img_ndarray)
 
-    return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
+    img_gray = rgb2gray(img_rgb)
+    img_gray_copy = np.copy(img_gray)
+
+    x, y = img_gray_copy.shape
+
+    for i in range(0, x):
+        for j in range(0, y):
+            pixel = img_gray_copy[i, j]
+            if pixel > 0:
+                img_gray_copy[i, j] = 1
+            else:
+                img_gray_copy[i, j] = 0
+
+    imsave(folder + filename + '_' + 'binary' + '.png', img_gray_copy)
+
+    # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
+    return img_gray_copy
 
 
 def create_com_image(img_read, filename, folder):
@@ -359,10 +380,13 @@ def create_scaled_image(img_read, filename, folder):
 
     # resize using Pillow
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
+
+    img_ndarray = np.array(img_cropped)
     img_cropped.save(newfilename, "PNG")
 
     # reload image due to pillow using its own image class
-    return imread(newfilename)
+    # return imread(newfilename)
+    return img_ndarray
 
 
 def create_folder(directory):
@@ -481,7 +505,7 @@ def read_image_from_location(directory):
     data_path = path + "/filtered/"
     filename = "filtered.png"
 
-    main_folder = data_path + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S") + "/"
+    main_folder = data_path + "/ImageFilter" + "/"
     create_folder(main_folder)
 
     # get rotation of image and read it
