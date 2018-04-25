@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
+using Traicy.GUI.Contracts;
 
 namespace Traicy.GUI.View
 {
@@ -11,6 +11,13 @@ namespace Traicy.GUI.View
         public SettingsWindow()
         {
             InitializeComponent();
+        }
+
+        public SettingsWindow(ISettingProperties settingProperties)
+        {
+            InitializeComponent();
+
+            SettingsUserControl.InitializeSettings(settingProperties);
         }
     }
 }

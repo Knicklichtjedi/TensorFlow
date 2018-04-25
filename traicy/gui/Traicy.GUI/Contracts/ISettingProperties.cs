@@ -6,6 +6,6 @@ namespace Traicy.GUI.Contracts
     {
         ImageSettings ImageSettings { get; set; }
         FilterSettings FilterSettings { get; set; }
-        //IGuiSettings GuiSettings { get; set; }
+        GuiSettings GuiSettings { get; set; }
     }
 }

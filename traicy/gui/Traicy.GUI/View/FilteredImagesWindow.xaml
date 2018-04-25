@@ -1,0 +1,33 @@
+﻿<Window x:Class="Traicy.GUI.View.FilteredImagesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Traicy.GUI.View"
+        mc:Ignorable="d"
+        Title="FilteredImagesWindow" Height="300" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#4b4b4b"></Border>
+        <Label Grid.Column="0" Grid.Row="0" Name="TitleTextSettings" Foreground="#E1E1E1" Content="Gefilterte Bilder" FontFamily="Raleway Light" FontSize="14pt" VerticalAlignment="Center" Margin="5,0"></Label>
+        <Image Source="/resources/traicy_logo.png" Margin="0,5" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"/>
+        <Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Fill="#FFB300" Height="4"/>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Binärbild:"></Label>
+        <Image Grid.Column="0" Grid.Row="3" Width="Auto" Height="Auto" Name="BinaryImage" Margin="10,10"></Image>
+        <Label Grid.Column="1" Grid.Row="2" Content="Skeleton:"></Label>
+        <Image Grid.Column="1" Grid.Row="3" Width="Auto" Height="Auto" Name="SkeletonImage" Margin="10,10"></Image>
+    </Grid>
+</Window>

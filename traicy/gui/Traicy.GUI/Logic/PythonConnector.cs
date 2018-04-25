@@ -1,15 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
 
 namespace Traicy.GUI.Logic
 {
     public class PythonConnector
     {
+
+        public string PythonInterpreterPath { get; set; }
+
+        public PythonConnector()
+        {
+            //EventHandling.PythonInterpreterChangedEvent += OnPythonInterpreterChanged;
+        }
+
+        private void OnPythonInterpreterChanged(string pythoninterpreterpath)
+        {
+            PythonInterpreterPath = pythoninterpreterpath;
+        }
+
         [Obsolete("IronPython isn't compatible with version 3.6 of Python and can't be used with TensorFlow either.")]
         public void ExecutePythonScript()
         {
@@ -46,7 +56,7 @@ namespace Traicy.GUI.Logic
         {
             //TODO: als Ressourcen-String verwenden
             //string pythonScriptFilePath = @"C:\Users\Eva\Documents\GitHub\TensorFlow\traicy\gui\Traicy.GUI\bin\Debug\filters\Test2.py";
-            string pythonScriptFilePath = @"py_scripts\predict_number.py"; //TODO: importierte Python-Module werden nicht erkannt
+            string pythonScriptFilePath = @"python_resources\predict_number.py"; //TODO: importierte Python-Module werden nicht erkannt
             
             var result = StartPythonProcess(pythonScriptFilePath, absoluteImagePath);
             if (!string.IsNullOrEmpty(result))
@@ -65,8 +75,9 @@ namespace Traicy.GUI.Logic
             ProcessStartInfo start = new ProcessStartInfo
             {
                 //TODO: this path has to be adjusted manually --> add to settings
+                FileName = PythonInterpreterPath, //custom path from settings file
                 //FileName = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe", //eva home
-                FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe", //eva laptop            
+                //FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe", //eva laptop            
                 //FileName = @"C:\Users\katha\AppData\Local\Programs\Python\Python36\python.exe", //katl
                 Arguments = $"\"{command}\" \"{args}\"",
                 UseShellExecute = false, // don't use windows cmd

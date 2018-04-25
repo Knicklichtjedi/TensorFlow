@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:Traicy.GUI.View"
         mc:Ignorable="d"
         Icon="pack://application:,,,/Traicy.GUI;component/resources/logo_halb_1-01.png"
-        Title="Settings" Height="300" Width="400">
+        Title="Settings" Height="400" Width="600">
     <ScrollViewer>
         <Grid>
-            <local:SettingsControl></local:SettingsControl>
+            <local:SettingsControl x:Name="SettingsUserControl"></local:SettingsControl>
         </Grid>
     </ScrollViewer>
 </Window>

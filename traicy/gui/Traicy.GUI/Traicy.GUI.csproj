@@ -120,8 +120,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Contracts\IFilterSettings.cs" />
-    <Compile Include="Contracts\IGUISettings.cs" />
+    <Compile Include="Contracts\IGuiSettings.cs" />
     <Compile Include="Contracts\IImageSettings.cs" />
+    <Compile Include="Data\FilteredImages.cs" />
     <Compile Include="Data\FilterSettings.cs" />
     <Compile Include="Data\GuiSettings.cs" />
     <Compile Include="Data\ImageSettings.cs" />
@@ -129,14 +130,22 @@
     <Compile Include="Logic\Logger.cs" />
     <Compile Include="Logic\PythonConnector.cs" />
     <Compile Include="Logic\PythonOutputParser.cs" />
+    <Compile Include="Logic\SettingsController.cs" />
     <Compile Include="Logic\TextToSpeech.cs" />
     <Compile Include="Logic\WebcamHelper.cs" />
+    <Compile Include="View\FilteredImagesWindow.xaml.cs">
+      <DependentUpon>FilteredImagesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\FilteredImagesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -184,31 +193,42 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="python_resources\CNN_load_model_d.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\ImageFilter_d.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\model\checkpoint">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\model\CNN_MNIST.data-00000-of-00001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\model\CNN_MNIST.index">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\model\CNN_MNIST.meta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\predict_number.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\logo_halb_1-01.png" />
-    <Content Include="resources\photo-camera.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\no-camera.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="resources\traicy_logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="resources\photo-camera.png" />
+    <Resource Include="resources\no-camera.png" />
+    <Resource Include="resources\traicy_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\traicy_logo_font.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="resources\traicy_logo_font.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="resources\settings.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="resources\settings.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />

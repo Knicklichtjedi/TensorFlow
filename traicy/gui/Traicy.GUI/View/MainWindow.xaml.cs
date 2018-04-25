@@ -17,16 +17,15 @@ namespace Traicy.GUI.View
     {
         private readonly WebCam _camera;
         private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
-        private bool _textToSpeechIsEnabled;
+        private ISettingProperties _settings; 
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _textToSpeechIsEnabled = true;
-
             //custom setting events
-            EventHandling.TextToSpeechEvent += OnTextToSpeechChanged;
+            //EventHandling.TextToSpeechEvent += OnTextToSpeechChanged;
+            EventHandling.SettingsChangedEvent += OnSettingsChanged;
 
             _backgroundWorker.DoWork += Worker_DoWork;
             _backgroundWorker.RunWorkerCompleted += Worker_RunWorkerCompleted;
@@ -36,9 +35,17 @@ namespace Traicy.GUI.View
 
             _backgroundWorker.ProgressChanged += BackgroundWorkerOnProgressChanged;
 
+            //load settings only at the start of the application
+            _settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json"); 
+
             _camera = new WebCam();
 
-            JsonTest();
+            //JsonTest();
+        }
+
+        private void OnSettingsChanged(ISettingProperties settings)
+        {
+            _settings = settings;
         }
 
         private void JsonTest()
@@ -54,22 +61,18 @@ namespace Traicy.GUI.View
                 GreenSaturation = 0
             };
 
-            IGuiSettings guiSettings = new GuiSettings() { TextToSpeechIsEnabled = true };
+            GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, ShowFilteredImagesIsEnabled = true, PythonInterpreterPath = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe" };
 
-            ImageSettings imageSettings = new ImageSettings() { Border = 0, Dimension = 0, DimensionSmall = 0 };
+            ImageSettings imageSettings = new ImageSettings { Border = 0, Dimension = 0, DimensionSmall = 0 };
 
             ISettingProperties settingsProperties = new SettingProperties
             {
                 FilterSettings = filter,
-                ImageSettings = imageSettings
+                ImageSettings = imageSettings,
+                GuiSettings = guiSettings
             };
 
             JsonParser.SerializeToJson(settingsProperties, @"settingsTest.json");
-        }
-
-        private void OnTextToSpeechChanged(bool isEnabled)
-        {
-            _textToSpeechIsEnabled = isEnabled;
         }
 
         private void BackgroundWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
@@ -83,8 +86,7 @@ namespace Traicy.GUI.View
             ConnectButton.Content = "Kamera verbinden";
 
             //TODO: statischen string als Resource hinterlegen 
-            WebcamVideo.Source = new BitmapImage(
-                new Uri("pack://application:,,,/Traicy.GUI;component/resources/no-camera.png"));
+            WebcamVideo.Source = new BitmapImage(new Uri("pack://application:,,,/Traicy.GUI;component/resources/no-camera.png"));
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -129,7 +131,7 @@ namespace Traicy.GUI.View
 
         private void ShowSettingsWindow()
         {
-            new SettingsWindow().ShowDialog();
+            new SettingsWindow(_settings).Show();
         }
 
         private void ButtonStartObjectDetection_OnClick(object sender, RoutedEventArgs e)
@@ -139,18 +141,24 @@ namespace Traicy.GUI.View
             {
                 ButtonStartObjectDetection.Content = "Verarbeitung...";
 
-                var absolutePath = SetImageSource();
-                PythonConnector pythonConnector = new PythonConnector();
-                string prediction = pythonConnector.GetPrediction(absolutePath);
+                var absoluteFilteredImagePath = SetImageSource();
+                PythonConnector pythonConnector =
+                    new PythonConnector {PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath};
+                string prediction = pythonConnector.GetPrediction(absoluteFilteredImagePath);
 
-                if (_textToSpeechIsEnabled)
+                if (_settings.GuiSettings.ShowFilteredImagesIsEnabled)
+                {
+                    new FilteredImagesWindow().Show(); //Open window that shows the filtered Images created from the image filter
+                }
+
+                if (_settings.GuiSettings.TextToSpeechIsEnabled)
                 {
                     TextToSpeech textToSpeech = new TextToSpeech();
                     textToSpeech.InvokeAsyncTextToSpeech(prediction);
                 }
                 else
                 {
-                    //TODO: andere Ausgabe des Ergebnisses (textuell)
+                    //TODO: andere Ausgabe des Ergebnisses (textuell) --> Python (Chunking)
                 }
 
                 ButtonStartObjectDetection.Content = "Starte Objekterkennung";

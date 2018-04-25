@@ -9,7 +9,7 @@ namespace Traicy.GUI.Data
         public ImageSettings ImageSettings { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "filter")]
         public FilterSettings FilterSettings { get; set; }
-        //[Newtonsoft.Json.JsonProperty(PropertyName = "gui")]
-        //public GuiSettings GuiSettings { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "gui")]
+        public GuiSettings GuiSettings { get; set; }
     }
 }
