@@ -95,7 +95,7 @@ def create_chunked_image(img_binary, filename, folder):
 
     im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
 
-    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    imgray = cv2.cvtColor(img_binary, cv2.COLOR_BGR2GRAY)
 
     ret, thresh = cv2.threshold(imgray, 127, 255, 0)
 
@@ -130,24 +130,35 @@ def create_chunked_image(img_binary, filename, folder):
 
 
 def create_chunked_image2(img_binary, filename, folder):
-    # bild neu lesen, grau machen,
+
     im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
-    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(imgray, 127, 255, 0)
+
+    thresh = img_as_ubyte(img_binary)
+
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     best = 0
     maxsize = 0
     count = 0
+
+    beste = list()
     for cnt in contours:
-        if cv2.contourArea(cnt) > maxsize:
+        if cv2.contourArea(cnt) > 500:
+
             maxsize = cv2.contourArea(cnt)
+
+            beste.append(count)
+
             best = count
 
         count = count + 1
 
-    x, y, w, h = cv2.boundingRect(contours[best])
-    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    print (len(beste))
+    for a in beste:
+        x, y, w, h = cv2.boundingRect(contours[a])
+        cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+
 
     imsave(folder + filename + '_' + 'chunked' + '.png', im)
 
@@ -510,9 +521,9 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 5):
+    for i in range(0, 4):
         filename = f"{i}.png"
-        dir_name = data_path + "images_green/" + filename
+        dir_name = data_path + "images_nice_green/" + filename
 
         # create folder and sub folder
         sub_folder = main_folder + f"/{i}" + "/"

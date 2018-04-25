@@ -8,8 +8,8 @@
         "canny": 0.5,
         "binary_gauss": 0.5,
         "binary_threshold": 0.5,
-        "green_low": 50,
-        "green_high": 170,
+        "green_low": 75,
+        "green_high": 135,
         "green_saturation": 0.5,
         "green_brightness": 0.75
     }
