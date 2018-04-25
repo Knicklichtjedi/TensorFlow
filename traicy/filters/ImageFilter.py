@@ -76,6 +76,7 @@ def assign_json_values(filename_directory):
         return
 
 
+
 def reassign_calculated_variables():
 
     global image_dimension, image_dimension_t, image_dimension_small, image_dimension_t_small
@@ -88,8 +89,79 @@ def reassign_calculated_variables():
     filter_green_high_factor = filter_green_high / 360
 
 
-def borders(img_read, filename, folder):
 
+def create_chunked_image(img_binary, filename, folder):
+
+
+    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
+
+    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+
+    ret, thresh = cv2.threshold(imgray, 127, 255, 0)
+
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    a = np.size(contours)
+
+
+
+    #ab = cv2.drawContours(im, contours, -1, (0, 255, 0), 2)
+            #originalbild, konturenliste, index der konturen (-1=alle), farbe, dicke der rechtecke
+
+    best = 0
+    maxsize = 0
+    count = 0
+    for cnt in contours:
+        if cv2.contourArea(cnt) > maxsize:
+
+            maxsize = cv2.contourArea(cnt)
+            best = count
+
+        count = count + 1
+
+    x, y, w, h = cv2.boundingRect(contours[best])
+    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+
+
+    imsave(folder + filename + '_' + 'chunked' + '.png', im)
+
+    return img_binary
+
+
+def create_chunked_image2(img_binary, filename, folder):
+    # bild neu lesen, grau machen,
+    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
+    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(imgray, 127, 255, 0)
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    best = 0
+    maxsize = 0
+    count = 0
+    for cnt in contours:
+        if cv2.contourArea(cnt) > maxsize:
+            maxsize = cv2.contourArea(cnt)
+            best = count
+
+        count = count + 1
+
+    x, y, w, h = cv2.boundingRect(contours[best])
+    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    imsave(folder + filename + '_' + 'chunked' + '.png', im)
+
+    return img_binary
+
+
+def create_bordered_image(img_read, filename, folder):
+    """
+    filters the borders of the image in a specific border size to black
+    :param img_read: binary image array
+    :param filename: name of the original image
+    :param folder: directory of the new image
+    :return: image with black borders
+    """
     # nd = imread(folder + filename + '_binary.png')
     nd = img_read
     newfilename = folder + filename + '_borders.png'
@@ -230,6 +302,8 @@ def create_greenfiltered_image(img_read, filename, folder):
 
 
 def create_chromakey_image(img_read, filename, folder):
+
+
     hsv = rgb2hsv(img_read)
 
     for pixel_row in hsv:
@@ -417,6 +491,7 @@ def rotate_image(img_read, rotation):
         return img_read
 
 
+
 def read_images():
     """
 
@@ -435,7 +510,7 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 3):
+    for i in range(0, 5):
         filename = f"{i}.png"
         dir_name = data_path + "images_green/" + filename
 
@@ -448,25 +523,28 @@ def read_images():
         img_reading = imread(dir_name, plugin='matplotlib')
 
         # resize image
-        img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, sub_folder)
+        #img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, sub_folder)
 
         # rotate image
-        img_rotated = rotate_image(img_scaled, rotation)
+        img_rotated = rotate_image(img_reading, rotation)
 
         # create binary image
         #img_binary = create_binary_image(img_rotated, filename, sub_folder)
         # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
         img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
+        #get chunks in the image
+        img_chunk = create_chunked_image2(img_binary, filename, sub_folder)
+
         # get black borders inside of image
-        img_borders = borders(img_binary, filename, sub_folder)
+        #img_borders = create_bordered_image(img_chunk, filename, sub_folder)
 
         # create two filtered images
         # img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
-        img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
+        #img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
 
         # align binary image to center of mass
-        img_com = create_com_image(img_skeleton, filename, sub_folder)
+        #img_com = create_com_image(img_skeleton, filename, sub_folder)
 
 
 def read_image_from_location(directory):
@@ -497,7 +575,7 @@ def read_image_from_location(directory):
     img_binary = create_chromakey_image(img_rotated, filename, main_folder)
 
     # get black borders inside of image
-    img_borders = borders(img_binary, filename, main_folder)
+    img_borders = create_bordered_image(img_binary, filename, main_folder)
 
     # create filtered images
     img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
