@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -82,7 +81,7 @@ namespace Traicy.GUI.View
         {
             var settings = GetSettingPropertiesFromSettings();
             EventHandling.OnSettingsChangedEvent(settings);
-            JsonParser.SerializeToJson(settings, @"settingsTest.json");
+            JsonParser.SerializeToJson(settings, @"configs\settings.json");
             
         }
 

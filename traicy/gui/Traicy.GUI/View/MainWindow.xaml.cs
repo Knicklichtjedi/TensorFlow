@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MetriCam;
+using System.IO;
 using Traicy.GUI.Logic;
 using Traicy.GUI.Contracts;
 using Traicy.GUI.Data;
@@ -36,11 +37,15 @@ namespace Traicy.GUI.View
             _backgroundWorker.ProgressChanged += BackgroundWorkerOnProgressChanged;
 
             //load settings only at the start of the application
-            _settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json"); 
+            if (!File.Exists(@"configs\settings.json"))
+            {
+                CreateJsonFile();
+            }
+            _settings = JsonParser.DeserializeFromJson<SettingProperties>(@"configs\settings.json"); 
+            //_settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json"); 
 
             _camera = new WebCam();
 
-            //JsonTest();
         }
 
         private void OnSettingsChanged(ISettingProperties settings)
@@ -48,8 +53,10 @@ namespace Traicy.GUI.View
             _settings = settings;
         }
 
-        private void JsonTest()
+        private void CreateJsonFile()
         {
+
+            //TODO: Werte auf Standard einstellen
             FilterSettings filter = new FilterSettings()
             {
                 Canny = 0,
@@ -72,7 +79,7 @@ namespace Traicy.GUI.View
                 GuiSettings = guiSettings
             };
 
-            JsonParser.SerializeToJson(settingsProperties, @"settingsTest.json");
+            JsonParser.SerializeToJson(settingsProperties, @"configs\settings.json");
         }
 
         private void BackgroundWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
