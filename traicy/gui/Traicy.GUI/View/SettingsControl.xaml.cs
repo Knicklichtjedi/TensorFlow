@@ -45,7 +45,8 @@ namespace Traicy.GUI.View
             _filteredImagesEnabled = settings.GuiSettings.ShowFilteredImagesIsEnabled;
             ButtonFilteredImages.Content = _filteredImagesEnabled ? "An" : "Aus";
 
-            ChoosePythonInterpreterTextBox.Text = settings.GuiSettings.PythonInterpreterPath;
+            _pythonInterpreterPath = settings.GuiSettings.PythonInterpreterPath;
+            ChoosePythonInterpreterTextBox.Text = _pythonInterpreterPath;
 
             //set image settings
             DimensionTextBox.Text = settings.ImageSettings.Dimension.ToString();

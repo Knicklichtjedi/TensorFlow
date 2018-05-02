@@ -61,10 +61,16 @@ namespace Traicy.GUI.Logic
             var result = StartPythonProcess(pythonScriptFilePath, absoluteImagePath);
             if (!string.IsNullOrEmpty(result))
             {
-                var parsedString = PythonOutputParser.Parse(result);
-                var letter = parsedString[0];
-                var probability = parsedString[1];
-                var prediction = $"The letter is {letter} with a probability of {probability}";
+                var parsedPrediction = PythonOutputParser.ParseToListOfPredictions(result);
+                string prediction = string.Empty;
+                //TODO: wie Sprachausgabe bei mehreren Predictions?
+                foreach (var pred in parsedPrediction)
+                {
+                    var letter = pred.PredictedValue;
+                    var probability = pred.PredictionPercentage;
+                    //TODO: performance? string Builder nutzen?
+                    prediction += $"The number is {letter} with a probability of {probability}";
+                }
                 return prediction;
             }
             return "prediction";

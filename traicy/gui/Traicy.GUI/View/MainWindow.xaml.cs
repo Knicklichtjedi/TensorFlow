@@ -37,12 +37,19 @@ namespace Traicy.GUI.View
             _backgroundWorker.ProgressChanged += BackgroundWorkerOnProgressChanged;
 
             //load settings only at the start of the application
-            if (!File.Exists(@"configs\settings.json"))
+            if (!Directory.Exists(@"configs"))
             {
-                CreateJsonFile();
+                Directory.CreateDirectory(@"configs");
+                if (!File.Exists(@"configs\settings.json"))
+                {
+                    _settings = new SettingsController().CreateJsonFileWithStandardValues();
+                }
             }
-            _settings = JsonParser.DeserializeFromJson<SettingProperties>(@"configs\settings.json"); 
-            //_settings = JsonParser.DeserializeFromJson<SettingProperties>("settingsTest.json"); 
+
+            if (_settings == null)
+            {
+                _settings = JsonParser.DeserializeFromJson<SettingProperties>(@"configs\settings.json");
+            }
 
             _camera = new WebCam();
 
@@ -51,35 +58,6 @@ namespace Traicy.GUI.View
         private void OnSettingsChanged(ISettingProperties settings)
         {
             _settings = settings;
-        }
-
-        private void CreateJsonFile()
-        {
-
-            //TODO: Werte auf Standard einstellen
-            FilterSettings filter = new FilterSettings()
-            {
-                Canny = 0,
-                BinaryGauss = 0,
-                BinaryThreshold = 0,
-                GreenBrightness = 0,
-                GreenHigh = 0,
-                GreenLow = 0,
-                GreenSaturation = 0
-            };
-
-            GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, ShowFilteredImagesIsEnabled = true, PythonInterpreterPath = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe" };
-
-            ImageSettings imageSettings = new ImageSettings { Border = 0, Dimension = 0, DimensionSmall = 0 };
-
-            ISettingProperties settingsProperties = new SettingProperties
-            {
-                FilterSettings = filter,
-                ImageSettings = imageSettings,
-                GuiSettings = guiSettings
-            };
-
-            JsonParser.SerializeToJson(settingsProperties, @"configs\settings.json");
         }
 
         private void BackgroundWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
