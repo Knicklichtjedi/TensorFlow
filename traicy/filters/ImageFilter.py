@@ -46,6 +46,8 @@ filter_green_high_factor = filter_green_high / 360
 filter_green_saturation = 0.5
 filter_green_brightness = 0.75
 
+filter_contours_length = 500
+
 
 def assign_json_values(filename_directory):
     try:
@@ -54,6 +56,7 @@ def assign_json_values(filename_directory):
         global image_dimension, image_dimension_small, image_border
         global filter_canny_strength, filter_binary_gaussian_strength, filter_binary_filter_threshold
         global filter_green_low, filter_green_high, filter_green_saturation, filter_green_brightness
+        global filter_contours_length
 
         image_dimension = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
         image_dimension_small = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION_SMALL)
@@ -68,6 +71,8 @@ def assign_json_values(filename_directory):
 
         filter_green_saturation = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_SATURATION)
         filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_BRIGHTNESS)
+
+        filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
         reassign_calculated_variables()
 
@@ -89,47 +94,7 @@ def reassign_calculated_variables():
     filter_green_high_factor = filter_green_high / 360
 
 
-
 def create_chunked_image(img_binary, filename, folder):
-
-
-    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
-
-    imgray = cv2.cvtColor(img_binary, cv2.COLOR_BGR2GRAY)
-
-    ret, thresh = cv2.threshold(imgray, 127, 255, 0)
-
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    a = np.size(contours)
-
-
-
-    #ab = cv2.drawContours(im, contours, -1, (0, 255, 0), 2)
-            #originalbild, konturenliste, index der konturen (-1=alle), farbe, dicke der rechtecke
-
-    best = 0
-    maxsize = 0
-    count = 0
-    for cnt in contours:
-        if cv2.contourArea(cnt) > maxsize:
-
-            maxsize = cv2.contourArea(cnt)
-            best = count
-
-        count = count + 1
-
-    x, y, w, h = cv2.boundingRect(contours[best])
-    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-
-
-    imsave(folder + filename + '_' + 'chunked' + '.png', im)
-
-    return img_binary
-
-
-def create_chunked_image2(img_binary, filename, folder):
 
     im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
 
@@ -154,15 +119,73 @@ def create_chunked_image2(img_binary, filename, folder):
         count = count + 1
 
     print (len(beste))
-    for a in beste:
-        x, y, w, h = cv2.boundingRect(contours[a])
-        cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
+    im = draw_chunks(im, contours, beste)
 
 
     imsave(folder + filename + '_' + 'chunked' + '.png', im)
 
     return img_binary
+
+def create_chunked_image2(img_binary, filename, folder):
+
+    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
+
+    thresh = img_as_ubyte(img_binary)
+
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    count = 0
+
+    beste = []
+    for cnt in contours:
+        if cv2.contourArea(cnt) > filter_contours_length:
+
+            maxsize = cv2.contourArea(cnt)
+
+            beste.append(cnt)
+
+        count = count + 1
+
+    print (len(beste))
+    img2 = Image.open(folder + filename + '_' + 'binary' + '.png')
+    im1 = draw_chunks(im, beste)
+    im = crop(im, beste, img2, filename, folder)
+
+    imsave(folder + filename + '_' + 'chunked' + '.png', im1)
+
+    return im, beste
+
+
+def crop(img, contours, img_pillow, filename, folder):
+
+    im = list()
+    for a in contours:
+        x, y, w, h = cv2.boundingRect(a)
+        b = img_pillow.crop((x,y,w,h))
+        b = create_scaled_image(b, folder, filename)
+        im.append(b)
+    return im
+
+
+def clamp_binary_values(img):
+    img_np_array = rgb2gray(np.array(img))
+    h, w = img_np_array.shape
+
+    for x in range(0, w):
+        for y in range(0, h):
+            if img_np_array[y, x] > 0:
+                img_np_array[y, x] = 1
+
+    return img_np_array
+
+def draw_chunks(img, contours):
+
+    for a in contours:
+        x, y, w, h = cv2.boundingRect(a)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    return img
+
 
 
 def create_bordered_image(img_read, filename, folder):
@@ -411,7 +434,7 @@ def create_com_image(img_read, filename, folder):
     return img_copy
 
 
-def create_scaled_image(img_read, filename, folder):
+def create_scaled_image(img_read, folder, filename):
     """
         Resize and change to aspect ratio of the image and save it to a given directory
 
@@ -439,7 +462,7 @@ def create_scaled_image(img_read, filename, folder):
     #
     # print(f"Scaled Size: {scaled_size}")
 
-    img_pil_array = Image.fromarray(img_read)
+    img_pil_array = img_read
 
     # resize using Pillow
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
@@ -503,7 +526,7 @@ def rotate_image(img_read, rotation):
 
 
 
-def read_images():
+def read_images_with_chunks():
     """
 
         Creates a new folder for the process with the necessary sub folder.
@@ -517,6 +540,8 @@ def read_images():
     json_path = str(path) + "/configs/settings.json"
 
     assign_json_values(json_path)
+
+    print(filter_contours_length)
 
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
@@ -545,7 +570,11 @@ def read_images():
         img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
         #get chunks in the image
-        img_chunk = create_chunked_image2(img_binary, filename, sub_folder)
+        img_chunk, img_coord = create_chunked_image2(img_binary, filename, sub_folder)
+
+        # for image in img_chunk:
+        #     img_clamped = clamp_binary_values(image)
+        #     imsave(img_clamped, filename + "_clamped.jpg", sub_folder)
 
         # get black borders inside of image
         #img_borders = create_bordered_image(img_chunk, filename, sub_folder)
@@ -598,7 +627,7 @@ def read_image_from_location(directory):
 
 
 def main():
-    read_images()
+    read_images_with_chunks()
 
 
 if __name__ == "__main__":

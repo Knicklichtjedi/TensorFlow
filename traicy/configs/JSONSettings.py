@@ -20,6 +20,8 @@ __f_green_high__ = 0.0
 __f_green_saturation__ = 0.0
 __f_green_brightness__ = 0.0
 
+__f_contours_length__ = 0.0
+
 __data__ = {}
 
 
@@ -38,6 +40,7 @@ class JSONValues (Enum):
     FILTER_GREEN_SATURATION = 8
     FILTER_GREEN_BRIGHTNESS = 9
 
+    FILTER_CONTOURS_LENGTH = 10
 
 def parse_data(filename):
     with open(filename, encoding='utf-8') as data_file:
@@ -54,6 +57,7 @@ def parse_data(filename):
             global __i_dim__, __i_dim_s__, __i_border__
             global __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __f_green_low__, __f_green_high__, \
                 __f_green_saturation__, __f_green_brightness__
+            global __f_contours_length__
             global __imported__
 
             image_access = data['image']
@@ -72,6 +76,8 @@ def parse_data(filename):
 
             __f_green_saturation__ = filter_access['green_saturation']
             __f_green_brightness__ = filter_access['green_brightness']
+
+            __f_contours_length__ = filter_access['contours_length']
 
             __imported__ = True
 
@@ -102,6 +108,8 @@ def get_data(json_value, *filename):
             return __f_green_saturation__
         if json_value == JSONValues.FILTER_GREEN_BRIGHTNESS:
             return __f_green_brightness__
+        if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
+            return __f_contours_length__
 
     else:
         if filename is not None or filename != "":
@@ -162,6 +170,10 @@ def write_data(filename, json_value, value):
     if json_value == JSONValues.FILTER_BIN_THRESHOLD:
         __data__['filter']['green_brightness'] = value
         __f_green_brightness__ = value
+
+    if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
+        __data__['filter']['contours_length'] = value
+        __f_contours_length__ = value
 
     with open(filename, 'wb') as outfile:
         json.dump(__data__, codecs.getwriter('utf-8')(outfile), indent=4, ensure_ascii=False)

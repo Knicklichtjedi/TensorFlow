@@ -11,6 +11,7 @@
         "green_low": 75,
         "green_high": 135,
         "green_saturation": 0.5,
-        "green_brightness": 0.75
+        "green_brightness": 0.75,
+        "contours_length": 500
     }
 }
