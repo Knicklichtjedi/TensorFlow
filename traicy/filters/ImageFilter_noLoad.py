@@ -21,6 +21,7 @@ import JSONSettings
 # os
 import datetime
 import os
+from os import listdir
 from os.path import abspath
 import errno
 import time
@@ -47,6 +48,8 @@ filter_green_high_factor = filter_green_high / 360
 filter_green_saturation = 0.5
 filter_green_brightness = 0.75
 
+loading_possible_filename = list()
+
 
 def assign_json_values(filename_directory):
     try:
@@ -55,6 +58,7 @@ def assign_json_values(filename_directory):
         global image_dimension, image_dimension_small, image_border
         global filter_canny_strength, filter_binary_gaussian_strength, filter_binary_filter_threshold
         global filter_green_low, filter_green_high, filter_green_saturation, filter_green_brightness
+        global loading_possible_filename
 
         image_dimension = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
         image_dimension_small = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION_SMALL)
@@ -69,6 +73,8 @@ def assign_json_values(filename_directory):
 
         filter_green_saturation = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_SATURATION)
         filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_BRIGHTNESS)
+
+        loading_possible_filename = JSONSettings.get_data(JSONSettings.JSONValues.LOADING_POSSIBLE_FILENAME)
 
         reassign_calculated_variables()
 
@@ -460,17 +466,34 @@ def read_images():
     main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
     create_folder(main_folder)
 
-    for i in range(0, 4):
-        filename = f"{i}.jpg"
-        dir_name = data_path + "" + "image_green/" + filename
+    dir_name = data_path + "" + "image_green/"
+    directory_data = listdir(dir_name)
 
+    loaded_images = list()
+
+    for file in directory_data:
+        file_ends_with = file.split(".")[-1].lower()
+
+        if len(loading_possible_filename) > 0:
+            for filename in loading_possible_filename:
+                if file_ends_with == filename:
+                    loaded_images.append(file)
+                else:
+                    print("Could not find file with: " + filename + " at " + file)
+
+    for image_name in loaded_images:
         # create folder and sub folder
-        sub_folder = main_folder + f"/{i}" + "/"
+        index = loaded_images.index(image_name)
+        filename = f"{index}.jpg"
+
+        sub_folder = main_folder + f"/{index}" + "/"
         create_folder(sub_folder)
 
+        image_dir = dir_name + "/" + image_name
+
         # get rotation of image and read it
-        rotation = get_image_rotation(dir_name)
-        img_reading = imread(dir_name, plugin='matplotlib')
+        rotation = get_image_rotation(image_dir)
+        img_reading = imread(image_dir, plugin='matplotlib')
 
         # resize image
         img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, sub_folder)
@@ -479,7 +502,7 @@ def read_images():
         img_rotated = rotate_image(img_scaled, rotation)
 
         # create binary image
-        #img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        # img_binary = create_binary_image(img_rotated, filename, sub_folder)
         # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
         img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
@@ -487,11 +510,45 @@ def read_images():
         img_borders = borders(img_binary, filename, sub_folder)
 
         # create two filtered images
-        # img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
+        img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
         img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
 
         # align binary image to center of mass
         img_com = create_com_image(img_skeleton, filename, sub_folder)
+
+    # ###############################CODE BACKUP##############################################
+    # for i in range(0, 4):
+    #     filename = f"{i}.jpg"
+    #     dir_name = data_path + "" + "image_green/" + filename
+
+        # create folder and sub folder
+        # sub_folder = main_folder + f"/{i}" + "/"
+        # create_folder(sub_folder)
+
+        # get rotation of image and read it
+        # rotation = get_image_rotation(dir_name)
+        # img_reading = imread(dir_name, plugin='matplotlib')
+
+        # resize image
+        # img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, sub_folder)
+
+        # rotate image
+        # img_rotated = rotate_image(img_scaled, rotation)
+
+        # create binary image
+        #img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
+        # img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
+
+        # get black borders inside of image
+        # img_borders = borders(img_binary, filename, sub_folder)
+
+        # create two filtered images
+        # img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
+        # img_skeleton = create_skeleton_image(img_borders, filename, sub_folder)
+
+        # align binary image to center of mass
+        # img_com = create_com_image(img_skeleton, filename, sub_folder)
 
 
 def read_image_from_location(directory):
@@ -505,7 +562,7 @@ def read_image_from_location(directory):
     data_path = path + "/filtered/"
     filename = "filtered.png"
 
-    main_folder = data_path + "/ImageFilter" + "/"
+    main_folder = data_path                                                                     # + "/ImageFilter" + "/"
     create_folder(main_folder)
 
     # get rotation of image and read it
@@ -533,6 +590,50 @@ def read_image_from_location(directory):
     return img_com
 
 
+def read_image_with_chunks_from_location(directory):
+    path = abspath(__file__ + "/../../")
+    json_path = str(path) + "/configs/settings.json"
+
+    # get new json values and assign them
+    assign_json_values(json_path)
+
+    list_of_images = list()
+    list_of_coordinates = list()
+
+    data_path = path + "/filtered/"
+    filename = "filtered.png"
+
+    main_folder = data_path                                                                     # + "/ImageFilter" + "/"
+    create_folder(main_folder)
+
+    # get rotation of image and read it
+    rotation = get_image_rotation(directory)
+    img_reading = imread(directory, plugin='matplotlib')
+
+    # resize image
+    img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, main_folder)
+
+    # rotate image
+    img_rotated = rotate_image(img_scaled, rotation)
+
+    # create binary image
+    img_binary = create_chromakey_image(img_rotated, filename, main_folder)
+
+    # get black borders inside of image
+    img_borders = borders(img_binary, filename, main_folder)
+
+    # create filtered images
+    img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+
+    # align binary image to center of mass
+    img_com = create_com_image(img_skeleton, filename, main_folder)
+
+    list_of_images.append(img_com)
+    list_of_coordinates.append((0, 0))
+
+    return list_of_images, list_of_coordinates
+
+
 def main():
     read_images()
 
@@ -544,4 +645,4 @@ if __name__ == "__main__":
 
     t2 = time.time()
 
-    print("Passed time: " + str(t2 - t1))
+    # print("Passed time: " + str(t2 - t1))

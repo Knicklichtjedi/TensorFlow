@@ -17,5 +17,8 @@
     "text_to_speech_enabled": true,
     "show_filtered_images_enabled": true,
     "python_interpreter_path": "C:\\Users\\katha\\AppData\\Local\\Programs\\Python\\Python36\\python.exe"
+  },
+  "loading":{
+      "possible_filename": ["png", "jpg"]
   }
 }
