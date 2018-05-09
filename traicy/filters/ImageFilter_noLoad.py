@@ -50,6 +50,8 @@ filter_green_brightness = 0.75
 
 loading_possible_filename = list()
 
+filter_contours_length = 500
+
 
 def assign_json_values(filename_directory):
     try:
@@ -59,6 +61,7 @@ def assign_json_values(filename_directory):
         global filter_canny_strength, filter_binary_gaussian_strength, filter_binary_filter_threshold
         global filter_green_low, filter_green_high, filter_green_saturation, filter_green_brightness
         global loading_possible_filename
+        global filter_contours_length
 
         image_dimension = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
         image_dimension_small = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION_SMALL)
@@ -75,6 +78,8 @@ def assign_json_values(filename_directory):
         filter_green_brightness = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_GREEN_BRIGHTNESS)
 
         loading_possible_filename = JSONSettings.get_data(JSONSettings.JSONValues.LOADING_POSSIBLE_FILENAME)
+
+        filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
         reassign_calculated_variables()
 
@@ -330,6 +335,67 @@ def create_chromakey_image(img_read, filename, folder):
 
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
+
+
+def create_chunked_image(img_binary, filename, folder):
+    """
+    gets every outline in the image and creates images with the biggest ones (according to the theshold filter_contours_length)
+    :param img_binary: large image, not chunked yet
+    :param filename: name of the image
+    :param folder: location of the image
+    :return: a list of chunks (smaller images) and a second list with their location in the big image
+    """
+
+
+    img_binary_cv2 = cv2.imread(folder + filename + '_' + 'binary' + '.png') #loads image with cv2 standarts
+
+    thresh = img_as_ubyte(img_binary) #loads image as ubyte
+
+    #finds the contours and gives back the original picture and a hierarchy of the contours
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    count = 0 #count contours that fit the threshold
+    beste = [] #save contours in a list
+    for cnt in contours:
+        if cv2.contourArea(cnt) > filter_contours_length:
+            beste.append(cnt)
+
+    #how many contours were found?
+    print (len(beste))
+
+    #open Image with PIL
+    img_binary_PIL = Image.open(folder + filename + '_' + 'binary' + '.png')
+
+    #img_with_chunks = draw_chunks(img_binary_cv2, beste) #draw Chunks at original image
+    #imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
+
+    #crop image
+    cropped_images = crop(img_binary_cv2, beste, img_binary_PIL, filename, folder)
+
+
+    return cropped_images, beste
+
+
+def crop(contours, img_PIL, filename, folder):
+    """
+    goes through all contours and creates a list of images
+    :param contours: list with contours
+    :param img_PIL: original image, called with PIL
+    :param filename: filename of the image
+    :param folder: foldername of the image
+    :return: list with cropped and scaled images
+    """
+
+    cropped_list = list()#list with cropped images
+
+    # go through the list of contours
+    for cnt in contours:
+        x, y, w, h = cv2.boundingRect(cnt) # get rectangle from contours
+        cropped_image = img_PIL.crop((x,y,w,h)) # get rectangle from image
+        img_scaled = create_scaled_image(cropped_image, folder, filename) # scale image to 27x27 size
+        cropped_list.append(img_scaled) # save in list
+
+    return cropped_list
 
 
 def create_com_image(img_read, filename, folder):
@@ -669,30 +735,24 @@ def read_image_with_chunks_from_location(directory):
     main_folder = data_path                                                                     # + "/ImageFilter" + "/"
     create_folder(main_folder)
 
-    # get rotation of image and read it
-    # TODO: DO we need rotation?
-    # rotation = get_image_rotation(directory)
-    # img_reading = imread(directory, plugin='matplotlib')
+    # read image
+    img_reading = imread(directory, plugin='matplotlib')
+
+    # rotate image
+    rotation = get_image_rotation(directory)
+    img_rotated = rotate_image(img_reading, rotation)
+
+    # create binary image
+    img_binary = create_chromakey_image(img_rotated, filename, main_folder)
 
     # TODO: Add chunking here with image reading from directory
-    # Returrned lists by chunking
-    list_of_work_images = list()
-    list_of_work_coordinates = list()
+    # Returned lists by chunking
+    list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
 
     for image_chunk in list_of_work_images:
 
         index = list_of_work_images.index(image_chunk)
         coordinates = list_of_work_coordinates[index]
-
-        # resize image
-        # img_scaled = create_scaled_image(img_as_ubyte(image_chunk), filename, main_folder)
-
-        # TODO: DO we need rotation? Scaling? Chromakey?
-        # rotate image
-        # img_rotated = rotate_image(img_scaled, rotation)
-
-        # create binary image
-        # img_binary = create_chromakey_image(image_chunk, filename, main_folder)
 
         # get black borders inside of image
         img_borders = create_borders(image_chunk, filename, main_folder)

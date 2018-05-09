@@ -21,6 +21,7 @@ __f_green_saturation__ = 0.0
 __f_green_brightness__ = 0.0
 
 __l_possible_filename = list()
+__f_contours_length__ = 0.0
 
 __data__ = {}
 
@@ -41,6 +42,7 @@ class JSONValues (Enum):
     FILTER_GREEN_BRIGHTNESS = 9
 
     LOADING_POSSIBLE_FILENAME = 10
+    FILTER_CONTOURS_LENGTH = 11
 
 
 def parse_data(filename):
@@ -59,6 +61,7 @@ def parse_data(filename):
             global __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __f_green_low__, __f_green_high__, \
                 __f_green_saturation__, __f_green_brightness__
             global __l_possible_filename
+            global __f_contours_length__
             global __imported__
 
             image_access = data['image']
@@ -80,6 +83,7 @@ def parse_data(filename):
             __f_green_brightness__ = filter_access['green_brightness']
 
             __l_possible_filename = loading_access['possible_filename']
+            __f_contours_length__ = filter_access['contours_length']
 
             __imported__ = True
 
@@ -111,6 +115,9 @@ def get_data(json_value, *filename):
         if json_value == JSONValues.FILTER_GREEN_BRIGHTNESS:
             return __f_green_brightness__
 
+        if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
+            return __f_contours_length__
+
         if json_value == JSONValues.LOADING_POSSIBLE_FILENAME:
             return __l_possible_filename
     else:
@@ -129,6 +136,7 @@ def write_data(filename, json_value, value):
     global __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __f_green_low__, __f_green_high__, \
         __f_green_saturation__, __f_green_brightness__
     global __l_possible_filename
+    global __f_contours_length__
 
     if json_value == JSONValues.IMAGE_DIMENSION:
         __data__['image']['dimension'] = value
@@ -179,6 +187,12 @@ def write_data(filename, json_value, value):
     if json_value == JSONValues.LOADING_POSSIBLE_FILENAME:
         __data__['loading']['possible_filename'] = value
         __l_possible_filename = value
+
+    ##################################################
+
+    if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
+        __data__['filter']['contours_length'] = value
+        __f_contours_length__ = value
 
     with open(filename, 'wb') as outfile:
         json.dump(__data__, codecs.getwriter('utf-8')(outfile), indent=4, ensure_ascii=False)
