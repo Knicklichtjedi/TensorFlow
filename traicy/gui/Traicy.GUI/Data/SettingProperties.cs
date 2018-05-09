@@ -11,5 +11,7 @@ namespace Traicy.GUI.Data
         public FilterSettings FilterSettings { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "gui")]
         public GuiSettings GuiSettings { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "loading")]
+        public Loading LoadingSettings { get; set; }
     }
 }

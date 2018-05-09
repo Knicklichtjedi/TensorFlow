@@ -9,5 +9,8 @@
         int GreenHigh { get; set; }
         float GreenSaturation { get; set; }
         float GreenBrightness { get; set; }
+        float Schmiering { get; set; }
+        float MinimalOutlineSizeChunking { get; set; }
+
     }
 }

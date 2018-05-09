@@ -76,6 +76,7 @@ namespace Traicy.GUI.Logic
             return "prediction";
         }
 
+        //TODO: settings als parameter übergeben?
         private string StartPythonProcess(string command, string args)
         {
             ProcessStartInfo start = new ProcessStartInfo

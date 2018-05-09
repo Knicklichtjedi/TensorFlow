@@ -40,10 +40,10 @@ namespace Traicy.GUI.View
             if (!Directory.Exists(@"configs"))
             {
                 Directory.CreateDirectory(@"configs");
-                if (!File.Exists(@"configs\settings.json"))
-                {
-                    _settings = new SettingsController().CreateJsonFileWithStandardValues();
-                }
+            }
+            if (!File.Exists(@"configs\settings.json"))
+            {
+                _settings = new SettingsController().CreateJsonFileWithStandardValues();
             }
 
             if (_settings == null)

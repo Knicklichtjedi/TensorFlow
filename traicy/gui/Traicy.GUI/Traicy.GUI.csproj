@@ -122,10 +122,12 @@
     <Compile Include="Contracts\IFilterSettings.cs" />
     <Compile Include="Contracts\IGuiSettings.cs" />
     <Compile Include="Contracts\IImageSettings.cs" />
+    <Compile Include="Contracts\ILoading.cs" />
     <Compile Include="Data\FilteredImages.cs" />
     <Compile Include="Data\FilterSettings.cs" />
     <Compile Include="Data\GuiSettings.cs" />
     <Compile Include="Data\ImageSettings.cs" />
+    <Compile Include="Data\Loading.cs" />
     <Compile Include="Data\Prediction.cs" />
     <Compile Include="Logic\EventHandling.cs" />
     <Compile Include="Logic\Logger.cs" />

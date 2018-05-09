@@ -61,6 +61,8 @@ namespace Traicy.GUI.View
             GreenHighTextBox.Text = settings.FilterSettings.GreenHigh.ToString(CultureInfo.CurrentCulture);
             GreenSaturationTextBox.Text = settings.FilterSettings.GreenSaturation.ToString(CultureInfo.CurrentCulture);
             GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
+            //SchmieringTextBox.Text = settings.FilterSettings.Schmiering.ToString(CultureInfo.CurrentCulture);
+            //MinOutlineSizeTextBox.Text = settings.FilterSettings.MinimalOutlineSizeChunking.ToString(CultureInfo.CurrentCulture);
 
         }
 
@@ -96,17 +98,19 @@ namespace Traicy.GUI.View
                 GreenBrightness = Convert.ToSingle(GreenBrightnessTextBox.Text),
                 GreenHigh = Convert.ToInt32(GreenHighTextBox.Text),
                 GreenLow = Convert.ToInt32(GreenLowTextBox.Text),
-                GreenSaturation = Convert.ToSingle(GreenSaturationTextBox.Text)
+                GreenSaturation = Convert.ToSingle(GreenSaturationTextBox.Text),
+                //Schmiering = Convert.ToSingle(SchmieringTextBox.Text),
+                //MinimalOutlineSizeChunking = Convert.ToSingle(MinOutlineSizeTextBox.Text)
             };
 
-            GuiSettings guiSettings = new GuiSettings()
+            GuiSettings guiSettings = new GuiSettings
             {
                 TextToSpeechIsEnabled = _textToSpeechEnabled,
                 PythonInterpreterPath = _pythonInterpreterPath,
                 ShowFilteredImagesIsEnabled = _filteredImagesEnabled
             };
 
-            ImageSettings imageSettings = new ImageSettings()
+            ImageSettings imageSettings = new ImageSettings
             {
                 Border = Convert.ToInt32(BorderTextBox.Text),
                 Dimension = Convert.ToInt32(DimensionTextBox.Text),
