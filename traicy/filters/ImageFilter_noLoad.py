@@ -95,11 +95,20 @@ def reassign_calculated_variables():
     filter_green_high_factor = filter_green_high / 360
 
 
-def borders(img_read, filename, folder):
+def create_borders(img_read, filename, folder):
 
     # nd = imread(folder + filename + '_binary.png')
     nd = img_read
-    newfilename = folder + filename + '_borders.png'
+
+    new_name = '_borders.png'
+
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append(new_name)
+
+    newfilename = ''.join(strl)
+
     new_color = 0
 
     xrange = image_dimension_small
@@ -137,7 +146,14 @@ def create_canny_image(img_read, filename, folder):
     img_canny = canny(img_read, filter_canny_strength)
     img_conv = img_as_ubyte(img_canny)
 
-    imsave(folder + filename + '_' + 'canny' + '.png', img_conv)
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_canny.png')
+
+    new_filename = ''.join(strl)
+
+    imsave(new_filename, img_conv)
     return img_canny
 
 
@@ -155,7 +171,14 @@ def create_skeleton_image(img_read, filename, folder):
     """
     img_skeletonized = skeletonize(img_read)
 
-    imsave(folder + filename + "_skeleton" + '.png', img_as_uint(img_skeletonized))
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_skeleton.png')
+
+    new_filename = ''.join(strl)
+
+    imsave(new_filename, img_as_uint(img_skeletonized))
 
     return img_skeletonized
 
@@ -180,7 +203,14 @@ def create_binary_image(img_read, filename, folder):
     # Threshold comparison
     img_binary = img_gaussian < img_threshold
 
-    imsave(folder + filename + "_binary" + '.png', img_as_uint(img_binary))
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_binary.png')
+
+    new_filename = ''.join(strl)
+
+    imsave(new_filename, img_as_uint(img_binary))
 
     return img_binary
 
@@ -207,7 +237,14 @@ def create_greenfiltered_image(img_read, filename, folder):
     img_hsv = rgb2hsv(frame)
     # img_shape = img_hsv.reshape()
 
-    imsave(folder + filename + "_binary_hsv" + '.png', hsv2rgb(img_hsv))
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_binary_hsv.png')
+
+    new_filename = ''.join(strl)
+
+    imsave(new_filename, hsv2rgb(img_hsv))
 
     for pixel_row in img_hsv:
         for pixel_col in pixel_row:
@@ -231,7 +268,14 @@ def create_greenfiltered_image(img_read, filename, folder):
     mask_inv = cv2.bitwise_not(mask)
     #  cv2.imshow('mask_inv', mask_inv)
 
-    imsave(folder + filename + "_binary" + '.png', img_as_uint(mask_inv))
+    strl_2 = list()
+    strl_2.append(folder)
+    strl_2.append(filename)
+    strl_2.append('_binary.png')
+
+    new_filename_2 = ''.join(strl_2)
+
+    imsave(new_filename_2, img_as_uint(mask_inv))
 
     img_ndarray = np.array(img_as_uint(mask_inv))
     img_gray = rgb2gray(hsv2rgb(img_ndarray))
@@ -275,7 +319,14 @@ def create_chromakey_image(img_read, filename, folder):
             else:
                 img_gray_copy[i, j] = 0
 
-    imsave(folder + filename + '_' + 'binary' + '.png', img_gray_copy)
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_binary.png')
+
+    new_filename = ''.join(strl)
+
+    imsave(new_filename, img_gray_copy)
 
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
@@ -294,7 +345,12 @@ def create_com_image(img_read, filename, folder):
             array of the new centered image
     """
 
-    new_filename = folder + filename + '_centered.png'
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_centered.png')
+
+    new_filename = ''.join(strl)
 
     img_copy = np.zeros(image_dimension_t)
 
@@ -366,7 +422,13 @@ def create_scaled_image(img_read, filename, folder):
         :returns
             array of the scaled image
     """
-    newfilename = folder + filename + '_scaled.png'
+
+    strl = list()
+    strl.append(folder)
+    strl.append(filename)
+    strl.append('_scaled.png')
+
+    new_filename = ''.join(strl)
 
     # OLD CODE : USE IF IMAGE HAS TO KEEP ITS ASPECT RATIO
     # y_dim, x_dim, rgb = img_read.shape
@@ -388,7 +450,7 @@ def create_scaled_image(img_read, filename, folder):
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
 
     img_ndarray = np.array(img_cropped)
-    img_cropped.save(newfilename, "PNG")
+    img_cropped.save(new_filename, "PNG")
 
     # reload image due to pillow using its own image class
     # return imread(newfilename)
@@ -507,7 +569,7 @@ def read_images():
         img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
         # get black borders inside of image
-        img_borders = borders(img_binary, filename, sub_folder)
+        img_borders = create_borders(img_binary, filename, sub_folder)
 
         # create two filtered images
         img_canny = create_canny_image(img_borders, filename, sub_folder)   # UNUSED!
@@ -579,7 +641,7 @@ def read_image_from_location(directory):
     img_binary = create_chromakey_image(img_rotated, filename, main_folder)
 
     # get black borders inside of image
-    img_borders = borders(img_binary, filename, main_folder)
+    img_borders = create_borders(img_binary, filename, main_folder)
 
     # create filtered images
     img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
@@ -591,14 +653,15 @@ def read_image_from_location(directory):
 
 
 def read_image_with_chunks_from_location(directory):
+
     path = abspath(__file__ + "/../../")
     json_path = str(path) + "/configs/settings.json"
 
     # get new json values and assign them
     assign_json_values(json_path)
 
-    list_of_images = list()
-    list_of_coordinates = list()
+    list_of_return_images = list()
+    list_of_return_coordinates = list()
 
     data_path = path + "/filtered/"
     filename = "filtered.png"
@@ -607,31 +670,43 @@ def read_image_with_chunks_from_location(directory):
     create_folder(main_folder)
 
     # get rotation of image and read it
-    rotation = get_image_rotation(directory)
-    img_reading = imread(directory, plugin='matplotlib')
+    # TODO: DO we need rotation?
+    # rotation = get_image_rotation(directory)
+    # img_reading = imread(directory, plugin='matplotlib')
 
-    # resize image
-    img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, main_folder)
+    # TODO: Add chunking here with image reading from directory
+    # Returrned lists by chunking
+    list_of_work_images = list()
+    list_of_work_coordinates = list()
 
-    # rotate image
-    img_rotated = rotate_image(img_scaled, rotation)
+    for image_chunk in list_of_work_images:
 
-    # create binary image
-    img_binary = create_chromakey_image(img_rotated, filename, main_folder)
+        index = list_of_work_images.index(image_chunk)
+        coordinates = list_of_work_coordinates[index]
 
-    # get black borders inside of image
-    img_borders = borders(img_binary, filename, main_folder)
+        # resize image
+        # img_scaled = create_scaled_image(img_as_ubyte(image_chunk), filename, main_folder)
 
-    # create filtered images
-    img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+        # TODO: DO we need rotation? Scaling? Chromakey?
+        # rotate image
+        # img_rotated = rotate_image(img_scaled, rotation)
 
-    # align binary image to center of mass
-    img_com = create_com_image(img_skeleton, filename, main_folder)
+        # create binary image
+        # img_binary = create_chromakey_image(image_chunk, filename, main_folder)
 
-    list_of_images.append(img_com)
-    list_of_coordinates.append((0, 0))
+        # get black borders inside of image
+        img_borders = create_borders(image_chunk, filename, main_folder)
 
-    return list_of_images, list_of_coordinates
+        # create filtered images
+        img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+
+        # align binary image to center of mass
+        img_com = create_com_image(img_skeleton, filename, main_folder)
+
+        list_of_return_images.append(img_com)
+        list_of_return_coordinates.append(coordinates)
+
+    return list_of_return_images, list_of_return_coordinates
 
 
 def main():
