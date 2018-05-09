@@ -95,79 +95,72 @@ def reassign_calculated_variables():
 
 
 def create_chunked_image(img_binary, filename, folder):
+    """
+    gets every outline in the image and creates images with the biggest ones (according to the theshold filter_contours_length)
+    :param img_binary: large image, not chunked yet
+    :param filename: name of the image
+    :param folder: location of the image
+    :return: a list of chunks (smaller images) and a second list with their location in the big image
+    """
 
-    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
 
-    thresh = img_as_ubyte(img_binary)
+    img_binary_cv2 = cv2.imread(folder + filename + '_' + 'binary' + '.png') #loads image with cv2 standarts
 
+    thresh = img_as_ubyte(img_binary) #loads image as ubyte
+
+    #finds the contours and gives back the original picture and a hierarchy of the contours
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    best = 0
-    maxsize = 0
-    count = 0
-
-    beste = list()
-    for cnt in contours:
-        if cv2.contourArea(cnt) > 500:
-
-            maxsize = cv2.contourArea(cnt)
-
-            beste.append(count)
-
-            best = count
-
-        count = count + 1
-
-    print (len(beste))
-    im = draw_chunks(im, contours, beste)
-
-
-    imsave(folder + filename + '_' + 'chunked' + '.png', im)
-
-    return img_binary
-
-def create_chunked_image2(img_binary, filename, folder):
-
-    im = cv2.imread(folder + filename + '_' + 'binary' + '.png')
-
-    thresh = img_as_ubyte(img_binary)
-
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    count = 0
-
-    beste = []
+    count = 0 #count contours that fit the threshold
+    beste = [] #save contours in a list
     for cnt in contours:
         if cv2.contourArea(cnt) > filter_contours_length:
-
-            maxsize = cv2.contourArea(cnt)
-
             beste.append(cnt)
 
-        count = count + 1
-
+    #how many contours were found?
     print (len(beste))
-    img2 = Image.open(folder + filename + '_' + 'binary' + '.png')
-    im1 = draw_chunks(im, beste)
-    im = crop(im, beste, img2, filename, folder)
 
-    imsave(folder + filename + '_' + 'chunked' + '.png', im1)
+    #open Image with PIL
+    img_binary_PIL = Image.open(folder + filename + '_' + 'binary' + '.png')
 
-    return im, beste
+    img_with_chunks = draw_chunks(img_binary_cv2, beste) #draw Chunks at original image
+    imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
+
+    #crop image
+    cropped_images = crop(img_binary_cv2, beste, img_binary_PIL, filename, folder)
 
 
-def crop(img, contours, img_pillow, filename, folder):
+    return cropped_images, beste
 
-    im = list()
-    for a in contours:
-        x, y, w, h = cv2.boundingRect(a)
-        b = img_pillow.crop((x,y,w,h))
-        b = create_scaled_image(b, folder, filename)
-        im.append(b)
-    return im
+
+def crop(contours, img_PIL, filename, folder):
+    """
+    goes through all contours and creates a list of images
+    :param contours: list with contours
+    :param img_PIL: original image, called with PIL
+    :param filename: filename of the image
+    :param folder: foldername of the image
+    :return: list with cropped and scaled images
+    """
+
+    cropped_list = list()#list with cropped images
+
+    # go through the list of contours
+    for cnt in contours:
+        x, y, w, h = cv2.boundingRect(cnt) # get rectangle from contours
+        cropped_image = img_PIL.crop((x,y,w,h)) # get rectangle from image
+        img_scaled = create_scaled_image(cropped_image, folder, filename) # scale image to 27x27 size
+        cropped_list.append(img_scaled) # save in list
+
+    return cropped_list
 
 
 def clamp_binary_values(img):
+    """
+    creates np array from image
+    :param img: original image
+    :return: np array
+    """
     img_np_array = rgb2gray(np.array(img))
     h, w = img_np_array.shape
 
@@ -179,7 +172,12 @@ def clamp_binary_values(img):
     return img_np_array
 
 def draw_chunks(img, contours):
-
+    """
+    draws chunks in color green on the original image
+    :param img: original image
+    :param contours: list of contours
+    :return: image with contours
+    """
     for a in contours:
         x, y, w, h = cv2.boundingRect(a)
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -528,10 +526,9 @@ def rotate_image(img_read, rotation):
 
 def read_images_with_chunks():
     """
-
         Creates a new folder for the process with the necessary sub folder.
         Starts the filtering process for each image.
-        Read -> Resize -> Rotate -> Binary -> CenterOfMass -> Canny + Skeleton
+        Read -> Rotate -> Binary -> Chunking -> CenterOfMass -> Canny + Skeleton
 
     """
 
@@ -558,9 +555,6 @@ def read_images_with_chunks():
         rotation = get_image_rotation(dir_name)
         img_reading = imread(dir_name, plugin='matplotlib')
 
-        # resize image
-        #img_scaled = create_scaled_image(img_as_ubyte(img_reading), filename, sub_folder)
-
         # rotate image
         img_rotated = rotate_image(img_reading, rotation)
 
@@ -569,8 +563,8 @@ def read_images_with_chunks():
         # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
         img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
-        #get chunks in the image
-        img_chunk, img_coord = create_chunked_image2(img_binary, filename, sub_folder)
+        #get a list of chunks and a list where these chunks are in the big image
+        img_chunk, img_coord = create_chunked_image(img_binary, filename, sub_folder)
 
         # for image in img_chunk:
         #     img_clamped = clamp_binary_values(image)
