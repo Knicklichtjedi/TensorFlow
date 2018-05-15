@@ -62,7 +62,7 @@ namespace Traicy.GUI.View
             GreenSaturationTextBox.Text = settings.FilterSettings.GreenSaturation.ToString(CultureInfo.CurrentCulture);
             GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
             //SchmieringTextBox.Text = settings.FilterSettings.Schmiering.ToString(CultureInfo.CurrentCulture);
-            //MinOutlineSizeTextBox.Text = settings.FilterSettings.MinimalOutlineSizeChunking.ToString(CultureInfo.CurrentCulture);
+            MinOutlineSizeTextBox.Text = settings.FilterSettings.MinimalOutlineSizeChunking.ToString(CultureInfo.CurrentCulture);
 
         }
 
@@ -99,8 +99,8 @@ namespace Traicy.GUI.View
                 GreenHigh = Convert.ToInt32(GreenHighTextBox.Text),
                 GreenLow = Convert.ToInt32(GreenLowTextBox.Text),
                 GreenSaturation = Convert.ToSingle(GreenSaturationTextBox.Text),
-                //Schmiering = Convert.ToSingle(SchmieringTextBox.Text),
-                //MinimalOutlineSizeChunking = Convert.ToSingle(MinOutlineSizeTextBox.Text)
+                //Schmiering = Convert.ToInt32(SchmieringTextBox.Text),
+                MinimalOutlineSizeChunking = Convert.ToInt32(MinOutlineSizeTextBox.Text)
             };
 
             GuiSettings guiSettings = new GuiSettings
@@ -117,6 +117,8 @@ namespace Traicy.GUI.View
                 DimensionSmall = Convert.ToInt32(DimensionSmallTextBox.Text)
             };
 
+
+            //TODO: loading
             SettingProperties settingsProperties = new SettingProperties
             {
                 FilterSettings = filter,

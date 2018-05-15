@@ -17,7 +17,7 @@ namespace Traicy.GUI.Logic
                 GreenHigh = 170,
                 GreenLow = 50,
                 GreenSaturation = 0.5f,
-                //MinimalOutlineSizeChunking = 100,
+                MinimalOutlineSizeChunking = 500
                 //Schmiering = 2,
             };
 

@@ -19,8 +19,8 @@ namespace Traicy.GUI.Data
         [Newtonsoft.Json.JsonProperty(PropertyName = "green_brightness")]
         public float GreenBrightness { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "schmiering")]
-        public float Schmiering { get; set; }
-        [Newtonsoft.Json.JsonProperty(PropertyName = "min_chunk_size")]
-        public float MinimalOutlineSizeChunking { get; set; }
+        public int Schmiering { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "contours_length")]
+        public int MinimalOutlineSizeChunking { get; set; }
     }
 }

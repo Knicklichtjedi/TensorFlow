@@ -83,8 +83,8 @@ def assign_json_values(filename_directory):
 
         reassign_calculated_variables()
 
-    except errno:
-        # TODO Error message
+    except Exception as e:
+        #print(e.args)
         return
 
 
@@ -174,7 +174,7 @@ def create_skeleton_image(img_read, filename, folder):
     :returns
         array of binary image as skeleton
     """
-    img_skeletonized = skeletonize(img_read)
+    img_skeletonized = skeletonize(rgb2gray(img_read))
 
     strl = list()
     strl.append(folder)
@@ -336,6 +336,22 @@ def create_chromakey_image(img_read, filename, folder):
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
 
+def clamp_binary_values(img):
+    """
+    creates np array from image
+    :param img: original image
+    :return: np array
+    """
+    img_np_array = rgb2gray(np.array(img))
+    h, w = img_np_array.shape
+
+    for x in range(0, w):
+        for y in range(0, h):
+            if img_np_array[y, x] > 0:
+                img_np_array[y, x] = 1
+
+    return img_np_array
+
 
 def create_chunked_image(img_binary, filename, folder):
     """
@@ -355,13 +371,13 @@ def create_chunked_image(img_binary, filename, folder):
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0 #count contours that fit the threshold
-    beste = [] #save contours in a list
+    best_contours = [] #save contours in a list
     for cnt in contours:
         if cv2.contourArea(cnt) > filter_contours_length:
-            beste.append(cnt)
+            best_contours.append(cnt)
 
     #how many contours were found?
-    print (len(beste))
+    #print (len(best_contours))
 
     #open Image with PIL
     img_binary_PIL = Image.open(folder + filename + '_' + 'binary' + '.png')
@@ -370,10 +386,10 @@ def create_chunked_image(img_binary, filename, folder):
     #imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
 
     #crop image
-    cropped_images = crop(img_binary_cv2, beste, img_binary_PIL, filename, folder)
+    cropped_images = crop(best_contours, img_binary_PIL, filename, folder)
 
 
-    return cropped_images, beste
+    return cropped_images, best_contours
 
 
 def crop(contours, img_PIL, filename, folder):
@@ -392,7 +408,7 @@ def crop(contours, img_PIL, filename, folder):
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt) # get rectangle from contours
         cropped_image = img_PIL.crop((x,y,w,h)) # get rectangle from image
-        img_scaled = create_scaled_image(cropped_image, folder, filename) # scale image to 27x27 size
+        img_scaled = create_scaled_image(cropped_image, filename, folder) # scale image to 27x27 size
         cropped_list.append(img_scaled) # save in list
 
     return cropped_list
@@ -510,7 +526,8 @@ def create_scaled_image(img_read, filename, folder):
     #
     # print(f"Scaled Size: {scaled_size}")
 
-    img_pil_array = Image.fromarray(img_read)
+    #img_pil_array = Image.fromarray(img_read)
+    img_pil_array = img_read
 
     # resize using Pillow
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
@@ -607,7 +624,8 @@ def read_images():
                 if file_ends_with == filename:
                     loaded_images.append(file)
                 else:
-                    print("Could not find file with: " + filename + " at " + file)
+                    pass
+                    #print("Could not find file with: " + filename + " at " + file)
 
     for image_name in loaded_images:
         # create folder and sub folder
@@ -749,24 +767,32 @@ def read_image_with_chunks_from_location(directory):
     # Returned lists by chunking
     list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
 
-    for image_chunk in list_of_work_images:
+    list_wi_length = len(list_of_work_images)
+    list_wc_length = len(list_of_work_coordinates)
 
-        index = list_of_work_images.index(image_chunk)
-        coordinates = list_of_work_coordinates[index]
+    if list_wi_length == list_wc_length:
 
-        # get black borders inside of image
-        img_borders = create_borders(image_chunk, filename, main_folder)
+        for index in range(list_wi_length):
 
-        # create filtered images
-        img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+            index_image = list_of_work_images[index]
+            index_coord = list_of_work_coordinates[index]
 
-        # align binary image to center of mass
-        img_com = create_com_image(img_skeleton, filename, main_folder)
+            # get black borders inside of image
+            img_borders = create_borders(index_image, filename, main_folder)
 
-        list_of_return_images.append(img_com)
-        list_of_return_coordinates.append(coordinates)
+            #get binary image
+            img_clamp = clamp_binary_values(img_borders)
 
-    return list_of_return_images, list_of_return_coordinates
+            # create filtered images
+            img_skeleton = create_skeleton_image(img_clamp, filename, main_folder)
+
+            # align binary image to center of mass
+            img_com = create_com_image(img_skeleton, filename, main_folder)
+
+            list_of_return_images.append(img_com)
+            list_of_return_coordinates.append(index_coord)
+
+        return list_of_return_images, list_of_return_coordinates
 
 
 def main():

@@ -55,8 +55,7 @@ namespace Traicy.GUI.Logic
 
             var filePath = @"filtered\";
             var directory = new DirectoryInfo(filePath);
-            var directoryInfo = directory.GetDirectories().OrderByDescending(d => d.LastWriteTime).First();
-
+            //var directoryInfo = directory.GetDirectories().OrderByDescending(d => d.LastWriteTime).First();
             //filePath = $"{filePath}{directoryInfo}\\filtered.png_borders.png";
             //filePath =
             //    @"C:\Users\Eva\Documents\GitHub\TensorFlow\traicy\gui\Traicy.GUI\bin\Debug\filtered\2018_04_25_x_02_29_49\test.png";
@@ -67,8 +66,8 @@ namespace Traicy.GUI.Logic
                 filteredImages = new FilteredImages
                 {
                     //BinaryImage = GetBitmapImageFromSource(filePath),
-                    BinaryImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}{directoryInfo}\\filtered.png_borders.png")),
-                    SkeletonImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}{directoryInfo}\\filtered.png_centered.png"))
+                    BinaryImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}\\filtered.png_borders.png")),
+                    SkeletonImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}\\filtered.png_centered.png"))
                 };
             }
             catch (Exception e)
