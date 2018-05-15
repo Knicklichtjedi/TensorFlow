@@ -25,6 +25,7 @@ from os import listdir
 from os.path import abspath
 import errno
 import time
+import random
 
 # Define image dimensions and postprocessing values
 image_dimension = 28
@@ -84,7 +85,7 @@ def assign_json_values(filename_directory):
         reassign_calculated_variables()
 
     except Exception as e:
-        #print(e.args)
+        # print(e.args)
         return
 
 
@@ -174,7 +175,8 @@ def create_skeleton_image(img_read, filename, folder):
     :returns
         array of binary image as skeleton
     """
-    img_skeletonized = skeletonize(rgb2gray(img_read))
+    
+    img_skeletonized = skeletonize(img_read)
 
     strl = list()
     strl.append(folder)
@@ -336,6 +338,7 @@ def create_chromakey_image(img_read, filename, folder):
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
 
+
 def clamp_binary_values(img):
     """
     creates np array from image
@@ -362,37 +365,34 @@ def create_chunked_image(img_binary, filename, folder):
     :return: a list of chunks (smaller images) and a second list with their location in the big image
     """
 
+    thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
-    img_binary_cv2 = cv2.imread(folder + filename + '_' + 'binary' + '.png') #loads image with cv2 standarts
-
-    thresh = img_as_ubyte(img_binary) #loads image as ubyte
-
-    #finds the contours and gives back the original picture and a hierarchy of the contours
+    # finds the contours and gives back the original picture and a hierarchy of the contours
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    count = 0 #count contours that fit the threshold
-    best_contours = [] #save contours in a list
+    count = 0   # count contours that fit the threshold
+    best_contours = []   # save contours in a list
     for cnt in contours:
         if cv2.contourArea(cnt) > filter_contours_length:
             best_contours.append(cnt)
 
-    #how many contours were found?
-    #print (len(best_contours))
+    # how many contours were found?
+    # print (len(best_contours))
 
-    #open Image with PIL
-    img_binary_PIL = Image.open(folder + filename + '_' + 'binary' + '.png')
+    # open Image with PIL
+    img_binary_PIL = Image.fromarray(img_binary)
+    
+    # img_with_chunks = draw_chunks(img_binary_cv2, beste) #draw Chunks at original image
+    # imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
 
-    #img_with_chunks = draw_chunks(img_binary_cv2, beste) #draw Chunks at original image
-    #imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
-
-    #crop image
-    cropped_images = crop(best_contours, img_binary_PIL, filename, folder)
+    # crop image
+    cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
 
 
     return cropped_images, best_contours
 
 
-def crop(contours, img_PIL, filename, folder):
+def cropping(contours, img_PIL, filename, folder):
     """
     goes through all contours and creates a list of images
     :param contours: list with contours
@@ -402,13 +402,20 @@ def crop(contours, img_PIL, filename, folder):
     :return: list with cropped and scaled images
     """
 
-    cropped_list = list()#list with cropped images
+    cropped_list = list()   # list with cropped images
 
     # go through the list of contours
     for cnt in contours:
-        x, y, w, h = cv2.boundingRect(cnt) # get rectangle from contours
-        cropped_image = img_PIL.crop((x,y,w,h)) # get rectangle from image
-        img_scaled = create_scaled_image(cropped_image, filename, folder) # scale image to 27x27 size
+        x, y, w, h = cv2.boundingRect(cnt)     # get rectangle from contours
+        cropped_image = img_PIL.crop((x, y, x+w, y+h))    # get rectangle from image
+        
+        # 0 ... 6492830432
+        # raise Exception(x,y,w,h)
+        # img_np = np.array(cropped_image)
+        # raise Exception(str(cropped_image) +" " + str(x) +  " " + str (y) + " " +str(w)+ " " +str(h))
+        img_scaled = create_scaled_image(cropped_image, filename, folder) # scale image to 27x27 size HIER
+        # 000000000
+
         cropped_list.append(img_scaled) # save in list
 
     return cropped_list
@@ -492,6 +499,25 @@ def create_com_image(img_read, filename, folder):
     return img_copy
 
 
+def clamp_float_values(img):
+    """
+    creates np array from image
+    :param img: original image
+    :return: np array
+    """
+    img_np_array = rgb2gray(np.array(img))
+    h, w = img_np_array.shape
+
+    for x in range(0, w):
+        for y in range(0, h):
+            if img_np_array[y, x] > 0:
+                img_np_array[y, x] = 1
+            else:
+                img_np_array[y, x] = 0
+
+    return img_np_array
+
+
 def create_scaled_image(img_read, filename, folder):
     """
         Resize and change to aspect ratio of the image and save it to a given directory
@@ -526,14 +552,21 @@ def create_scaled_image(img_read, filename, folder):
     #
     # print(f"Scaled Size: {scaled_size}")
 
-    #img_pil_array = Image.fromarray(img_read)
+    # img_np_clamp = clamp_binary_values(img_read)
+    # img_pil_array = Image.fromarray(img_read)
     img_pil_array = img_read
 
     # resize using Pillow
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
-
     img_ndarray = np.array(img_cropped)
-    img_cropped.save(new_filename, "PNG")
+
+    img_ndarray = clamp_float_values(img_ndarray)
+
+    new_filename = folder + "chunk" + str(random.randrange(10)) + ".png"
+
+    # img_cropped.save(new_filename)
+    
+    imsave(new_filename, img_ndarray)
 
     # reload image due to pillow using its own image class
     # return imread(newfilename)
@@ -586,9 +619,13 @@ def rotate_image(img_read, rotation):
             array of the new rotated image
     """
     if rotation is not None:
-        value_cw = -float((str.split(str(rotation), " ")[1]))
-        img_rotated = rotate(img_read, value_cw)
-        return img_rotated
+        rotate_value = (str.split(str(rotation), " ")[1])
+        if isinstance(rotate_value, int) or isinstance(rotate_value, float):
+            value_cw = -float(rotate_value)
+            img_rotated = rotate(img_read, value_cw)
+            return img_rotated
+        else:
+            return img_read
     else:
         return img_read
 
@@ -625,7 +662,7 @@ def read_images():
                     loaded_images.append(file)
                 else:
                     pass
-                    #print("Could not find file with: " + filename + " at " + file)
+                    # print("Could not find file with: " + filename + " at " + file)
 
     for image_name in loaded_images:
         # create folder and sub folder
@@ -682,7 +719,7 @@ def read_images():
         # img_rotated = rotate_image(img_scaled, rotation)
 
         # create binary image
-        #img_binary = create_binary_image(img_rotated, filename, sub_folder)
+        # img_binary = create_binary_image(img_rotated, filename, sub_folder)
         # img_binary = create_greenfiltered_image(img_rotated, filename, sub_folder)
         # img_binary = create_chromakey_image(img_rotated, filename, sub_folder)
 
@@ -736,6 +773,100 @@ def read_image_from_location(directory):
     return img_com
 
 
+def read_images_with_chunks():
+    """
+
+        Creates a new folder for the process with the necessary sub folder.
+        Starts the filtering process for each image.
+        Read -> Resize -> Rotate -> Binary -> CenterOfMass -> Canny + Skeleton
+
+    """
+
+    # TODO
+    pre_border = 5
+
+    path = abspath(__file__ + "/../../")
+    data_path = str(path) + "/data/"
+    json_path = str(path) + "/configs/settings.json"
+    filename = "filtered.png"
+
+    assign_json_values(json_path)
+
+    main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
+    create_folder(main_folder)
+
+    dir_name = data_path + "" + "image_green/"    # TODO
+    directory_data = listdir(dir_name)
+
+    loaded_images = list()
+
+    for file in directory_data:
+        file_ends_with = file.split(".")[-1].lower()
+
+        if len(loading_possible_filename) > 0:
+            for filename in loading_possible_filename:
+                if file_ends_with == filename:
+                    loaded_images.append(file)
+                else:
+                    pass
+                    # print("Could not find file with: " + filename + " at " + file)
+
+    for image_name in loaded_images:
+
+        filename = dir_name + image_name
+
+        list_of_return_images = list()
+        list_of_return_coordinates = list()
+
+        # read image
+        img_reading = imread(filename, plugin='matplotlib')
+
+        # rotate image
+        rotation = get_image_rotation(filename)
+        img_rotated = rotate_image(img_reading, rotation)
+
+        h, w, c = img_rotated.shape
+
+        img_rotated_pil = Image.fromarray(img_rotated)
+        img_pre_crop = img_rotated_pil.crop((pre_border, pre_border, w - pre_border, h - pre_border))
+        img_np_pre_cropped = np.array(img_pre_crop)
+
+        # create binary image
+        img_binary = create_chromakey_image(img_np_pre_cropped, filename, main_folder)
+
+        # TODO: Add chunking here with image reading from directory
+        # Returned lists by chunking
+        list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
+
+        list_wi_length = len(list_of_work_images)
+        list_wc_length = len(list_of_work_coordinates)
+
+        print(len(list_of_return_images))
+
+        if list_wi_length == list_wc_length:
+
+            for index in range(list_wi_length):
+                index_image = list_of_work_images[index]
+                index_coord = list_of_work_coordinates[index]
+
+                # get black borders inside of image
+                img_borders = create_borders(index_image, filename, main_folder)
+
+                # get binary image
+                img_clamp = clamp_binary_values(img_borders)
+
+                # create filtered images
+                img_skeleton = create_skeleton_image(img_clamp, filename, main_folder)
+
+                # align binary image to center of mass
+                img_com = create_com_image(img_skeleton, filename, main_folder)
+
+                list_of_return_images.append(img_com)
+                list_of_return_coordinates.append(index_coord)
+
+            return list_of_return_images, list_of_return_coordinates
+
+
 def read_image_with_chunks_from_location(directory):
 
     path = abspath(__file__ + "/../../")
@@ -760,8 +891,15 @@ def read_image_with_chunks_from_location(directory):
     rotation = get_image_rotation(directory)
     img_rotated = rotate_image(img_reading, rotation)
 
+    h, w = img_rotated.shape
+
+    img_rotated_pil = Image.fromarray(img_rotated)
+    img_pre_crop = img_rotated_pil.crop(())  # TODO
+
     # create binary image
     img_binary = create_chromakey_image(img_rotated, filename, main_folder)
+
+    
 
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
@@ -780,7 +918,7 @@ def read_image_with_chunks_from_location(directory):
             # get black borders inside of image
             img_borders = create_borders(index_image, filename, main_folder)
 
-            #get binary image
+            # get binary image
             img_clamp = clamp_binary_values(img_borders)
 
             # create filtered images
@@ -796,7 +934,7 @@ def read_image_with_chunks_from_location(directory):
 
 
 def main():
-    read_images()
+    read_images_with_chunks()
 
 
 if __name__ == "__main__":
