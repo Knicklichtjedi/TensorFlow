@@ -27,29 +27,31 @@ namespace Traicy.GUI.Logic
         {
             //get all available voices
             var voices = GetInstalledVoices();
+            if (voices?.Count > 0)
+            {
+                string voiceName = string.Empty;
 
-            _speaker.SetOutputToDefaultAudioDevice();
-            //Geschwindigkeit (-10 - 10)
-            _speaker.Rate = -2;
-            //Lautstärke (0-100)
-            _speaker.Volume = 100;
-            _speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
-            //_speaker.SelectVoice("Microsoft Anna"); //englische Version
+                var voice = voices.FirstOrDefault(x => x.Culture.Name == "en-US");
+                if (voice != null)
+                {
+                    voiceName = voice.Name;
+                }
 
-            //Such passende Stimme zu angegebenen Argumenten
-            //_speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
-            //Text wird ausgegeben (abbrechen mit speaker.CancelAsync())
+                _speaker.SetOutputToDefaultAudioDevice();
+                //Geschwindigkeit (-10 - 10)
+                _speaker.Rate = -2;
+                //Lautstärke (0-100)
+                _speaker.Volume = 100;
+                _speaker.SelectVoice(voiceName); //englische Version
+                //_speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
+                //_speaker.SelectVoice("Microsoft Anna"); //englische Version
 
-            //_speaker.SpeakAsync("I see an T!");
-            //_speaker.SpeakAsync("I see an R!");
-            //_speaker.SpeakAsync("I see an A!");
-            //_speaker.SpeakAsync("I see an I!");
-            //_speaker.SpeakAsync("I see an C!");
-            //_speaker.SpeakAsync("I see an Y!");
-            //_speaker.SpeakAsync("T R A I C Y");
-            //_speaker.SpeakAsync("TRAICY");
+                //Such passende Stimme zu angegebenen Argumenten
+                //_speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
+                //Text wird ausgegeben (abbrechen mit speaker.CancelAsync())
 
-            _speaker.SpeakAsync(text);
+                _speaker.SpeakAsync(text);
+            }
         }
     }
 }

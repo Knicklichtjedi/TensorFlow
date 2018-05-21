@@ -131,7 +131,7 @@ namespace Traicy.GUI.View
                     new PythonConnector {PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath};
                 string prediction = pythonConnector.GetPrediction(absoluteFilteredImagePath);
 
-                if (_settings.GuiSettings.ShowFilteredImagesIsEnabled)
+                if (!prediction.Contains("error") && _settings.GuiSettings.ShowFilteredImagesIsEnabled)
                 {
                     new FilteredImagesWindow().Show(); //Open window that shows the filtered Images created from the image filter
                 }
@@ -153,17 +153,25 @@ namespace Traicy.GUI.View
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!_camera.IsConnected())
+            try
             {
-                _camera.Connect();
-                ConnectButton.Content = "Verbindung trennen";
+                if (!_camera.IsConnected())
+                {
+                    _camera.Connect();
+                    ConnectButton.Content = "Verbindung trennen";
 
-                _backgroundWorker.RunWorkerAsync();
+                    _backgroundWorker.RunWorkerAsync();
+                }
+                else
+                {
+                    _backgroundWorker.CancelAsync();
+                }
             }
-            else
+            catch (Exception exception)
             {
-                _backgroundWorker.CancelAsync();
+                Logger.Log(exception.Message);
             }
+           
         }
 
         //TODO: löschen?

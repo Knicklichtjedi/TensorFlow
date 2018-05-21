@@ -26,6 +26,14 @@ namespace Traicy.GUI.Logic
             {
                 Console.WriteLine(e.Message);
             }
+            catch (JsonWriterException e)
+            {
+                Logger.Log(e.Message);
+            }
+            catch (Exception e)
+            {
+                Logger.Log(e.Message);
+            }
         }
 
         /// <summary>
@@ -45,7 +53,15 @@ namespace Traicy.GUI.Logic
             }
             catch (IOException e)
             {
-                Console.WriteLine(e.Message);
+                Logger.Log(e.Message);
+            }
+            catch (JsonReaderException e)
+            {
+                Logger.Log(e.Message);
+            }
+            catch (Exception e)
+            {
+                Logger.Log(e.Message);
             }
 
             return listOfInformation;

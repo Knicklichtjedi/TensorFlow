@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using IronPython.Hosting;
@@ -73,7 +74,7 @@ namespace Traicy.GUI.Logic
                 }
                 return prediction;
             }
-            return "prediction";
+            return "There has been an error!";
         }
 
         //TODO: settings als parameter übergeben?
@@ -83,7 +84,6 @@ namespace Traicy.GUI.Logic
             {
                 //TODO: this path has to be adjusted manually --> add to settings
                 FileName = PythonInterpreterPath, //custom path from settings file
-                //FileName = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe", //eva home
                 //FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe", //eva laptop            
                 //FileName = @"C:\Users\katha\AppData\Local\Programs\Python\Python36\python.exe", //katl
                 Arguments = $"\"{command}\" \"{args}\"",
@@ -93,11 +93,10 @@ namespace Traicy.GUI.Logic
                 RedirectStandardError = true // Any error in standard output will be redirected back (for example exceptions)
             };
 
-            var test = start.WorkingDirectory;
-
-            using (Process process = Process.Start(start))
+            //var test = start.WorkingDirectory;
+            try
             {
-                try
+                using (Process process = Process.Start(start))
                 {
                     if (process != null)
                     {
@@ -107,16 +106,22 @@ namespace Traicy.GUI.Logic
                             string stderr =
                                 process.StandardError.ReadToEnd(); // Here are the exceptions from our Python script
                             Logger.Log(stderr);
-                            string result = reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
+                            string
+                                result = reader.ReadToEnd(); // Here is the result of StdOut(for example: print "test")
                             return result;
                         }
                     }
                 }
-                catch (Exception e)
-                {
-                    Logger.Log(e.Message);
-                }
             }
+            catch (Win32Exception e)
+            {
+                Logger.Log(e.Message);
+            }
+            catch (Exception e)
+            {
+                Logger.Log(e.Message);
+            }
+
             return string.Empty;
         }
     }
