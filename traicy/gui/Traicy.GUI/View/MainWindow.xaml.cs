@@ -62,29 +62,43 @@ namespace Traicy.GUI.View
 
         private void BackgroundWorkerOnProgressChanged(object sender, ProgressChangedEventArgs progressChangedEventArgs)
         {
-            WebcamVideo.Source = progressChangedEventArgs.UserState as ImageSource;
+            try
+            {
+                WebcamVideo.Source = progressChangedEventArgs.UserState as ImageSource;
+            }
+            catch (Exception e)
+            {
+                Logger.Log(e.Message);
+            }
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _camera.Disconnect();
-            ConnectButton.Content = "Kamera verbinden";
+            try
+            {
+                _camera.Disconnect();
+                ConnectButton.Content = "Kamera verbinden";
 
-            //TODO: statischen string als Resource hinterlegen 
-            WebcamVideo.Source = new BitmapImage(new Uri("pack://application:,,,/Traicy.GUI;component/resources/no-camera.png"));
+                //TODO: statischen string als Resource hinterlegen 
+                WebcamVideo.Source = new BitmapImage(new Uri("pack://application:,,,/Traicy.GUI;component/resources/no-camera.png"));
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception.Message);
+            }
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             while (!_backgroundWorker.CancellationPending)
             {
-                //TODO System Exception abfangen
-                _camera.Update();
-
-                WebcamHelper helper = new WebcamHelper();
-
                 try
                 {
+                    _camera.Update();
+
+                    WebcamHelper helper = new WebcamHelper();
+
+                
                     //convert camera image (bitmap) to imagesource that is freezable (fixed image) 
                     Freezable webcamFrame = helper.ImageSourceForBitmap(_camera.CalcBitmap()).GetAsFrozen();
 
@@ -105,6 +119,7 @@ namespace Traicy.GUI.View
                 }
                 catch (Exception exception)
                 {
+                    //log problems using the camera
                     Logger.Log(exception.Message);
                 }
             }
@@ -132,9 +147,12 @@ namespace Traicy.GUI.View
                     new PythonConnector {PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath};
                 string prediction = pythonConnector.GetPrediction(absoluteFilteredImagePath);
 
+                FilteredImagesWindow filteredImagesWindow = null;
+
                 if (!prediction.Contains("error") && _settings.GuiSettings.ShowFilteredImagesIsEnabled)
                 {
-                    new FilteredImagesWindow().Show(); //Open window that shows the filtered Images created from the image filter
+                    filteredImagesWindow = new FilteredImagesWindow();
+                    filteredImagesWindow.Show(); //Open window that shows the filtered Images created from the image filter
                 }
 
                 if (_settings.GuiSettings.TextToSpeechIsEnabled)
@@ -144,7 +162,12 @@ namespace Traicy.GUI.View
                 }
                 else
                 {
-                    //TODO: andere Ausgabe des Ergebnisses (textuell) --> Python (Chunking)
+                    //TODO: TESTEN!! andere Ausgabe des Ergebnisses (textuell) --> Python (Chunking)
+                    if (filteredImagesWindow != null)
+                    {
+                        filteredImagesWindow.ResultTextBlock.Text = prediction;
+                    }
+                    
                 }
 
                 ButtonStartObjectDetection.Content = "Starte Objekterkennung";
