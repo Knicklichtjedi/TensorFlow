@@ -388,7 +388,6 @@ def create_chunked_image(img_binary, filename, folder):
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
 
-
     return cropped_images, best_contours
 
 
@@ -556,17 +555,19 @@ def create_scaled_image(img_read, filename, folder):
     # img_pil_array = Image.fromarray(img_read)
     img_pil_array = img_read
 
+    #new_filename = folder + "chunkScaled" + str(random.randrange(10)) + ".png"
+    #imsave(new_filename, img_pil_array)
     # resize using Pillow
     img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
     img_ndarray = np.array(img_cropped)
 
     img_ndarray = clamp_float_values(img_ndarray)
 
-    new_filename = folder + "chunk" + str(random.randrange(10)) + ".png"
+
 
     # img_cropped.save(new_filename)
     
-    imsave(new_filename, img_ndarray)
+
 
     # reload image due to pillow using its own image class
     # return imread(newfilename)
@@ -587,7 +588,7 @@ def create_folder(directory):
             raise
 
 
-def get_image_rotation(filename):
+def get_image_rotation(filename, folder):
     """
         Get the Image Orientation Tag from an image and return it
 
@@ -598,7 +599,27 @@ def get_image_rotation(filename):
             EXIF file tag if it exists
     """
 
-    file = open(filename, 'rb')
+    file = open(folder + filename, 'rb')
+    tags = exifread.process_file(file)
+
+    for tag in tags.keys():
+        if tag == 'Image Orientation':
+            # print(f"{tag}, value {tags[tag]}")
+            return tags[tag]
+
+
+def get_image_rotation_from_location(directory):
+    """
+        Get the Image Orientation Tag from an image and return it
+
+        :parameter
+            filename: name of the original image
+
+        :returns
+            EXIF file tag if it exists
+    """
+
+    file = open(directory, 'rb')
     tags = exifread.process_file(file)
 
     for tag in tags.keys():
@@ -628,6 +649,13 @@ def rotate_image(img_read, rotation):
             return img_read
     else:
         return img_read
+
+
+def create_cropped_image(image, crop_border, filename, folder):
+
+    image_cropped = image[crop_border:-crop_border, crop_border:-crop_border]
+
+    return image_cropped
 
 
 def read_images():
@@ -675,7 +703,7 @@ def read_images():
         image_dir = dir_name + "/" + image_name
 
         # get rotation of image and read it
-        rotation = get_image_rotation(image_dir)
+        rotation = get_image_rotation_from_location(image_dir)
         img_reading = imread(image_dir, plugin='matplotlib')
 
         # resize image
@@ -749,7 +777,7 @@ def read_image_from_location(directory):
     create_folder(main_folder)
 
     # get rotation of image and read it
-    rotation = get_image_rotation(directory)
+    rotation = get_image_rotation_from_location(directory)
     img_reading = imread(directory, plugin='matplotlib')
 
     # resize image
@@ -785,21 +813,27 @@ def read_images_with_chunks():
     # TODO
     pre_border = 5
 
+    #create path & filename
     path = abspath(__file__ + "/../../")
     data_path = str(path) + "/data/"
     json_path = str(path) + "/configs/settings.json"
     filename = "filtered.png"
 
+    #json values
     assign_json_values(json_path)
 
-    main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")
+    #create folder with time stamp
+    main_folder = data_path + "filtered/" + datetime.datetime.now().strftime("%Y_%m_%d_x_%H_%M_%S")+"/"
     create_folder(main_folder)
 
-    dir_name = data_path + "" + "image_green/"    # TODO
+    #path to readable files
+    dir_name = data_path + "" + "images_green/"    # TODO
     directory_data = listdir(dir_name)
 
+    #list of all loaded images
     loaded_images = list()
 
+    #loads images
     for file in directory_data:
         file_ends_with = file.split(".")[-1].lower()
 
@@ -811,60 +845,70 @@ def read_images_with_chunks():
                     pass
                     # print("Could not find file with: " + filename + " at " + file)
 
+    list_of_return_images = list()
+    list_of_return_coordinates = list()
+
     for image_name in loaded_images:
 
-        filename = dir_name + image_name
-
-        list_of_return_images = list()
-        list_of_return_coordinates = list()
+        #assigns name of file to name of current image
+        filename = image_name
 
         # read image
-        img_reading = imread(filename, plugin='matplotlib')
+        img_reading = imread(dir_name + "/" + filename, plugin='matplotlib')
 
         # rotate image
-        rotation = get_image_rotation(filename)
+        rotation = get_image_rotation(filename, dir_name)
         img_rotated = rotate_image(img_reading, rotation)
 
         h, w, c = img_rotated.shape
 
-        img_rotated_pil = Image.fromarray(img_rotated)
-        img_pre_crop = img_rotated_pil.crop((pre_border, pre_border, w - pre_border, h - pre_border))
-        img_np_pre_cropped = np.array(img_pre_crop)
+        # img_rotated_gray = rgb2gray(img_rotated)
+
+        # img_rotated_pil = Image.fromarray(img_rotated)
+        # img_pre_crop = img_rotated_pil.crop((pre_border, pre_border, w - pre_border, h - pre_border))
+        # img_np_pre_cropped = np.array(img_pre_crop)
+
+        img_np_pre_cropped = create_cropped_image(img_rotated,
+                                                  pre_border,
+                                                  filename,
+                                                  main_folder)
 
         # create binary image
         img_binary = create_chromakey_image(img_np_pre_cropped, filename, main_folder)
 
-        # TODO: Add chunking here with image reading from directory
         # Returned lists by chunking
         list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
 
         list_wi_length = len(list_of_work_images)
         list_wc_length = len(list_of_work_coordinates)
 
-        print(len(list_of_return_images))
-
         if list_wi_length == list_wc_length:
 
             for index in range(list_wi_length):
                 index_image = list_of_work_images[index]
                 index_coord = list_of_work_coordinates[index]
+                chunk_string = "___" + str(index) + "_chunk_"
+
+                chunk_filename = filename + chunk_string
 
                 # get black borders inside of image
-                img_borders = create_borders(index_image, filename, main_folder)
+                img_borders = create_borders(index_image, chunk_filename, main_folder)
 
                 # get binary image
                 img_clamp = clamp_binary_values(img_borders)
 
                 # create filtered images
-                img_skeleton = create_skeleton_image(img_clamp, filename, main_folder)
+                img_skeleton = create_skeleton_image(img_clamp, chunk_filename, main_folder)
 
                 # align binary image to center of mass
-                img_com = create_com_image(img_skeleton, filename, main_folder)
+                img_com = create_com_image(img_skeleton, chunk_filename, main_folder)
 
                 list_of_return_images.append(img_com)
                 list_of_return_coordinates.append(index_coord)
 
-            return list_of_return_images, list_of_return_coordinates
+
+
+    return list_of_return_images, list_of_return_coordinates
 
 
 def read_image_with_chunks_from_location(directory):
@@ -888,10 +932,10 @@ def read_image_with_chunks_from_location(directory):
     img_reading = imread(directory, plugin='matplotlib')
 
     # rotate image
-    rotation = get_image_rotation(directory)
+    rotation = get_image_rotation_from_location(directory)
     img_rotated = rotate_image(img_reading, rotation)
 
-    h, w = img_rotated.shape
+    h, w, c = img_rotated.shape
 
     img_rotated_pil = Image.fromarray(img_rotated)
     img_pre_crop = img_rotated_pil.crop(())  # TODO

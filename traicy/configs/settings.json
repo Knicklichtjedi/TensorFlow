@@ -12,7 +12,7 @@
     "green_high": 170,
     "green_saturation": 0.5,
     "green_brightness": 0.75,
-    "contours_length": 500
+    "contours_length": 90000
   },
   "gui": {
     "text_to_speech_enabled": true,

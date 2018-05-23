@@ -78,6 +78,7 @@ namespace Traicy.GUI.View
         {
             while (!_backgroundWorker.CancellationPending)
             {
+                //TODO System Exception abfangen
                 _camera.Update();
 
                 WebcamHelper helper = new WebcamHelper();

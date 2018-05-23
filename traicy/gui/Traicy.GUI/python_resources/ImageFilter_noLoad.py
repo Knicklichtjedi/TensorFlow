@@ -800,7 +800,7 @@ def read_image_with_chunks_from_location(directory):
     rotation = get_image_rotation(directory)
     img_rotated = rotate_image(img_reading, rotation)
 
-    h, w = img_rotated.shape
+    h, w, c = img_rotated.shape
 
 
     img_rotated_pil = Image.fromarray(img_rotated)
