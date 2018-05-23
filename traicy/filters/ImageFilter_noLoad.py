@@ -291,6 +291,60 @@ def create_greenfiltered_image(img_read, filename, folder):
     return img_gray
 
 
+def create_fillout_image(img_read, filename, folder):
+    """
+                Iterates 4 times over the image-array and adds white pixels after every last white pixel inside the image
+                The form of an object will mostly be kept or even stabilised
+                At half the iterations the image will be transposed so rotating should happen afterwards maybe
+
+                :parameter
+                    img_read: binary image array
+                    filename: name of the original image
+                    folder: directory of the new image
+
+                :returns
+                    array of the new binary image
+    """
+    lastWhite = False
+
+    it = 2
+
+    test = np.array(img_read)
+
+    for i in range(it):
+
+        if i != 1:
+            #print(i)
+            for row in test:
+                for col in range(len(row)):
+
+                    if row[col] > 0:
+
+
+                        row[col] = 1
+
+                        lastWhite = True
+                    elif row[col] < 1 and lastWhite == True:
+                        # print('black append')
+                        row[col] = 1
+
+                        lastWhite = False
+                    else:
+                        row[col] = 0
+                        # print('black')
+
+
+                lastWhite = False
+        else:
+            test = cv2.transpose(test)
+
+    test = cv2.transpose(test)
+
+    imsave(folder + filename + "_fillout" + '.png', img_as_uint(test))
+
+    return imread(folder + filename + "_fillout" + '.png', plugin="matplotlib")
+
+
 def create_chromakey_image(img_read, filename, folder):
     hsv = rgb2hsv(img_read)
 
@@ -558,7 +612,7 @@ def create_scaled_image(img_read, filename, folder):
     #new_filename = folder + "chunkScaled" + str(random.randrange(10)) + ".png"
     #imsave(new_filename, img_pil_array)
     # resize using Pillow
-    img_cropped = img_pil_array.resize(image_dimension_t_small, Image.ANTIALIAS)
+    img_cropped = img_pil_array.resize(image_dimension_t_small)
     img_ndarray = np.array(img_cropped)
 
     img_ndarray = clamp_float_values(img_ndarray)
@@ -891,14 +945,18 @@ def read_images_with_chunks():
 
                 chunk_filename = filename + chunk_string
 
-                # get black borders inside of image
-                img_borders = create_borders(index_image, chunk_filename, main_folder)
 
                 # get binary image
-                img_clamp = clamp_binary_values(img_borders)
+                img_clamp = clamp_binary_values(index_image)
+
+                #schmiering
+                img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
+
+                # get black borders inside of image
+                img_borders = create_borders(img_fillout, chunk_filename, main_folder)
 
                 # create filtered images
-                img_skeleton = create_skeleton_image(img_clamp, chunk_filename, main_folder)
+                img_skeleton = create_skeleton_image(img_borders, chunk_filename, main_folder)
 
                 # align binary image to center of mass
                 img_com = create_com_image(img_skeleton, chunk_filename, main_folder)
