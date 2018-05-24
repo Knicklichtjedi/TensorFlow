@@ -25,9 +25,6 @@ from os import listdir
 from os.path import abspath
 import errno
 import time
-import random
-#log
-import logging
 
 # Define image dimensions and postprocessing values
 image_dimension = 28
@@ -95,7 +92,7 @@ def assign_json_values(filename_directory):
             float(filter_contours_length)
         except Exception as e:
             #print("Value Error" +  "\n" + e.args)
-            raise
+            return
 
 
         reassign_calculated_variables()
@@ -117,7 +114,7 @@ def reassign_calculated_variables():
      float(filter_green_high)
     except Exception as e:
         #print("Value Error" +  "\n" + e.args)
-        raise
+        return
 
     image_dimension_t = (image_dimension, image_dimension)
     image_dimension_t_small = (image_dimension_small, image_dimension_small)
@@ -1069,13 +1066,10 @@ def read_image_with_chunks_from_location(directory):
 
 
 def main():
-    #initialise logger
     logging.basicConfig(filename="log.txt")
     stderrLogger = logging.StreamHandler()
     stderrLogger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
     logging.getLogger().addHandler(stderrLogger)
-
-    logging.info("Hey :)")
 
     read_images_with_chunks()
 

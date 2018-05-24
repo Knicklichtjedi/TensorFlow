@@ -82,6 +82,19 @@ def assign_json_values(filename_directory):
         filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
         try:
+            float(image_border)
+            float(filter_canny_strength)
+            float(filter_binary_gaussian_strength)
+            float(filter_binary_filter_threshold)
+            float(image_border)
+            float(filter_green_saturation)
+            float(filter_green_brightness)
+            float(filter_contours_length)
+        except Exception as e:
+            #print("Value Error" +  "\n" + e.args)
+            return
+
+
         reassign_calculated_variables()
 
     except Exception as e:

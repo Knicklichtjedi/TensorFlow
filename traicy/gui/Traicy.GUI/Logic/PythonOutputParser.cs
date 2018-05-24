@@ -29,7 +29,7 @@ namespace Traicy.GUI.Logic
         /// </summary>
         /// <param name="toParse"></param>
         /// <returns></returns>
-        public static IEnumerable<Prediction> ParseToListOfPredictions(string toParse)
+        public static List<Prediction> ParseToListOfPredictions(string toParse)
         {
             //TODO: überprüfen, ob das so mit newline funktioniert
             var predictionLine = toParse.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using IronPython.Hosting;
 
 namespace Traicy.GUI.Logic
@@ -64,15 +65,24 @@ namespace Traicy.GUI.Logic
             {
                 var parsedPrediction = PythonOutputParser.ParseToListOfPredictions(result);
                 string prediction = string.Empty;
-                //TODO: wie Sprachausgabe bei mehreren Predictions?
+                //TODO: Sprachausgabe bei mehreren Predictions so lassen?
+
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(prediction);
+                string numberOfChunksFound = parsedPrediction.Count.ToString();
+                string outputChunks = $"There were {numberOfChunksFound} numbers found!";
+                stringBuilder.Append(outputChunks);
+
                 foreach (var pred in parsedPrediction)
                 {
-                    var letter = pred.PredictedValue;
-                    var probability = pred.PredictionPercentage;
-                    //TODO: performance? string Builder nutzen?
-                    prediction += $"The number is {letter} with a probability of {probability}";
+                    var number = pred.PredictedValue;
+                    var probability = pred.PredictionPercentage; //OBSOLETE bis NN überarbeitet wurde
+                    //prediction += $"The number is {letter} with a probability of {probability}"; //OBSOLETE
+                    stringBuilder.Append("The number is ");
+                    stringBuilder.Append(number);
+                    //prediction += $"The number is {letter}";
                 }
-                return prediction;
+                return stringBuilder.ToString();
             }
             return "There has been an error!";
         }

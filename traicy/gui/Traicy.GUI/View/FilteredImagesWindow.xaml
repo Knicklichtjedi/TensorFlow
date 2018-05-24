@@ -29,5 +29,6 @@
         <Image Grid.Column="0" Grid.Row="3" Width="Auto" Height="Auto" Name="BinaryImage" Margin="10,10"></Image>
         <Label Grid.Column="1" Grid.Row="2" Content="Skeleton:"></Label>
         <Image Grid.Column="1" Grid.Row="3" Width="Auto" Height="Auto" Name="SkeletonImage" Margin="10,10"></Image>
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Name="ResultTextBlock"></TextBlock>
     </Grid>
 </Window>
