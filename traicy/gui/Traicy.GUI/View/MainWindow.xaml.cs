@@ -163,10 +163,10 @@ namespace Traicy.GUI.View
                 else
                 {
                     //TODO: TESTEN!! andere Ausgabe des Ergebnisses (textuell) --> Python (Chunking)
-                    if (filteredImagesWindow != null)
-                    {
-                        filteredImagesWindow.ResultTextBlock.Text = prediction;
-                    }
+                    //if (filteredImagesWindow != null)
+                    //{
+                    //    filteredImagesWindow.ResultTextBlock.Text = prediction;
+                    //}
                     
                 }
 

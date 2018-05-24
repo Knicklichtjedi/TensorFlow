@@ -31,7 +31,7 @@ namespace Traicy.GUI.Logic
             {
                 string voiceName = string.Empty;
 
-                var voice = voices.FirstOrDefault(x => x.Culture.Name == "en-US");
+                var voice = voices.FirstOrDefault(x => x.Culture.Name == "de-DE");
                 if (voice != null)
                 {
                     voiceName = voice.Name;

@@ -69,22 +69,45 @@ namespace Traicy.GUI.Logic
 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append(prediction);
-                string numberOfChunksFound = parsedPrediction.Count.ToString();
-                string outputChunks = $"There were {numberOfChunksFound} numbers found!";
-                stringBuilder.Append(outputChunks);
 
-                foreach (var pred in parsedPrediction)
+
+                string numberOfChunksFound = parsedPrediction.Count.ToString();
+
+                if (parsedPrediction.Count == 1)
                 {
-                    var number = pred.PredictedValue;
-                    var probability = pred.PredictionPercentage; //OBSOLETE bis NN überarbeitet wurde
-                    //prediction += $"The number is {letter} with a probability of {probability}"; //OBSOLETE
-                    stringBuilder.Append("The number is ");
+                    //string outputChunks = "I found the number ";
+                    string outputChunks = "Die gefundene Nummer ist ";
+                    stringBuilder.Append(outputChunks);
+                    var number = parsedPrediction[0].PredictedValue;
                     stringBuilder.Append(number);
-                    //prediction += $"The number is {letter}";
+                    stringBuilder.Append(", ");
+
                 }
+                else if (parsedPrediction.Count >= 2)
+                {
+                    //string outputChunks = $"I found the following {numberOfChunksFound} numbers: ";
+                    stringBuilder.Append("Ich habe die folgenden ");
+                    stringBuilder.Append(numberOfChunksFound);
+                    stringBuilder.Append(" Zahlen gefunden: ");
+                
+                    //stringBuilder.Append(outputChunks);
+                    foreach (var pred in parsedPrediction)
+                    {
+                        var number = pred.PredictedValue;
+                        var probability = pred.PredictionPercentage; //OBSOLETE bis NN überarbeitet wurde
+                                                                     //prediction += $"The number is {letter} with a probability of {probability}"; //OBSOLETE
+
+                        stringBuilder.Append(number);
+                        stringBuilder.Append(", ");
+                        //prediction += $"The number is {letter}";
+                    }
+                }
+                //stringBuilder.Append("That's all.");
+                stringBuilder.Append("Mehr kann ich nicht erkennen.");
                 return stringBuilder.ToString();
             }
-            return "There has been an error!";
+            //return "There has been an error!";
+            return "Es ist ein Fehler aufgetreten!";
         }
 
         //TODO: settings als parameter übergeben?
@@ -92,7 +115,6 @@ namespace Traicy.GUI.Logic
         {
             ProcessStartInfo start = new ProcessStartInfo
             {
-                //TODO: this path has to be adjusted manually --> add to settings
                 FileName = PythonInterpreterPath, //custom path from settings file
                 //FileName = @"C:\Users\Eva\Anaconda3\envs\customEnv\python.exe", //eva laptop            
                 //FileName = @"C:\Users\katha\AppData\Local\Programs\Python\Python36\python.exe", //katl
