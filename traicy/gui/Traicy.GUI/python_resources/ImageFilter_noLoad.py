@@ -435,7 +435,7 @@ def clamp_binary_values(img):
     return img_np_array
 
 
-def create_chunked_image(img_binary, filename, folder):
+def create_chunked_image(img_binary, filename, folder, originalImage):
     """
     gets every outline in the image and creates images with the biggest ones (according to the theshold filter_contours_length)
     :param img_binary: large image, not chunked yet
@@ -447,27 +447,32 @@ def create_chunked_image(img_binary, filename, folder):
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.imwrite(folder + filename, originalImage)
     count = 0   # count contours that fit the threshold
+    img_with_chunks = np.array(originalImage)#draw Chunks at original image
+
+
     best_contours = []   # save contours in a list
     for cnt in contours:
         if cv2.contourArea(cnt) > filter_contours_length:
+            #cv2.drawContours(img_with_chunks, [cnt], 0, (255, 179, 0), 3)
+            #cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
             best_contours.append(cnt)
-
     # how many contours were found?
     # print (len(best_contours))
 
     # open Image with PIL
     img_binary_PIL = Image.fromarray(img_binary)
-    
-    # img_with_chunks = draw_chunks(img_binary_cv2, beste) #draw Chunks at original image
-    # imsave(folder + filename + '_' + 'chunked' + '.png', img_with_chunks) #save image with drawn chunks
+    #save image with drawn chunks
+
+    x, y, w, h = cv2.boundingRect(best_contours[0])
+    cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
 
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
 
-    return cropped_images, best_contours
+    return cropped_images, best_contours, img_with_chunks
 
 
 def cropping(contours, img_PIL, filename, folder):
@@ -956,7 +961,8 @@ def read_images_with_chunks():
         img_binary = create_chromakey_image(img_np_pre_cropped, filename, main_folder)
 
         # Returned lists by chunking
-        list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
+        list_of_work_images, list_of_work_coordinates, img_with_chunks = create_chunked_image(img_binary, filename,
+                                                                                              main_folder, img_reading)
 
         list_wi_length = len(list_of_work_images)
         list_wc_length = len(list_of_work_coordinates)
@@ -1007,11 +1013,14 @@ def read_image_with_chunks_from_location(directory):
     list_of_return_images = list()
     list_of_return_coordinates = list()
 
+    chunk_path = path + "/chunked/"
     data_path = path + "/filtered/"
+    filename_chunked = "chunked.png"
     filename = "filtered.png"
 
     main_folder = data_path                                                                     # + "/ImageFilter" + "/"
     create_folder(main_folder)
+    create_folder(chunk_path)
 
     # read image
     img_reading = imread(directory, plugin='matplotlib')
@@ -1033,7 +1042,9 @@ def read_image_with_chunks_from_location(directory):
 
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
-    list_of_work_images, list_of_work_coordinates = create_chunked_image(img_binary, filename, main_folder)
+    list_of_work_images, list_of_work_coordinates, img_with_chunks = create_chunked_image(img_binary, filename_chunked, chunk_path, img_reading)
+
+
 
     list_wi_length = len(list_of_work_images)
     list_wc_length = len(list_of_work_coordinates)
