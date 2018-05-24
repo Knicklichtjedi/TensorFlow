@@ -40,17 +40,17 @@ filter_binary_gaussian_strength = 0.5
 filter_binary_filter_threshold = 0.5
 
 filter_green_low = 50
-filter_green_high = 180
+filter_green_high = 170
 
 filter_green_low_factor = filter_green_low / 360
 filter_green_high_factor = filter_green_high / 360
 
 filter_green_saturation = 0.5
-filter_green_brightness = 0.75
+filter_green_brightness = 0.25
 
 loading_possible_filename = list()
 
-filter_contours_length = 500
+filter_contours_length = 9000
 
 
 def assign_json_values(filename_directory):
@@ -93,7 +93,6 @@ def assign_json_values(filename_directory):
         except Exception as e:
             #print("Value Error" +  "\n" + e.args)
             return
-
 
         reassign_calculated_variables()
 
@@ -372,12 +371,14 @@ def create_fillout_image(img_read, filename, folder):
 def create_chromakey_image(img_read, filename, folder):
     hsv = rgb2hsv(img_read)
 
+    imsave(folder + filename + "_pre_chromakey.png", hsv)
+
     for pixel_row in hsv:
         for pixel_col in pixel_row:
 
-            if filter_green_low_factor < pixel_col[0] <= filter_green_high_factor:
-                    # and pixel_col[1] > filter_green_saturation \
-                    # and pixel_col[2] < filter_green_brightness:
+            if filter_green_low_factor < pixel_col[0] <= filter_green_high_factor \
+                    and pixel_col[1] > filter_green_saturation \
+                    and pixel_col[2] > filter_green_brightness:
 
                 pixel_col[0] = 0
                 pixel_col[1] = 0
@@ -387,6 +388,8 @@ def create_chromakey_image(img_read, filename, folder):
                 pixel_col[0] = 1
                 pixel_col[1] = 1
                 pixel_col[2] = 1
+
+    imsave(folder + filename + "_post_chromakey.png", hsv)
 
     img_ndarray = np.array(hsv)
     img_rgb = hsv2rgb(img_ndarray)
@@ -412,7 +415,6 @@ def create_chromakey_image(img_read, filename, folder):
     new_filename = ''.join(strl)
 
     imsave(new_filename, img_gray_copy)
-
 
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
@@ -452,7 +454,6 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     count = 0   # count contours that fit the threshold
     img_with_chunks = np.array(originalImage)#draw Chunks at original image
 
-
     best_contours = []   # save contours in a list
     for cnt in contours:
         if cv2.contourArea(cnt) > filter_contours_length:
@@ -466,8 +467,9 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     img_binary_PIL = Image.fromarray(img_binary)
     #save image with drawn chunks
 
-    x, y, w, h = cv2.boundingRect(best_contours[0])
-    cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
+    if len(best_contours) > 0:
+        x, y, w, h = cv2.boundingRect(best_contours[0])
+        cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
 
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
@@ -496,12 +498,49 @@ def cropping(contours, img_PIL, filename, folder):
         # raise Exception(x,y,w,h)
         # img_np = np.array(cropped_image)
         # raise Exception(str(cropped_image) +" " + str(x) +  " " + str (y) + " " +str(w)+ " " +str(h))
-        img_scaled = create_scaled_image(cropped_image, filename, folder) # scale image to 27x27 size HIER
+        img_ndarray = np.array(cropped_image)
+        img_extended = create_extended_chunk(img_ndarray, filename, folder)
+        img_extended_pil = Image.fromarray(img_extended)
+        img_scaled = create_scaled_image(img_extended_pil, filename, folder) # scale image to 27x27 size HIER
         # 000000000
 
         cropped_list.append(img_scaled) # save in list
 
     return cropped_list
+
+
+def create_extended_chunk(image_chunk, filename, folder):
+    h, w = image_chunk.shape
+
+    if h > w:
+        extension_range = int((h - w) / 2)
+
+        image_container = np.zeros((h, h))
+
+        for w_in_container in range(extension_range, extension_range + w):
+            for h_in_container in range(0, h):
+                image_container[h_in_container, w_in_container] = \
+                    image_chunk[h_in_container, w_in_container - extension_range]
+
+        imsave(folder + filename + "_h_extened.png", image_container)
+        return image_container
+
+    elif w > h:
+        extension_range = int((w - h) / 2)
+
+        image_container = np.zeros((w, w))
+
+        for w_in_container in range(0, w):
+            for h_in_container in range(extension_range, extension_range + h):
+                image_container[h_in_container, w_in_container] = \
+                    image_chunk[h_in_container - extension_range, w_in_container]
+
+        imsave(folder + filename + "_w_extened.png", image_container)
+        return image_container
+
+    else:
+        imsave(folder + filename + "_q_extened.png", image_chunk)
+        return image_chunk
 
 
 def create_com_image(img_read, filename, folder):
@@ -647,11 +686,7 @@ def create_scaled_image(img_read, filename, folder):
 
     img_ndarray = clamp_float_values(img_ndarray)
 
-
-
     # img_cropped.save(new_filename)
-    
-
 
     # reload image due to pillow using its own image class
     # return imread(newfilename)
@@ -894,7 +929,7 @@ def read_images_with_chunks():
 
     """
 
-    # TODO
+    # TODO: add to settings.json
     pre_border = 5
 
     #create path & filename
@@ -981,10 +1016,10 @@ def read_images_with_chunks():
                 img_clamp = clamp_binary_values(index_image)
 
                 #schmiering
-                img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
+                # img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
 
                 # get black borders inside of image
-                img_borders = create_borders(img_fillout, chunk_filename, main_folder)
+                img_borders = create_borders(img_clamp, chunk_filename, main_folder)
 
                 # create filtered images
                 img_skeleton = create_skeleton_image(img_borders, chunk_filename, main_folder)
@@ -994,8 +1029,6 @@ def read_images_with_chunks():
 
                 list_of_return_images.append(img_com)
                 list_of_return_coordinates.append(index_coord)
-
-
 
     return list_of_return_images, list_of_return_coordinates
 
@@ -1033,18 +1066,13 @@ def read_image_with_chunks_from_location(directory):
 
     img_pre_crop = create_cropped_image(img_rotated,pre_border,filename,main_folder)
 
-
-
     # create binary image
-    img_binary = create_chromakey_image(img_rotated, filename, main_folder)
+    img_binary = create_chromakey_image(img_pre_crop, filename, main_folder)
 
-    
 
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
     list_of_work_images, list_of_work_coordinates, img_with_chunks = create_chunked_image(img_binary, filename_chunked, chunk_path, img_reading)
-
-
 
     list_wi_length = len(list_of_work_images)
     list_wc_length = len(list_of_work_coordinates)
@@ -1056,19 +1084,23 @@ def read_image_with_chunks_from_location(directory):
             index_image = list_of_work_images[index]
             index_coord = list_of_work_coordinates[index]
 
+            chunk_string = "___" + str(index) + "_chunk_"
+            chunk_filename = filename + chunk_string
+
             # get binary image
             img_clamp = clamp_binary_values(index_image)
 
-            img_fillout = create_fillout_image(img_clamp, filename, main_folder)
+            img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
+            # TODO REDUCED
 
             # get black borders inside of image
-            img_borders = create_borders(img_fillout, filename, main_folder)
+            img_borders = create_borders(img_clamp, chunk_filename, main_folder)
 
             # create filtered images
-            img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
+            img_skeleton = create_skeleton_image(img_borders, chunk_filename, main_folder)
 
             # align binary image to center of mass
-            img_com = create_com_image(img_skeleton, filename, main_folder)
+            img_com = create_com_image(img_skeleton, chunk_filename, main_folder)
 
             list_of_return_images.append(img_com)
             list_of_return_coordinates.append(index_coord)
