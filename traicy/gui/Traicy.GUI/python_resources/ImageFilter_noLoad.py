@@ -1066,10 +1066,6 @@ def read_image_with_chunks_from_location(directory):
 
 
 def main():
-    logging.basicConfig(filename="log.txt")
-    stderrLogger = logging.StreamHandler()
-    stderrLogger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
-    logging.getLogger().addHandler(stderrLogger)
 
     read_images_with_chunks()
 
