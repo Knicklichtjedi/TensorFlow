@@ -25,7 +25,6 @@ from os import listdir
 from os.path import abspath
 import errno
 import time
-import random
 
 # Define image dimensions and postprocessing values
 image_dimension = 28
@@ -82,6 +81,7 @@ def assign_json_values(filename_directory):
 
         filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
+        try:
         reassign_calculated_variables()
 
     except Exception as e:
@@ -93,6 +93,15 @@ def reassign_calculated_variables():
 
     global image_dimension, image_dimension_t, image_dimension_small, image_dimension_t_small
     global filter_green_low_factor, filter_green_high_factor, filter_green_low, filter_green_high
+
+    try :
+     float(image_dimension)
+     float(image_dimension_small)
+     float(filter_green_low)
+     float(filter_green_high)
+    except Exception as e:
+        #print("Value Error" +  "\n" + e.args)
+        return
 
     image_dimension_t = (image_dimension, image_dimension)
     image_dimension_t_small = (image_dimension_small, image_dimension_small)
@@ -134,6 +143,7 @@ def create_borders(img_read, filename, folder):
             nd[x, y] = new_color
 
     imsave(newfilename, nd)
+
     return nd
 
 
@@ -160,6 +170,7 @@ def create_canny_image(img_read, filename, folder):
     new_filename = ''.join(strl)
 
     imsave(new_filename, img_conv)
+
     return img_canny
 
 
@@ -388,6 +399,7 @@ def create_chromakey_image(img_read, filename, folder):
     new_filename = ''.join(strl)
 
     imsave(new_filename, img_gray_copy)
+
 
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
@@ -977,6 +989,8 @@ def read_image_with_chunks_from_location(directory):
     # get new json values and assign them
     assign_json_values(json_path)
 
+    pre_border = 5
+
     list_of_return_images = list()
     list_of_return_coordinates = list()
 
@@ -995,8 +1009,9 @@ def read_image_with_chunks_from_location(directory):
 
     h, w, c = img_rotated.shape
 
-    img_rotated_pil = Image.fromarray(img_rotated)
-    img_pre_crop = img_rotated_pil.crop(())  # TODO
+    img_pre_crop = create_cropped_image(img_rotated,pre_border,filename,main_folder)
+
+
 
     # create binary image
     img_binary = create_chromakey_image(img_rotated, filename, main_folder)
@@ -1017,14 +1032,16 @@ def read_image_with_chunks_from_location(directory):
             index_image = list_of_work_images[index]
             index_coord = list_of_work_coordinates[index]
 
-            # get black borders inside of image
-            img_borders = create_borders(index_image, filename, main_folder)
-
             # get binary image
-            img_clamp = clamp_binary_values(img_borders)
+            img_clamp = clamp_binary_values(index_image)
+
+            img_fillout = create_fillout_image(img_clamp, filename, main_folder)
+
+            # get black borders inside of image
+            img_borders = create_borders(img_fillout, filename, main_folder)
 
             # create filtered images
-            img_skeleton = create_skeleton_image(img_clamp, filename, main_folder)
+            img_skeleton = create_skeleton_image(img_borders, filename, main_folder)
 
             # align binary image to center of mass
             img_com = create_com_image(img_skeleton, filename, main_folder)
@@ -1036,7 +1053,10 @@ def read_image_with_chunks_from_location(directory):
 
 
 def main():
+
     read_images_with_chunks()
+
+
 
 
 if __name__ == "__main__":
