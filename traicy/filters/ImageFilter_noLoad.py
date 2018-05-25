@@ -25,6 +25,7 @@ from os import listdir
 from os.path import abspath
 import errno
 import time
+import matplotlib
 
 # Define image dimensions and postprocessing values
 image_dimension = 28
@@ -81,19 +82,6 @@ def assign_json_values(filename_directory):
 
         filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
-        try:
-            float(image_border)
-            float(filter_canny_strength)
-            float(filter_binary_gaussian_strength)
-            float(filter_binary_filter_threshold)
-            float(image_border)
-            float(filter_green_saturation)
-            float(filter_green_brightness)
-            float(filter_contours_length)
-        except Exception as e:
-            #print("Value Error" +  "\n" + e.args)
-            return
-
         reassign_calculated_variables()
 
     except Exception as e:
@@ -105,15 +93,6 @@ def reassign_calculated_variables():
 
     global image_dimension, image_dimension_t, image_dimension_small, image_dimension_t_small
     global filter_green_low_factor, filter_green_high_factor, filter_green_low, filter_green_high
-
-    try :
-     float(image_dimension)
-     float(image_dimension_small)
-     float(filter_green_low)
-     float(filter_green_high)
-    except Exception as e:
-        #print("Value Error" +  "\n" + e.args)
-        return
 
     image_dimension_t = (image_dimension, image_dimension)
     image_dimension_t_small = (image_dimension_small, image_dimension_small)
@@ -446,13 +425,14 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     :return: a list of chunks (smaller images) and a second list with their location in the big image
     """
 
+
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.imwrite(folder + filename, originalImage)
+
     count = 0   # count contours that fit the threshold
-    img_with_chunks = np.array(originalImage)#draw Chunks at original image
+    img_with_chunks = originalImage#draw Chunks at original image
 
     best_contours = []   # save contours in a list
     for cnt in contours:
@@ -462,7 +442,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
             best_contours.append(cnt)
     # how many contours were found?
     # print (len(best_contours))
-
+    imsave(folder + filename, img_with_chunks)
     # open Image with PIL
     img_binary_PIL = Image.fromarray(img_binary)
     #save image with drawn chunks
@@ -470,6 +450,8 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     if len(best_contours) > 0:
         x, y, w, h = cv2.boundingRect(best_contours[0])
         cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
+
+
 
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
