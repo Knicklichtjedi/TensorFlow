@@ -1091,7 +1091,7 @@ def read_image_with_chunks_from_location(directory):
 
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
-    list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, img_reading)
+    list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, img_reading, main_folder, img_reading)
 
     list_wi_length = len(list_of_work_images)
     list_wc_length = len(list_of_work_contours)
