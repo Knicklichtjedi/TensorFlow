@@ -17,8 +17,8 @@ namespace Traicy.GUI.Logic
                 GreenHigh = 170,
                 GreenLow = 50,
                 GreenSaturation = 0.5f,
-                MinimalOutlineSizeChunking = 90000
-                //Schmiering = 2,
+                MinimalOutlineSizeChunking = 90000,
+                Schmiering = 2,
             };
 
             GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, ShowFilteredImagesIsEnabled = true, PythonInterpreterPath = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe" };
@@ -26,7 +26,7 @@ namespace Traicy.GUI.Logic
             ImageSettings imageSettings = new ImageSettings { Border = 2, Dimension = 28, DimensionSmall = 27 };
 
             List<string> loadingPictureStrings = new List<string> { "png", "jpg"};
-            Loading loadingSettings = new Loading {PossibleImageFileTypes = loadingPictureStrings};
+            LoadingSettings loadingSettings = new LoadingSettings {PossibleImageFileTypes = loadingPictureStrings};
 
             ISettingProperties settingsProperties = new SettingProperties
             {

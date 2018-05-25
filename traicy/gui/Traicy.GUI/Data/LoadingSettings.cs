@@ -3,7 +3,7 @@ using Traicy.GUI.Contracts;
 
 namespace Traicy.GUI.Data
 {
-    public class Loading : ILoading
+    public class LoadingSettings : ILoadingSettings
     {
         [Newtonsoft.Json.JsonProperty(PropertyName = "possible_filename")]
         public List<string> PossibleImageFileTypes { get; set; }

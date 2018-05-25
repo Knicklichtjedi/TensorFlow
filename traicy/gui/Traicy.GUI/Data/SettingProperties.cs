@@ -12,6 +12,6 @@ namespace Traicy.GUI.Data
         [Newtonsoft.Json.JsonProperty(PropertyName = "gui")]
         public GuiSettings GuiSettings { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "loading")]
-        public Loading LoadingSettings { get; set; }
+        public LoadingSettings LoadingSettings { get; set; }
     }
 }

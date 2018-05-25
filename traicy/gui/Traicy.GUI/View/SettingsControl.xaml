@@ -71,6 +71,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Content="Bildgröße:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="0"></Label>
@@ -111,6 +112,9 @@
 
                 <Label Content="Minimale Konturgröße (Chunking):" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="12"></Label>
                 <TextBox Name="MinOutlineSizeTextBox" Grid.Column="1" Grid.Row="12" Margin="5,5"></TextBox>
+
+                <Label Content="Mögliche Dateiendungen für Bilder:" HorizontalAlignment="Right" Margin="5,5" Grid.Column="0" Grid.Row="13"></Label>
+                <TextBox Name="LoadingFileExtensionForImagesTextBox" Grid.Column="1" Grid.Row="13" Margin="5,5"></TextBox>
 
             </Grid>
 

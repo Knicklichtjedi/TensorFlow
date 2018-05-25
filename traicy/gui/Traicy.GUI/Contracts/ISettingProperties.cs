@@ -7,6 +7,6 @@ namespace Traicy.GUI.Contracts
         ImageSettings ImageSettings { get; set; }
         FilterSettings FilterSettings { get; set; }
         GuiSettings GuiSettings { get; set; }
-        Loading LoadingSettings { get; set; }
+        LoadingSettings LoadingSettings { get; set; }
     }
 }
