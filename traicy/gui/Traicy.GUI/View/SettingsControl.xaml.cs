@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -61,8 +62,11 @@ namespace Traicy.GUI.View
             GreenHighTextBox.Text = settings.FilterSettings.GreenHigh.ToString(CultureInfo.CurrentCulture);
             GreenSaturationTextBox.Text = settings.FilterSettings.GreenSaturation.ToString(CultureInfo.CurrentCulture);
             GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
-            //SchmieringTextBox.Text = settings.FilterSettings.Schmiering.ToString(CultureInfo.CurrentCulture);
+            SchmieringTextBox.Text = settings.FilterSettings.Schmiering.ToString(CultureInfo.CurrentCulture);
             MinOutlineSizeTextBox.Text = settings.FilterSettings.MinimalOutlineSizeChunking.ToString(CultureInfo.CurrentCulture);
+
+            //set loading settings
+            LoadingFileExtensionForImagesTextBox.Text = PythonOutputParser.ParseListToString(settings.LoadingSettings.PossibleImageFileTypes);
 
         }
 
@@ -99,7 +103,7 @@ namespace Traicy.GUI.View
                 GreenHigh = Convert.ToInt32(GreenHighTextBox.Text),
                 GreenLow = Convert.ToInt32(GreenLowTextBox.Text),
                 GreenSaturation = Convert.ToSingle(GreenSaturationTextBox.Text),
-                //Schmiering = Convert.ToInt32(SchmieringTextBox.Text),
+                Schmiering = Convert.ToInt32(SchmieringTextBox.Text),
                 MinimalOutlineSizeChunking = Convert.ToInt32(MinOutlineSizeTextBox.Text)
             };
 
@@ -117,13 +121,20 @@ namespace Traicy.GUI.View
                 DimensionSmall = Convert.ToInt32(DimensionSmallTextBox.Text)
             };
 
+            List<string> possibleFileExtensionsForImages = 
+                PythonOutputParser.ParseStringToList(LoadingFileExtensionForImagesTextBox.Text);
 
-            //TODO: loading
+            LoadingSettings loadingSettings = new LoadingSettings
+            {
+                PossibleImageFileTypes = possibleFileExtensionsForImages
+            };
+
             SettingProperties settingsProperties = new SettingProperties
             {
                 FilterSettings = filter,
                 ImageSettings = imageSettings,
-                GuiSettings = guiSettings
+                GuiSettings = guiSettings, 
+                LoadingSettings = loadingSettings
             };
 
             return settingsProperties;
@@ -137,7 +148,7 @@ namespace Traicy.GUI.View
                 {
                     //toggle between 
                     _filteredImagesEnabled = !_filteredImagesEnabled;
-                    //EventHandling.OnFilteredImagesEvent(_filteredImagesEnabled);
+                    //EventHandling.OnFilteredImagesEvent(_filteredImagesEnabled); 
                     button.Content = _filteredImagesEnabled ? "An" : "Aus";
                 }
             }

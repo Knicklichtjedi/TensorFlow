@@ -8,6 +8,7 @@ using System.IO;
 using Traicy.GUI.Logic;
 using Traicy.GUI.Contracts;
 using Traicy.GUI.Data;
+using System.Windows.Input;
 
 namespace Traicy.GUI.View
 {
@@ -135,16 +136,15 @@ namespace Traicy.GUI.View
             new SettingsWindow(_settings).Show();
         }
 
-        private void ButtonStartObjectDetection_OnClick(object sender, RoutedEventArgs e)
+        private void StartObjectDetection()
         {
-
             if (_camera.IsConnected())
             {
                 ButtonStartObjectDetection.Content = "Verarbeitung...";
 
                 var absoluteFilteredImagePath = SetImageSource();
                 PythonConnector pythonConnector =
-                    new PythonConnector {PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath};
+                    new PythonConnector { PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath };
                 string prediction = pythonConnector.GetPrediction(absoluteFilteredImagePath);
 
                 FilteredImagesWindow filteredImagesWindow = null;
@@ -167,12 +167,24 @@ namespace Traicy.GUI.View
                     //{
                     //    filteredImagesWindow.ResultTextBlock.Text = prediction;
                     //}
-                    
+
                 }
 
                 ButtonStartObjectDetection.Content = "Starte Objekterkennung";
             }
+        }
 
+        private void ButtonStartObjectDetection_OnClick(object sender, RoutedEventArgs e)
+        {
+            StartObjectDetection();
+        }
+
+        private void KeyDownObjectDetection(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.P))
+            {
+                StartObjectDetection();
+            }
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

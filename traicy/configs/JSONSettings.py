@@ -54,7 +54,7 @@ class JSONValues (Enum):
 def parse_data(filename):
     with open(filename, encoding='utf-8') as data_file:
 
-        data = json.loads(data_file.read())
+        data = json.loads(data_file.read())        
 
         # Change variable access to global
         global __data__
@@ -74,22 +74,26 @@ def parse_data(filename):
             filter_access = data['filter']
             loading_access = data['loading']
 
-            __i_dim__ = image_access['dimension']
-            __i_dim_s__ = image_access['dimension_small']
-            __i_border__ = image_access['border']
+            if image_access is not None:
+                __i_dim__ = image_access['dimension']
+                __i_dim_s__ = image_access['dimension_small']
+                __i_border__ = image_access['border']
 
-            __f_canny__ = filter_access['canny']
-            __f_bin_gauss__ = filter_access['binary_gauss']
-            __f_bin_thresh__ = filter_access['binary_threshold']
+            if filter_access is not None:
+                __f_canny__ = filter_access['canny']
+                __f_bin_gauss__ = filter_access['binary_gauss']
+                __f_bin_thresh__ = filter_access['binary_threshold']
 
-            __f_green_low__ = filter_access['green_low']
-            __f_green_high__ = filter_access['green_high']
+                __f_green_low__ = filter_access['green_low']
+                __f_green_high__ = filter_access['green_high']
 
-            __f_green_saturation__ = filter_access['green_saturation']
-            __f_green_brightness__ = filter_access['green_brightness']
+                __f_green_saturation__ = filter_access['green_saturation']
+                __f_green_brightness__ = filter_access['green_brightness']
 
-            __l_possible_filename = loading_access['possible_filename']
-            __f_contours_length__ = filter_access['contours_length']
+                __f_contours_length__ = filter_access['contours_length']
+
+            if loading_access is not None:
+                __l_possible_filename = loading_access['possible_filename']
 
             __f_fill_out_length__ = filter_access['schmiering']
             __f_chunk_border_strength__ = filter_access['chunk_border']

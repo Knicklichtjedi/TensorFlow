@@ -2,7 +2,7 @@
 
 namespace Traicy.GUI.Contracts
 {
-    public interface ILoading
+    public interface ILoadingSettings
     {
         List<string> PossibleImageFileTypes { get; set; }
     }
