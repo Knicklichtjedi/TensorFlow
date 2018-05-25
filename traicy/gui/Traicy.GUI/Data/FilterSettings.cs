@@ -22,5 +22,7 @@ namespace Traicy.GUI.Data
         public int Schmiering { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "contours_length")]
         public int MinimalOutlineSizeChunking { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "chunk_border")]
+        public int ChunkBorder { get; set; }
     }
 }
