@@ -53,6 +53,9 @@ loading_possible_filename = list()
 
 filter_contours_length = 9000
 
+filter_fill_out_length = 2
+filter_chunk_border = 5
+
 
 def assign_json_values(filename_directory):
     try:
@@ -62,7 +65,7 @@ def assign_json_values(filename_directory):
         global filter_canny_strength, filter_binary_gaussian_strength, filter_binary_filter_threshold
         global filter_green_low, filter_green_high, filter_green_saturation, filter_green_brightness
         global loading_possible_filename
-        global filter_contours_length
+        global filter_contours_length, filter_fill_out_length, filter_chunk_border
 
         image_dimension = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION)
         image_dimension_small = JSONSettings.get_data(JSONSettings.JSONValues.IMAGE_DIMENSION_SMALL)
@@ -82,9 +85,12 @@ def assign_json_values(filename_directory):
 
         filter_contours_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CONTOURS_LENGTH)
 
+        filter_fill_out_length = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_FILL_OUT_LENGTH)
+        filter_chunk_border = JSONSettings.get_data(JSONSettings.JSONValues.FILTER_CHUNK_BORDER_STRENGTH)
+
         reassign_calculated_variables()
 
-    except Exception as e:
+    except FileNotFoundError as e:
         # print(e.args)
         return
 
@@ -309,7 +315,7 @@ def create_fillout_image(img_read, filename, folder):
     """
     lastWhite = False
 
-    it = 2
+    it = filter_fill_out_length
 
     test = np.array(img_read)
 
@@ -426,13 +432,15 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     """
 
 
+
+
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0   # count contours that fit the threshold
-    img_with_chunks = originalImage#draw Chunks at original image
+
 
     best_contours = []   # save contours in a list
     for cnt in contours:
@@ -442,21 +450,38 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
             best_contours.append(cnt)
     # how many contours were found?
     # print (len(best_contours))
-    imsave(folder + filename, img_with_chunks)
+
+
     # open Image with PIL
     img_binary_PIL = Image.fromarray(img_binary)
     #save image with drawn chunks
 
-    if len(best_contours) > 0:
-        x, y, w, h = cv2.boundingRect(best_contours[0])
-        cv2.rectangle(img_with_chunks, (x,y), (w,h), (255, 0, 0), 2)
+    img_with_chunks = np.copy(originalImage)#draw Chunks at original image
 
+    if best_contours:
 
+        for image_index in range(len(best_contours)):
 
+            x, y, w, h = cv2.boundingRect(best_contours[image_index])
+
+            draw_rectangle(x, y, w, h, img_with_chunks, filter_chunk_border)
+
+    imsave(folder + filename, img_with_chunks)
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
 
     return cropped_images, best_contours, img_with_chunks
+
+
+def draw_rectangle(x, y, w, h, picture, chunk_border):
+
+    for contour_strength in range(0, chunk_border):
+        for height in range(y, y + h):
+            picture[height, x + contour_strength] = (1, 0, 0)
+            picture[height, x + w - contour_strength] = (1, 0, 0)
+        for width in range(x + contour_strength, x + w - contour_strength):
+            picture[y + contour_strength, width] = (1, 0, 0)
+            picture[y + h - contour_strength, width] = (1, 0, 0)
 
 
 def cropping(contours, img_PIL, filename, folder):
@@ -998,10 +1023,10 @@ def read_images_with_chunks():
                 img_clamp = clamp_binary_values(index_image)
 
                 #schmiering
-                # img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
+                img_fillout = create_fillout_image(img_clamp, chunk_filename, main_folder)
 
                 # get black borders inside of image
-                img_borders = create_borders(img_clamp, chunk_filename, main_folder)
+                img_borders = create_borders(img_fillout, chunk_filename, main_folder)
 
                 # create filtered images
                 img_skeleton = create_skeleton_image(img_borders, chunk_filename, main_folder)
@@ -1020,12 +1045,8 @@ def read_image_with_chunks_from_location(directory):
     path = abspath(__file__ + "/../../")
     json_path = str(path) + "/configs/settings.json"
 
-    
-
     # get new json values and assign them
     assign_json_values(json_path)
-
-
 
     pre_border = 5
 
@@ -1080,7 +1101,7 @@ def read_image_with_chunks_from_location(directory):
             # TODO REDUCED
 
             # get black borders inside of image
-            img_borders = create_borders(img_clamp, chunk_filename, main_folder)
+            img_borders = create_borders(img_fillout, chunk_filename, main_folder)
 
             # create filtered images
             img_skeleton = create_skeleton_image(img_borders, chunk_filename, main_folder)

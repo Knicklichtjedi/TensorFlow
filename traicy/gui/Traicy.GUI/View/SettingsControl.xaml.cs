@@ -19,7 +19,7 @@ namespace Traicy.GUI.View
     {
         private bool _textToSpeechEnabled;
         private bool _filteredImagesEnabled;
-        private string _pythonInterpreterPath;
+        //private string _pythonInterpreterPath;
 
         public SettingsControl()
         {
@@ -46,8 +46,8 @@ namespace Traicy.GUI.View
             _filteredImagesEnabled = settings.GuiSettings.ShowFilteredImagesIsEnabled;
             ButtonFilteredImages.Content = _filteredImagesEnabled ? "An" : "Aus";
 
-            _pythonInterpreterPath = settings.GuiSettings.PythonInterpreterPath;
-            ChoosePythonInterpreterTextBox.Text = _pythonInterpreterPath;
+            //_pythonInterpreterPath = settings.GuiSettings.PythonInterpreterPath;
+            ChoosePythonInterpreterTextBox.Text = settings.GuiSettings.PythonInterpreterPath;
 
             //set image settings
             DimensionTextBox.Text = settings.ImageSettings.Dimension.ToString();
@@ -64,10 +64,10 @@ namespace Traicy.GUI.View
             GreenBrightnessTextBox.Text = settings.FilterSettings.GreenBrightness.ToString(CultureInfo.CurrentCulture);
             SchmieringTextBox.Text = settings.FilterSettings.Schmiering.ToString(CultureInfo.CurrentCulture);
             MinOutlineSizeTextBox.Text = settings.FilterSettings.MinimalOutlineSizeChunking.ToString(CultureInfo.CurrentCulture);
+            ChunkBorderTextBox.Text = settings.FilterSettings.ChunkBorder.ToString(CultureInfo.CurrentCulture);
 
             //set loading settings
             LoadingFileExtensionForImagesTextBox.Text = PythonOutputParser.ParseListToString(settings.LoadingSettings.PossibleImageFileTypes);
-
         }
 
         private void ToggleSpeechButton_OnClick(object sender, RoutedEventArgs e)
@@ -104,13 +104,14 @@ namespace Traicy.GUI.View
                 GreenLow = Convert.ToInt32(GreenLowTextBox.Text),
                 GreenSaturation = Convert.ToSingle(GreenSaturationTextBox.Text),
                 Schmiering = Convert.ToInt32(SchmieringTextBox.Text),
-                MinimalOutlineSizeChunking = Convert.ToInt32(MinOutlineSizeTextBox.Text)
+                MinimalOutlineSizeChunking = Convert.ToInt32(MinOutlineSizeTextBox.Text),
+                ChunkBorder = Convert.ToInt32(ChunkBorderTextBox.Text)
             };
 
             GuiSettings guiSettings = new GuiSettings
             {
-                TextToSpeechIsEnabled = _textToSpeechEnabled,
-                PythonInterpreterPath = _pythonInterpreterPath,
+                TextToSpeechIsEnabled =  _textToSpeechEnabled,
+                PythonInterpreterPath = ChoosePythonInterpreterTextBox.Text,
                 ShowFilteredImagesIsEnabled = _filteredImagesEnabled
             };
 
@@ -160,8 +161,8 @@ namespace Traicy.GUI.View
                 new OpenFileDialog {Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*"};
             if (openFileDialog.ShowDialog() == true)
             {
-                _pythonInterpreterPath = openFileDialog.FileName;
-                ChoosePythonInterpreterTextBox.Text = _pythonInterpreterPath;
+                //_pythonInterpreterPath = openFileDialog.FileName;
+                ChoosePythonInterpreterTextBox.Text = openFileDialog.FileName;
             }
 
         }

@@ -11,6 +11,7 @@
         float GreenBrightness { get; set; }
         int Schmiering { get; set; }
         int MinimalOutlineSizeChunking { get; set; }
+        int ChunkBorder { get; set; }
 
     }
 }

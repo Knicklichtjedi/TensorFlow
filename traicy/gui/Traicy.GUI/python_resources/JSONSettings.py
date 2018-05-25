@@ -23,6 +23,9 @@ __f_green_brightness__ = 0.0
 __l_possible_filename = list()
 __f_contours_length__ = 0.0
 
+__f_fill_out_length__ = 0.0
+__f_chunk_border_strength__ = 0.0
+
 __data__ = {}
 
 
@@ -44,6 +47,9 @@ class JSONValues (Enum):
     LOADING_POSSIBLE_FILENAME = 10
     FILTER_CONTOURS_LENGTH = 11
 
+    FILTER_FILL_OUT_LENGTH = 12
+    FILTER_CHUNK_BORDER_STRENGTH = 13
+
 
 def parse_data(filename):
     with open(filename, encoding='utf-8') as data_file:
@@ -61,7 +67,7 @@ def parse_data(filename):
             global __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __f_green_low__, __f_green_high__, \
                 __f_green_saturation__, __f_green_brightness__
             global __l_possible_filename
-            global __f_contours_length__
+            global __f_contours_length__, __f_fill_out_length__, __f_chunk_border_strength__
             global __imported__
 
             image_access = data['image']
@@ -88,6 +94,9 @@ def parse_data(filename):
 
             if loading_access is not None:
                 __l_possible_filename = loading_access['possible_filename']
+
+            __f_fill_out_length__ = filter_access['schmiering']
+            __f_chunk_border_strength__ = filter_access['chunk_border']
 
             __imported__ = True
 
@@ -121,6 +130,10 @@ def get_data(json_value, *filename):
 
         if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
             return __f_contours_length__
+        if json_value == JSONValues.FILTER_FILL_OUT_LENGTH:
+            return __f_fill_out_length__
+        if json_value == JSONValues.FILTER_CHUNK_BORDER_STRENGTH:
+            return __f_chunk_border_strength__
 
         if json_value == JSONValues.LOADING_POSSIBLE_FILENAME:
             return __l_possible_filename
@@ -140,7 +153,7 @@ def write_data(filename, json_value, value):
     global __f_canny__, __f_bin_gauss__, __f_bin_thresh__, __f_green_low__, __f_green_high__, \
         __f_green_saturation__, __f_green_brightness__
     global __l_possible_filename
-    global __f_contours_length__
+    global __f_contours_length__, __f_fill_out_length__, __f_chunk_border_strength__
 
     if json_value == JSONValues.IMAGE_DIMENSION:
         __data__['image']['dimension'] = value
@@ -196,6 +209,16 @@ def write_data(filename, json_value, value):
 
     if json_value == JSONValues.FILTER_CONTOURS_LENGTH:
         __data__['filter']['contours_length'] = value
+        __f_contours_length__ = value
+
+    ##################################################
+
+    if json_value == JSONValues.FILTER_FILL_OUT_LENGTH:
+        __data__['filter']['schmiering'] = value
+        __f_contours_length__ = value
+
+    if json_value == JSONValues.FILTER_CHUNK_BORDER_STRENGTH:
+        __data__['filter']['chunk_border'] = value
         __f_contours_length__ = value
 
     with open(filename, 'wb') as outfile:

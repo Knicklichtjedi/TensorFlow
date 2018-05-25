@@ -9,6 +9,7 @@ using Traicy.GUI.Logic;
 using Traicy.GUI.Contracts;
 using Traicy.GUI.Data;
 using System.Windows.Input;
+using System.Drawing;
 
 namespace Traicy.GUI.View
 {
@@ -142,12 +143,15 @@ namespace Traicy.GUI.View
             {
                 ButtonStartObjectDetection.Content = "Verarbeitung...";
 
-                var absoluteFilteredImagePath = SetImageSource();
+                var absoluteFilteredImagePath = SaveImage();
+
                 PythonConnector pythonConnector =
                     new PythonConnector { PythonInterpreterPath = _settings.GuiSettings.PythonInterpreterPath };
                 string prediction = pythonConnector.GetPrediction(absoluteFilteredImagePath);
 
                 FilteredImagesWindow filteredImagesWindow = null;
+                var chunkedImage = WebcamHelper.GetBitmapImageFromSource(@"chunked\chunked.png");
+                SetImageSource(chunkedImage);
 
                 if (!prediction.Contains("error") && _settings.GuiSettings.ShowFilteredImagesIsEnabled)
                 {
@@ -215,18 +219,23 @@ namespace Traicy.GUI.View
         {
             if (_camera.IsConnected())
             {
-                SetImageSource();
+                SaveImage();
             }
         }
 
-        private string SetImageSource()
+        private string SaveImage()
         {
             WebcamHelper helper = new WebcamHelper();
             var picture = _camera.GetBitmap();
-            var webcamFrame = helper.ImageSourceForBitmap(picture);
-            WebCamPicture.Source = webcamFrame;
             var absolutePath = helper.TakePicture(picture);
             return absolutePath;
+        }
+
+        private void SetImageSource(Bitmap image)
+        {
+            WebcamHelper helper = new WebcamHelper();
+            var webcamFrame = helper.ImageSourceForBitmap(image);
+            WebCamPicture.Source = webcamFrame;
         }
 
         //call to avoid exception when closing the window without disconnecting the camera

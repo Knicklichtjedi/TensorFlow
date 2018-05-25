@@ -13,12 +13,13 @@ namespace Traicy.GUI.Logic
                 Canny = 0.5f,
                 BinaryGauss = 0.5f,
                 BinaryThreshold = 0.5f,
-                GreenBrightness = 0.75f,
+                GreenBrightness = 0.25f,
                 GreenHigh = 170,
                 GreenLow = 50,
                 GreenSaturation = 0.5f,
                 MinimalOutlineSizeChunking = 90000,
                 Schmiering = 2,
+                ChunkBorder = 5
             };
 
             GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, ShowFilteredImagesIsEnabled = true, PythonInterpreterPath = @"C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe" };
