@@ -107,6 +107,16 @@ def reassign_calculated_variables():
     filter_green_high_factor = filter_green_high / 360
 
 
+def save_image_with_drawn_chunks(img):
+    path = abspath(__file__ + "/../../")
+    chunk_path = path + "/chunked/"
+    filename = "chunked.png"
+
+    create_folder(chunk_path)
+
+    imsave(chunk_path + filename, img)
+
+
 def create_borders(img_read, filename, folder):
 
     # nd = imread(folder + filename + '_binary.png')
@@ -466,7 +476,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
 
             draw_rectangle(x, y, w, h, img_with_chunks, filter_chunk_border)
 
-    imsave(folder + filename, img_with_chunks)
+    save_image_with_drawn_chunks(img_with_chunks)
     # crop image
     cropped_images = cropping(best_contours, img_binary_PIL, filename, folder)
 
@@ -974,7 +984,8 @@ def read_images_with_chunks():
                     # print("Could not find file with: " + filename + " at " + file)
 
     list_of_return_images = list()
-    list_of_return_coordinates = list()
+    list_of_return_contours = list()
+    img_with_chunks = None
 
     for image_name in loaded_images:
 
@@ -989,6 +1000,7 @@ def read_images_with_chunks():
         img_rotated = rotate_image(img_reading, rotation)
 
         h, w, c = img_rotated.shape
+        img_with_chunks = img_rotated
 
         # img_rotated_gray = rgb2gray(img_rotated)
 
@@ -1005,17 +1017,17 @@ def read_images_with_chunks():
         img_binary = create_chromakey_image(img_np_pre_cropped, filename, main_folder)
 
         # Returned lists by chunking
-        list_of_work_images, list_of_work_coordinates, img_with_chunks = create_chunked_image(img_binary, filename,
+        list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, filename,
                                                                                               main_folder, img_reading)
 
         list_wi_length = len(list_of_work_images)
-        list_wc_length = len(list_of_work_coordinates)
+        list_wc_length = len(list_of_work_contours)
 
         if list_wi_length == list_wc_length:
 
             for index in range(list_wi_length):
                 index_image = list_of_work_images[index]
-                index_coord = list_of_work_coordinates[index]
+                index_coord = list_of_work_contours[index]
                 chunk_string = "___" + str(index) + "_chunk_"
 
                 chunk_filename = filename + chunk_string
@@ -1037,9 +1049,9 @@ def read_images_with_chunks():
                 img_com = create_com_image(img_skeleton, chunk_filename, main_folder)
 
                 list_of_return_images.append(img_com)
-                list_of_return_coordinates.append(index_coord)
+                list_of_return_contours.append(index_coord)
 
-    return list_of_return_images, list_of_return_coordinates
+    return list_of_return_images, list_of_return_contours, img_with_chunks
 
 
 def read_image_with_chunks_from_location(directory):
@@ -1053,16 +1065,14 @@ def read_image_with_chunks_from_location(directory):
     pre_border = 5
 
     list_of_return_images = list()
-    list_of_return_coordinates = list()
+    list_of_return_contours = list()
+    img_with_chunks = None
 
-    chunk_path = path + "/chunked/"
     data_path = path + "/filtered/"
-    filename_chunked = "chunked.png"
     filename = "filtered.png"
 
     main_folder = data_path                                                                     # + "/ImageFilter" + "/"
     create_folder(main_folder)
-    create_folder(chunk_path)
 
     # read image
     img_reading = imread(directory, plugin='matplotlib')
@@ -1071,6 +1081,7 @@ def read_image_with_chunks_from_location(directory):
     rotation = get_image_rotation_from_location(directory)
     img_rotated = rotate_image(img_reading, rotation)
 
+    img_with_chunks = img_rotated
     h, w, c = img_rotated.shape
 
     img_pre_crop = create_cropped_image(img_rotated,pre_border,filename,main_folder)
@@ -1078,20 +1089,19 @@ def read_image_with_chunks_from_location(directory):
     # create binary image
     img_binary = create_chromakey_image(img_pre_crop, filename, main_folder)
 
-
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
-    list_of_work_images, list_of_work_coordinates, img_with_chunks = create_chunked_image(img_binary, filename_chunked, chunk_path, img_reading)
+    list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, img_reading)
 
     list_wi_length = len(list_of_work_images)
-    list_wc_length = len(list_of_work_coordinates)
+    list_wc_length = len(list_of_work_contours)
 
     if list_wi_length == list_wc_length:
 
         for index in range(list_wi_length):
 
             index_image = list_of_work_images[index]
-            index_coord = list_of_work_coordinates[index]
+            index_coord = list_of_work_contours[index]
 
             chunk_string = "___" + str(index) + "_chunk_"
             chunk_filename = filename + chunk_string
@@ -1112,16 +1122,14 @@ def read_image_with_chunks_from_location(directory):
             img_com = create_com_image(img_skeleton, chunk_filename, main_folder)
 
             list_of_return_images.append(img_com)
-            list_of_return_coordinates.append(index_coord)
+            list_of_return_contours.append(index_coord)
 
-        return list_of_return_images, list_of_return_coordinates
+        return list_of_return_images, list_of_return_contours, img_with_chunks
 
 
 def main():
 
     read_images_with_chunks()
-
-
 
 
 if __name__ == "__main__":
