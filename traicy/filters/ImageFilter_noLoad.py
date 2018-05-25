@@ -475,13 +475,15 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
 
 def draw_rectangle(x, y, w, h, picture, chunk_border):
 
+    color = (255 / 255, 179 / 255, 0)
+
     for contour_strength in range(0, chunk_border):
         for height in range(y, y + h):
-            picture[height, x + contour_strength] = (1, 0, 0)
-            picture[height, x + w - contour_strength] = (1, 0, 0)
+            picture[height, x + contour_strength] = color
+            picture[height, x + w - contour_strength] = color
         for width in range(x + contour_strength, x + w - contour_strength):
-            picture[y + contour_strength, width] = (1, 0, 0)
-            picture[y + h - contour_strength, width] = (1, 0, 0)
+            picture[y + contour_strength, width] = color
+            picture[y + h - contour_strength, width] = color
 
 
 def cropping(contours, img_PIL, filename, folder):
