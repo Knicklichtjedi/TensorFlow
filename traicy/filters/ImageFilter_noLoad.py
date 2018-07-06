@@ -447,7 +447,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0   # count contours that fit the threshold
 
