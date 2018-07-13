@@ -87,7 +87,10 @@ def dense_con_layer(h_pool2):
     b_fc1 = bias_variable([1024])
 
     h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
+
+    # h_fc1 = tf.layers.dense(inputs=h_pool2_flat, units=1024, activation=tf.nn.relu)
     h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+
     return h_fc1
 
 
@@ -98,7 +101,10 @@ def dropout_layer(h_fc1):
         :return: Tensor following layers are attached to and the probability of a node being kept in the next iteration
     """
     keep_prob = tf.placeholder(tf.float32, name="keep_prob")
+
     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+    # h_fc1_drop = tf.layers.dropout(inputs=h_fc1, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
+
     return h_fc1_drop, keep_prob
 
 
@@ -112,6 +118,8 @@ def readout_layer(h_fc1_drop):
     b_fc2 = bias_variable([10])
 
     y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+    # y_conv = tf.layers.dense(inputs=h_fc1_drop, units=10)
+
     return y_conv
 
 
@@ -119,7 +127,7 @@ def create_network(x):
     """
     Creates the neural network
         :param x: Input Tensor for the image
-        :return: last Tensor of the network and the keep propability
+        :return: last Tensor of the network and the keep probability
     """
     first = first_c_layer(x)
     second = second_c_layer(first)
@@ -136,15 +144,23 @@ def training_variables(net, y_):
         :param y_: Output Tensor for the prediction
         :return: training variables
     """
-    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=net))
-    train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+    softmax_xent = tf.nn.softmax_cross_entropy_with_logits_v2(labels=y_, logits=net)
+
+    # softmax = tf.nn.softmax(softmax_xent)
+    # soft_xent = -tf.reduce_sum(y_ * tf.log(softmax), 1)
+
+    # percentage = tf.reduce_mean(tf.argmax(net, 1))
+    percentage = tf.reduce_mean(softmax_xent)
+
+    # cross_entropy = tf.reduce_mean(softmax_xent)
+    train_step = tf.train.AdamOptimizer(1e-4).minimize(softmax_xent)
     correct_prediction = tf.equal(tf.argmax(net, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
 
-    return cross_entropy, train_step, correct_prediction, accuracy
+    return train_step, accuracy, percentage
 
 
-def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
+def start_training(mnist, accuracy, train_step, keep_prob, x, y_, percentage):
     """
     Starts the training process
         :param mnist: training data
@@ -159,11 +175,10 @@ def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver(save_relative_paths=True)
 
-        for i in range(10000):
+        for i in range(2000):
             batch = mnist.train.next_batch(50)
             if i % 100 == 0:
-                train_accuracy = accuracy.eval(feed_dict={
-                    x: batch[0], y_: batch[1], keep_prob: 1.0})
+                train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
@@ -175,7 +190,7 @@ def start_training(mnist, accuracy, train_step, keep_prob, x, y_):
         image_list = load_cust_images()
         counter = 0
         for i in image_list:
-            predict(i, accuracy, x, y_, keep_prob, counter)
+            predict(sess, i, accuracy, x, y_, keep_prob, counter, percentage)
             counter += 1
 
 
@@ -186,7 +201,7 @@ def save_model(sess, saver):
     saver.save(sess, "./model/CNN_MNIST")
 
 
-def predict(img_flat, accuracy, x, y_, keep_prob, actual):
+def predict(sess, img_flat, accuracy, x, y_, keep_prob, actual, percentage):
     """
         Predicts a number in a given image and prints the result
             :param img_flat: image to analyze
@@ -200,9 +215,21 @@ def predict(img_flat, accuracy, x, y_, keep_prob, actual):
     dict_poss = create_poss()
 
     for i in range(0, len(dict_poss)):
+
         prediction = accuracy.eval(feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
+
+        prediction_percentage = sess.run(percentage, feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
+        # prediction_percentage = percentage.eval(feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
+
+        # answer = sess.run(soft_xent, feed_dict={x: img_flat, y_: dict_poss[i].reshape(1, 10), keep_prob: 1.0})
+        # answer_element = answer[0, answer.argmax()]
+        # print(answer.argmax(), answer_element)
+
+        # print(soft_xent.eval())
+        print(prediction_percentage)
+
         if prediction - 0.5 > 0:
-            print(f"Guessing with {prediction} prob. for {round(i, 2)} while its {round(actual, 2)}")
+            print(f"Guessing with {prediction_percentage} prob. for {round(i, 2)} while its {round(actual, 2)}")
 
 
 def create_poss():
@@ -255,9 +282,9 @@ def main():
     y_ = tf.placeholder(tf.float32, [None, 10], name='y_')
 
     net, keep_prob = create_network(x)
-    cross_entropy, train_step, correct_prediction, accuracy = training_variables(net, y_)
+    train_step, accuracy, percentage = training_variables(net, y_)
 
-    start_training(mnist, accuracy, train_step, keep_prob, x, y_)
+    start_training(mnist, accuracy, train_step, keep_prob, x, y_, percentage)
 
 
 if __name__ == "__main__":
