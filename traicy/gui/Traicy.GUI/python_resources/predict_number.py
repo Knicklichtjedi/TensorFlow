@@ -18,9 +18,9 @@ if image_path is not None:
 
     for image in img_list:
 
-        img_flat = img_as_float(image.flatten().reshape(1, 784))
+        img_to_predict = img_as_float(image.flatten().reshape(1, 784))
 
-        number, confidence = CNN_load_model.predict_image(img_flat)
+        number, confidence = CNN_load_model.predict_image(img_to_predict)
 
         predictions += (str(number) + ", " + str(confidence)) + "\n"
 

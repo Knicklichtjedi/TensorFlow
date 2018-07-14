@@ -1,9 +1,5 @@
 import numpy as np
 import tensorflow as tf
-from skimage.io import imread
-from tensorflow.examples.tutorials.mnist import input_data
-from os.path import abspath
-import random
 
 
 def convolution(layer, filters):
@@ -70,78 +66,38 @@ def cnn_model_fn(features, labels, mode):
     # Logits Layer
     logits = tf.layers.dense(inputs=dropout, units=10)
 
-    # dictionary
-    # predictions = {
-    #     # Generate predictions (for PREDICT and EVAL mode)
-    #     "classes": tf.argmax(input=logits, axis=1, name="class_tensor"),
-    #     # Add `softmax_tensor` to the graph. It is used for PREDICT and by the
-    #     # `logging_hook`.
-    #     "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
-    # }
-    #
-    # prediction_tensor = tf.nn.softmax(logits, name="softmax_only_tensor")
-
+    loss = None
+    predictions = None
+    eval_metric_ops = None
+    train_op = None
     prediction_dict = {
-            'class_ids': tf.argmax(input=logits, axis=1),
-            'probabilities': tf.nn.softmax(logits, name="softmax_tensor"),
-            'logits': logits,
+        'class_ids': tf.argmax(input=logits, axis=1),
+        'probabilities': tf.nn.softmax(logits, name="softmax_tensor"),
+        'logits': logits,
     }
 
-    # onehot_labels = tf.one_hot(indices=tf.cast(labels, tf.int32), depth=10)
-    # loss = tf.losses.softmax_cross_entropy(onehot_labels=onehot_labels, logits=logits)
-
-    # Calculate Loss (for both TRAIN and EVAL modes)
-    loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
-
-    # loss = tf.nn.softmax_cross_entropy_with_logits_v2(labels=labels, logits=logits)
-
-    # Configure the Training Op (for TRAIN mode
-    #if mode == tf.estimator.ModeKeys.TRAIN:
-    #    optimizer = tf.train.AdamOptimizer(learning_rate=1e-4)
-    #    train_op = optimizer.minimize(
-    #        loss=loss,
-    #        global_step=tf.train.get_global_step())
-    #    return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
-    #
-    #if mode == tf.estimator.ModeKeys.PREDICT:
-    #    return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
-    #
-    # Add evaluation metrics (for EVAL mode)
-    #eval_metric_ops = {
-    #    "accuracy": tf.metrics.accuracy(
-    #     labels=labels, predictions=predictions["classes"])}
-    #
-    #return tf.estimator.EstimatorSpec(
-    #  mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
-
-    eval_metric_ops = {
-       "accuracy": tf.metrics.accuracy(
-        labels=labels, predictions=prediction_dict["class_ids"])}
-
     if mode == tf.estimator.ModeKeys.EVAL:
-        loss = loss
-        eval_metric_ops = eval_metric_ops
-    else:
-        pass
-        # loss = None
-        # eval_metric_ops = None
+        # Calculate Loss (for both TRAIN and EVAL modes)
+        loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+
+        # Add evaluation metrics (for EVAL mode)
+        eval_metric_ops = {
+            "accuracy": tf.metrics.accuracy(labels=labels, predictions=prediction_dict["class_ids"])
+        }
 
     if mode == tf.estimator.ModeKeys.TRAIN:
+        # Calculate Loss (for both TRAIN and EVAL modes)
+        loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+
+        # Configure the Training Op (for TRAIN mode)
         optimizer = tf.train.AdamOptimizer(learning_rate=1e-4)
-        # optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.05)
         train_op = optimizer.minimize(
             loss=loss,
             global_step=tf.train.get_global_step())
-    else:
-        pass
-        train_op = None
-        # eval_metric_ops = None
 
     if mode == tf.estimator.ModeKeys.PREDICT:
         predictions = prediction_dict
         # return tf.estimator.EstimatorSpec(mode, predictions=predictions)
-    else:
-        predictions = None
 
     return tf.estimator.EstimatorSpec(
         mode=mode,
@@ -164,7 +120,7 @@ def main(argv):
         model_fn=cnn_model_fn, model_dir="./model/mnist_convnet_model")
 
     # steps
-    training_steps = 200
+    training_steps = 2000
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -197,53 +153,24 @@ def main(argv):
     eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
     print(eval_results)
 
-    # test_image = eval_data[0].flatten()
-    # test_dict = {"x": test_image}
-    # input_fn = tf.estimator.inputs.numpy_input_fn(x=test_dict, y=test_labels, shuffle=False)
-    # test_tuple = (10, test_image)
-
-    # dataset = tf.data.Dataset.from_generator(get_prediction_image, tf.int64)
-
-    random_label = random.randrange(0, 10)
-
-    predict_image = tf.estimator.inputs.numpy_input_fn(
-        x={"x": eval_data[0]},
-        y=np.array(random_label),
-        num_epochs=1,
-        shuffle=False)
-
-    print(str(random_label) + "  " + str(type(eval_labels[0])))
-
-    result = mnist_classifier.predict(input_fn=predict_image)              # , predict_keys=['probabilities']
-
+    result = mnist_classifier.predict(input_fn=get_prediction_mnist_fn)
     print(str(result) + "  ||  " + str(result is not None))
 
-    for i in iter(result):
-        print(str(i))
+    generator_result = next(result)
+    generator_result_list = list(x for x in generator_result['probabilities'])
 
-    # expected = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    # for pred_dict, expec in zip(result, expected):
-    #     class_id = pred_dict['classes'][0]
-    #     probability = pred_dict['probabilities'][class_id]
-    #     print(str(class_id) + " " + str(probability))
+    for i in generator_result_list:
+        print("{:.10f}".format(i))
 
-    # print(result)
 
-    # iterator = iter(result)
-    #
-    # print(iterator)
+def get_prediction_mnist_fn():
+    mnist = tf.contrib.learn.datasets.load_dataset("mnist")
+    eval_data = mnist.test.images  # Returns np.array
 
-    # for element in range(0, 10):
-    #    print(next(iterator))
+    features = {'x': eval_data[0].flatten()}
+    labels = None # np.array([eval_labels[0]])
 
-    # print(next(generator))
-    # for element in list(result):
-    #    print(element)
-
-    # prediction = result['class_id'][0]
-    # print(result['probabilities'][prediction])
-
-    # print(list(result))
+    return features, labels
 
 
 if __name__ == "__main__":
