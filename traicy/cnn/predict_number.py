@@ -42,7 +42,7 @@ if image_path is not None:
             img_to_predict = img_as_float(image.flatten().reshape(1, 784))
 
             number, confidence = CNN_load_model.predict_image(img_to_predict)
-            draw_font(img_with_chunks, number, confidence, contour)
+            # draw_font(img_with_chunks, number, confidence, contour)
 
             predictions += (str(number) + ", " + str(confidence)) + "\n"
 

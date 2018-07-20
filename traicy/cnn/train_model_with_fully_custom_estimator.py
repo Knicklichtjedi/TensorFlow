@@ -120,7 +120,7 @@ def main(argv):
         model_fn=cnn_model_fn, model_dir="./model/mnist_convnet_model")
 
     # steps
-    training_steps = 2000
+    training_steps = 200
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -160,7 +160,7 @@ def main(argv):
     generator_result_list = list(x for x in generator_result['probabilities'])
 
     for i in generator_result_list:
-        print("{:.10f}".format(i))
+        print("{:.10f}".format(i*100))
 
 
 def get_prediction_mnist_fn():
