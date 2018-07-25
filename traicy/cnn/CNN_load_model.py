@@ -3,7 +3,6 @@ import tensorflow as tf
 from skimage.io import imread
 from skimage.util import img_as_float
 from os.path import abspath
-import time
 
 
 def create_poss():
