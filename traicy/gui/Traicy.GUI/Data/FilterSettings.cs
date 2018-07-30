@@ -1,8 +1,9 @@
-﻿using Traicy.GUI.Contracts;
-
-namespace Traicy.GUI.Data
+﻿namespace Traicy.GUI.Data
 {
-    public class FilterSettings : IFilterSettings
+	/// <summary>
+	/// Data class that represents all python filter settings in the JSON settings file.
+	/// </summary>
+    public class FilterSettings
     {
         [Newtonsoft.Json.JsonProperty(PropertyName = "canny")]
         public float Canny { get; set; }

@@ -117,13 +117,115 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Attention" xml:space="preserve">
+    <value>Achtung!</value>
+  </data>
+  <data name="ChunkedImagePath" xml:space="preserve">
+    <value>chunked\chunked.png</value>
+  </data>
+  <data name="Comma" xml:space="preserve">
+    <value>, </value>
+  </data>
   <data name="ConnectWebcam" xml:space="preserve">
     <value>Kamera Verbinden</value>
+  </data>
+  <data name="DisconnectWebcam" xml:space="preserve">
+    <value>Verbindung trennen</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="FileExtensionsInterpreter" xml:space="preserve">
+    <value>Executable files (*.exe)|*.exe|All files (*.*)|*.*</value>
+  </data>
+  <data name="FoundLetter" xml:space="preserve">
+    <value>Der gefundene Buchstabe ist </value>
+  </data>
+  <data name="FoundLetters" xml:space="preserve">
+    <value> Buchstaben gefunden: </value>
+  </data>
+  <data name="FoundNumber" xml:space="preserve">
+    <value>Die gefundene Nummer ist </value>
+  </data>
+  <data name="FoundNumbers" xml:space="preserve">
+    <value> Zahlen gefunden: </value>
+  </data>
+  <data name="FoundTheFollowing" xml:space="preserve">
+    <value>Ich habe die folgenden </value>
+  </data>
+  <data name="GermanVoice" xml:space="preserve">
+    <value>de-DE</value>
+  </data>
+  <data name="ImageFilterOpenFileDialog" xml:space="preserve">
+    <value>JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|PNG (*.png)|*.png|All files (*.*)|*.*</value>
+  </data>
+  <data name="ImageFolderPath" xml:space="preserve">
+    <value>images</value>
+  </data>
+  <data name="ImageTypeJPG" xml:space="preserve">
+    <value>jpg</value>
+  </data>
+  <data name="ImageTypePNG" xml:space="preserve">
+    <value>png</value>
+  </data>
+  <data name="JSONSettingsDirectoryName" xml:space="preserve">
+    <value>configs</value>
+  </data>
+  <data name="JSONSettingsFilePath" xml:space="preserve">
+    <value>configs\settings.json</value>
+  </data>
+  <data name="Logfile" xml:space="preserve">
+    <value>log.txt</value>
+  </data>
+  <data name="MNIST" xml:space="preserve">
+    <value>MNIST</value>
+  </data>
+  <data name="NoCameraUri" xml:space="preserve">
+    <value>pack://application:,,,/Traicy.GUI;component/resources/no-camera.png</value>
+  </data>
+  <data name="NoConnectionMessage" xml:space="preserve">
+    <value>Es konnte keine Verbindung mit der Kamera hergestellt werden. Überprüfen Sie die Verbindung zum Gerät!</value>
+  </data>
+  <data name="NoObjectDetectionPossibleContent" xml:space="preserve">
+    <value>Verbinden Sie die Kamera oder wählen Sie ein zu erkennendes Bild aus!</value>
+  </data>
+  <data name="NoObjectDetectionPossibleHeader" xml:space="preserve">
+    <value>Keine Objekterkennung möglich!</value>
+  </data>
+  <data name="NoResultFound" xml:space="preserve">
+    <value>Ich konnte kein Objekt erkennen.</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>An</value>
+  </data>
+  <data name="Percent" xml:space="preserve">
+    <value>Prozent</value>
+  </data>
+  <data name="Probability" xml:space="preserve">
+    <value> mit einer Wahrscheinlichkeit von </value>
   </data>
   <data name="Processing" xml:space="preserve">
     <value>Verarbeitung...</value>
   </data>
+  <data name="PythonModelPath" xml:space="preserve">
+    <value>python_resources\model</value>
+  </data>
+  <data name="PythonScriptPath" xml:space="preserve">
+    <value>python_resources\predict_number.py</value>
+  </data>
+  <data name="StandardPythonInterpreterPath" xml:space="preserve">
+    <value>C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe</value>
+  </data>
   <data name="StartObjectDetection" xml:space="preserve">
     <value>Starte Objekterkennung</value>
+  </data>
+  <data name="ThatIsAll" xml:space="preserve">
+    <value>Mehr kann ich nicht erkennen.</value>
+  </data>
+  <data name="ThereHasBeenAnError" xml:space="preserve">
+    <value>Es ist ein Fehler aufgetreten!</value>
   </data>
 </root>

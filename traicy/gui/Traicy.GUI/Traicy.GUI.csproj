@@ -119,36 +119,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Contracts\IFilterSettings.cs" />
-    <Compile Include="Contracts\IGuiSettings.cs" />
-    <Compile Include="Contracts\IImageSettings.cs" />
-    <Compile Include="Contracts\ILoadingSettings.cs" />
-    <Compile Include="Data\FilteredImages.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Contracts\ViewModelBase.cs" />
     <Compile Include="Data\FilterSettings.cs" />
     <Compile Include="Data\GuiSettings.cs" />
     <Compile Include="Data\ImageSettings.cs" />
     <Compile Include="Data\LoadingSettings.cs" />
     <Compile Include="Data\Prediction.cs" />
-    <Compile Include="Logic\EventHandling.cs" />
     <Compile Include="Logic\Logger.cs" />
+    <Compile Include="Logic\ObjectDetection.cs" />
     <Compile Include="Logic\PythonConnector.cs" />
     <Compile Include="Logic\PythonOutputParser.cs" />
     <Compile Include="Logic\SettingsController.cs" />
     <Compile Include="Logic\TextToSpeech.cs" />
     <Compile Include="Logic\WebcamHelper.cs" />
-    <Compile Include="View\FilteredImagesWindow.xaml.cs">
-      <DependentUpon>FilteredImagesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\SettingsControl.xaml.cs">
-      <DependentUpon>SettingsControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="View\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\FilteredImagesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -157,17 +146,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Contracts\ISettingProperties.cs" />
     <Compile Include="Data\SettingProperties.cs" />
     <Compile Include="Logic\JsonParser.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\SettingsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,9 +171,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="resources\icons8-checkmark-80.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

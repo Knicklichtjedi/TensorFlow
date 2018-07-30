@@ -4,6 +4,9 @@ using System.Speech.Synthesis;
 
 namespace Traicy.GUI.Logic
 {
+	/// <summary>
+	/// Class that is responsible for handling the Text-To-Speech functionality.
+	/// </summary>
     public class TextToSpeech
     {
         private static SpeechSynthesizer _speaker;
@@ -13,7 +16,10 @@ namespace Traicy.GUI.Logic
             _speaker = new SpeechSynthesizer();
         }
 
-        //zusätzliche Methode, kann manchmal nützlich sein
+		/// <summary>
+		/// Returns all installed voices for the operating system (Windows) as List.
+		/// </summary>
+		/// <returns>List of VoiceInfo objects that can be used to configure the Text-To-Speech output.</returns>
         private static List<VoiceInfo> GetInstalledVoices()
         {
             var listOfVoiceInfo = from voice
@@ -23,34 +29,27 @@ namespace Traicy.GUI.Logic
             return listOfVoiceInfo.ToList<VoiceInfo>();
         }
 
+		/// <summary>
+		/// Invokes the Text-To-Speech algorithm and uses the given text.
+		///	Based on the installed voices the first german voice is chosen and used to speak.
+		/// </summary>
+		/// <param name="text">The given text the speechsynthesizer processes.</param>
         public void InvokeAsyncTextToSpeech(string text)
         {
             //get all available voices
             var voices = GetInstalledVoices();
             if (voices?.Count > 0)
             {
-                string voiceName = string.Empty;
-
-                var voice = voices.FirstOrDefault(x => x.Culture.Name == "de-DE");
+				//use first german voice that is found
+                var voice = voices.FirstOrDefault(x => x.Culture.Name == Properties.Resources.GermanVoice);
                 if (voice != null)
                 {
-                    voiceName = voice.Name;
-                }
-
-                _speaker.SetOutputToDefaultAudioDevice();
-                //Geschwindigkeit (-10 - 10)
-                _speaker.Rate = -2;
-                //Lautstärke (0-100)
-                _speaker.Volume = 100;
-                _speaker.SelectVoice(voiceName); //englische Version
-                //_speaker.SelectVoice("Microsoft Zira Desktop"); //englische Version
-                //_speaker.SelectVoice("Microsoft Anna"); //englische Version
-
-                //Such passende Stimme zu angegebenen Argumenten
-                //_speaker.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Teen);
-                //Text wird ausgegeben (abbrechen mit speaker.CancelAsync())
-
-                _speaker.SpeakAsync(text);
+	                _speaker.SetOutputToDefaultAudioDevice();
+	                _speaker.Rate = -2; //speed
+	                _speaker.Volume = 100; //max volume
+	                _speaker.SelectVoice(voice.Name);
+	                _speaker.SpeakAsync(text); //speak
+				}
             }
         }
     }

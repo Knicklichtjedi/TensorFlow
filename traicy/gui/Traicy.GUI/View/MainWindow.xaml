@@ -3,15 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Traicy.GUI.ViewModels"
         mc:Ignorable="d"
         Title="Traicy" Height="720" Width="1280"
         Background="#d9d9d9"
-        Icon="pack://application:,,,/Traicy.GUI;component/resources/logo_halb_1-01.png"
-        Closing="Window_Closing"
-        KeyDown="KeyDownObjectDetection">
-    
-    
-    <Grid>
+        Icon="pack://application:,,,/Traicy.GUI;component/resources/logo_halb_1-01.png">
+	<Window.InputBindings>
+		<KeyBinding Command="{Binding KeyDownObjectDetectionCommand}" Key="P"/>
+	</Window.InputBindings>
+
+	<Window.DataContext>
+		<viewModels:MainViewModel />
+	</Window.DataContext>
+	
+	<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -30,22 +35,19 @@
         <Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Fill="#FFB300" Height="4"/>
 
         <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="gray"></Border>
-        <Image Margin="10,10" Grid.Row="2" Grid.Column="0" x:Name="WebcamVideo" Stretch="Uniform" />
-        <Image Margin="10,10" Grid.Row="2" Grid.Column="1" x:Name="WebCamPicture" Stretch="Uniform" />
-        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Kamera verbinden" Width="200px" Height="20px" Name="ConnectButton" HorizontalAlignment="Center" Click="ButtonConnectWebcam_OnClick"></Button>
-        
-        <Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Content="Starte Objekterkennung" Click="ButtonStartObjectDetection_OnClick">
+        <Image Margin="10,10" Grid.Row="2" Grid.Column="0" x:Name="WebcamVideo" Stretch="Uniform" Source="{Binding LiveVideo}"/>
+		<Image Margin="10,10" Grid.Row="2" Grid.Column="1" x:Name="WebCamPicture" Stretch="Uniform" Source="{Binding LiveImage}"/>
+		<Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ConnectButtonText, Mode=TwoWay}" Width="200px" Height="20px" Name="ConnectButton" HorizontalAlignment="Center" Command="{Binding ButtonConnectWebcamClickCommand}"></Button>
 
-        </Button>
+		<Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Command="{Binding ButtonStartObjectDetectionClickCommand}" Content="{Binding StartObjectDetectionButtonText, Mode=TwoWay}"></Button>
 
-        <Button Name="ButtonTakePicture" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent"  Height="20px" Click="ButtonTakePicture_OnClick">
+		<Button Name="ButtonTakePicture" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent"  Height="20px" Command="{Binding ButtonTakePictureClickCommand}">
             <StackPanel Orientation="Horizontal" >
-				<!--<Label>Bild von Festplatte einlesen</Label>-->
                 <Image Source="/resources/photo-camera.png" Width="16" Height="16" Margin="10,0"/>
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Transparent" Background="Transparent" Height="20px" Name="ButtonSettings" Click="ButtonSettings_OnClick">
+		<Button Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Transparent" Background="Transparent" Height="20px" Name="ButtonSettings" Command="{Binding ButtonOpenSettingsClickCommand}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/resources/settings.png" Width="16" Height="16" Margin="10,0"/>
             </StackPanel>

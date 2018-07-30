@@ -2,13 +2,11 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Traicy.GUI.Data;
 
 namespace Traicy.GUI.Logic
 {
@@ -22,11 +20,11 @@ namespace Traicy.GUI.Logic
         public static extern bool DeleteObject([In] IntPtr hObject);
 
         /// <summary>
-        /// Parses given webcam bitmap to ImageSource 
+        /// Parses given webcam bitmap to ImageSource.
         /// </summary>
-        /// <param name="bmp"></param>
-        /// <returns></returns>
-        public ImageSource ImageSourceForBitmap(Bitmap bmp)
+        /// <param name="bmp">The given image as bitmap.</param>
+        /// <returns>ImageSource as type that is used in the view.</returns>
+        public static ImageSource ImageSourceForBitmap(Bitmap bmp)
         {
             var handle = bmp.GetHbitmap();
             try
@@ -36,48 +34,29 @@ namespace Traicy.GUI.Logic
             finally { DeleteObject(handle); }
         }
 
-        public string TakePicture(Bitmap picture)
+		/// <summary>
+		/// Takes a picture of the given webcam frame and saves it with current timestamp to the images folder. The filepath of the saved image is returned for further processing.
+		/// </summary>
+		/// <param name="picture">Webcam frame that is saved as bitmap.</param>
+		/// <returns>Absolute filepath of the saved image.</returns>
+		public static string TakePicture(Bitmap picture)
         {
-            string filename = $"{DateTime.Now:dd_MM_yy hh_mm_ss}.png";
-            if (!Directory.Exists("images"))
+            string filename = $"{DateTime.Now:dd_MM_yy hh_mm_ss}.{Properties.Resources.ImageTypePNG}";
+            if (!Directory.Exists(Properties.Resources.ImageFolderPath))
             {
-                Directory.CreateDirectory("images");
+                Directory.CreateDirectory(Properties.Resources.ImageFolderPath);
             }
-            string filePath = $"images\\{filename}";
+            string filePath = $"{Properties.Resources.ImageFolderPath}\\{filename}";
             picture.Save(filePath, ImageFormat.Png);
             string absolutePath = Path.GetFullPath(filePath);
             return absolutePath;
         }
 
-        internal FilteredImages GetFilteredImages()
-        {
-            FilteredImages filteredImages = null;
-
-            var filePath = @"filtered\";
-            var directory = new DirectoryInfo(filePath);
-            //var directoryInfo = directory.GetDirectories().OrderByDescending(d => d.LastWriteTime).First();
-            //filePath = $"{filePath}{directoryInfo}\\filtered.png_borders.png";
-            //filePath =
-            //    @"C:\Users\Eva\Documents\GitHub\TensorFlow\traicy\gui\Traicy.GUI\bin\Debug\filtered\2018_04_25_x_02_29_49\test.png";
-
-            try
-            {
-                //TODO: 
-                filteredImages = new FilteredImages
-                {
-                    //BinaryImage = GetBitmapImageFromSource(filePath),
-                    BinaryImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}\\filtered.png_borders.png")),
-                    SkeletonImage = ImageSourceForBitmap(GetBitmapImageFromSource($"{filePath}\\filtered.png_centered.png"))
-                };
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e.Message);
-            }
-
-            return filteredImages;
-        }
-
+		/// <summary>
+		/// Returns bitmap from the given image source.
+		/// </summary>
+		/// <param name="source">Image source (Uri) as string.</param>
+		/// <returns>Bitmap from the image that is read from source.</returns>
         public static Bitmap GetBitmapImageFromSource(string source)
         {
             Image image = Image.FromFile(source);

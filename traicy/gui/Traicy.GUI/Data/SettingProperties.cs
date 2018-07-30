@@ -1,11 +1,12 @@
-﻿using Traicy.GUI.Contracts;
-
+﻿
 namespace Traicy.GUI.Data
 {
-    public class SettingProperties : ISettingProperties
-    {
+	/// <summary>
+	/// Data class that represents all settings wrapped as settings model (gui, image, filter and loading).
+	/// </summary>
+	public class SettingProperties {
 
-        [Newtonsoft.Json.JsonProperty(PropertyName = "image")]
+		[Newtonsoft.Json.JsonProperty(PropertyName = "image")]
         public ImageSettings ImageSettings { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "filter")]
         public FilterSettings FilterSettings { get; set; }
