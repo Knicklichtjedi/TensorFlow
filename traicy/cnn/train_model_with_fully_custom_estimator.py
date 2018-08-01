@@ -117,10 +117,10 @@ def main(argv):
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="./model/mnist_convnet_model")
+        model_fn=cnn_model_fn, model_dir="./model")
 
     # steps
-    training_steps = 200
+    training_steps = 1000
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions

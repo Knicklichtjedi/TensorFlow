@@ -3,14 +3,15 @@ import tensorflow as tf
 from skimage.io import imread
 from skimage.util import img_as_float
 from os.path import abspath
-
 import train_model_with_fully_custom_estimator
 
 static_image_reference = None
+model_dir = "./model"
+
 
 def main():
     mnist_classifier = tf.estimator.Estimator(model_fn=train_model_with_fully_custom_estimator.cnn_model_fn,
-                                              model_dir="./model/mnist_convnet_model")
+                                              model_dir=model_dir)
 
     generator_result = None
     image_list = load_cust_images()
@@ -27,11 +28,14 @@ def main():
 
 def predict_image(image):
     mnist_classifier = tf.estimator.Estimator(model_fn=train_model_with_fully_custom_estimator.cnn_model_fn,
-                                              model_dir="./model/mnist_convnet_model")
+                                              model_dir=model_dir)
     global static_image_reference
     static_image_reference = image  # image_list[0]
 
     generator_result = mnist_classifier.predict(input_fn=prediction_image_fn)
+    number, confidence = extract_prediction_result(next(generator_result))
+
+    return number, confidence
 
 
 def prediction_image_fn():
@@ -59,6 +63,13 @@ def load_cust_images():
         image_list.append(img_flat_f32)
 
     return image_list
+
+
+def extract_prediction_result(generator_content):
+    best_category_index = generator_content['class_ids']
+    best_category_confidence = generator_content['probabilities'][best_category_index]
+
+    return best_category_index, best_category_confidence
 
 
 def print_generator_content(generator):
