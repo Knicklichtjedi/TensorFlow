@@ -2,7 +2,8 @@ import glob
 import pickle
 from os.path import abspath
 from random import shuffle
-
+from skimage.io import imread
+from skimage.util import img_as_float
 import numpy as np
 import tensorflow as tf
 
@@ -15,17 +16,30 @@ sublist_eval = []
 sublist_test = []
 
 def generator_train():
-    yield sublist_train
+    for index in range(0, len(sublist_train)):
+        image = imread(sublist_train[index, 0], as_grey=True)
+        image_flat = image.flatten()
+        image_float = img_as_float(image_flat)
+        label = sublist_train[index,1]
+        yield image_float, label
 
 
 def generator_eval():
-    yield sublist_eval
+    for index in range(0, len(sublist_eval)):
+        image = imread(sublist_eval[index, 0], as_grey=True)
+        image_flat = image.flatten()
+        image_float = img_as_float(image_flat)
+        label = sublist_eval[index,1]
+        yield image_float, label
+
 
 def generator_test():
-    #images = np.array([784][1])
-    #labels = np.array([1])
-    #yield images, labels
-    yield sublist_test
+    for index in range(0, len(sublist_test)):
+        image = imread(sublist_test[index, 0], as_grey=True)
+        image_flat = image.flatten()
+        image_float = img_as_float(image_flat)
+        label = sublist_test[index,1]
+        yield image_float, label
 
 def load_all_data():
     #gives back lists
@@ -98,15 +112,18 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     np.random.shuffle(sublist_eval)
     np.random.shuffle(sublist_test)
 
-    return sublist_train, sublist_eval, sublist_test
+    return np.asarray(sublist_train), np.asarray(sublist_eval), np.asarray(sublist_test)
 
 
 def set_all_datasets():
-    train = tf.data.Dataset.from_generator(generator=generator_train, output_types=(tf.int64, tf.int64))
-    eval = tf.data.Dataset.from_generator(generator=generator_eval, output_types=(tf.int64, tf.int64))
-    test = tf.data.Dataset.from_generator(generator=generator_test, output_types=(tf.int64, tf.int64))
+    train = tf.data.Dataset.from_generator(generator=generator_train, output_types=(tf.float32, tf.string))
+    eval = tf.data.Dataset.from_generator(generator=generator_eval, output_types=(tf.float32, tf.string))
+    test = tf.data.Dataset.from_generator(generator=generator_test, output_types=(tf.float32, tf.string))
+    # train = tf.data.Dataset.from_tensor_slices(sublist_train)
+    # eval = tf.data.Dataset.from_tensor_slices(sublist_eval)
+    # test = tf.data.Dataset.from_tensor_slices(sublist_test)
 
-    return train,eval,test
+    return train, eval, test
 
 
 class TraicyData:
@@ -127,8 +144,25 @@ class TraicyData:
 lists = load_all_data()
 sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30,30,30)#1923, 385, 140) #49.998 Trainingsdaten, 10010 Evaluierungsdaten, 3640 Testdaten
 #print(sublist_test[0])
-
+print("Hey, die sublisten sind fertig!")
 train, test, eval = set_all_datasets() #funktioniert das??
+print("Hey, die datasets sind fertig!")
+
+td = TraicyData(train, test, eval)
+iterator = td.test.make_one_shot_iterator()
+iterValue = iterator.get_next()
+
+sess = tf.Session()
+# print(sess.run(iterValue))
+print(sess.run(iterValue))
+
+
+generator = generator_test()
+generator_result = next(generator)
+# print("image " + str(generator_result[0]))
+# print("label " + str(generator_result[1]))
+
+
 #print(train, test,eval)
 #neues TraicyData erstellen mit train, test, eval
 #serialisieren
