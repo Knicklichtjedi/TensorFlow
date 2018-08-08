@@ -211,10 +211,10 @@
     <value>Verarbeitung...</value>
   </data>
   <data name="PythonModelPath" xml:space="preserve">
-    <value>python_resources\model</value>
+    <value>python_resources\model_number</value>
   </data>
   <data name="PythonScriptPath" xml:space="preserve">
-    <value>python_resources\predict_number.py</value>
+    <value>python_resources\predict_number_with_ce.py</value>
   </data>
   <data name="StandardPythonInterpreterPath" xml:space="preserve">
     <value>C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe</value>

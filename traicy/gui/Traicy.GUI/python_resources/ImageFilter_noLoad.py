@@ -446,7 +446,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0   # count contours that fit the threshold
 
@@ -485,6 +485,19 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
 def draw_rectangle(x, y, w, h, picture, chunk_border):
 
     color = (255 / 255, 179 / 255, 0)
+
+    for contour_strength in range(0, chunk_border):
+        for height in range(y, y + h):
+            picture[height, x + contour_strength] = color
+            picture[height, x + w - contour_strength] = color
+        for width in range(x + contour_strength, x + w - contour_strength):
+            picture[y + contour_strength, width] = color
+            picture[y + h - contour_strength, width] = color
+
+
+def draw_red_rectangle(x, y, w, h, picture, chunk_border):
+
+    color = (1, 0, 0)
 
     for contour_strength in range(0, chunk_border):
         for height in range(y, y + h):

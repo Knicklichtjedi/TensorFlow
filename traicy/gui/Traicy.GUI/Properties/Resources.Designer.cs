@@ -340,7 +340,7 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\model ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\model_number ähnelt.
         /// </summary>
         internal static string PythonModelPath {
             get {
@@ -349,7 +349,7 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\predict_number.py ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\predict_number_with_ce.py ähnelt.
         /// </summary>
         internal static string PythonScriptPath {
             get {
