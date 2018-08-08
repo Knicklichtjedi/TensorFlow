@@ -3,8 +3,7 @@ from skimage.feature import canny
 from skimage.morphology import skeletonize
 from skimage.io import imread, imsave
 from skimage.transform import rotate
-from skimage import img_as_ubyte
-from skimage import img_as_uint
+from skimage import img_as_ubyte, img_as_uint, img_as_float
 from skimage import filters as filters
 from skimage.color import rgb2hsv, hsv2rgb, rgb2gray
 # openCV
@@ -466,7 +465,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     img_binary_PIL = Image.fromarray(img_binary)
     #save image with drawn chunks
 
-    img_with_chunks = np.copy(originalImage)#draw Chunks at original image
+    img_with_chunks = img_as_float(np.copy(originalImage))#draw Chunks at original image
 
     if best_contours:
 
