@@ -7,7 +7,7 @@ from skimage.util import img_as_float
 import numpy as np
 import tensorflow as tf
 
-buchstaben = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+buchstaben = ["A", "B"]#, "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 file_list = [] #bilddateien
 labels_list = []
 
@@ -17,29 +17,30 @@ sublist_test = []
 
 def generator_train():
     for index in range(0, len(sublist_train)):
-        image = imread(sublist_train[index, 0], as_grey=True)
+        image = imread(sublist_train[index][0], as_grey=True)
         image_flat = image.flatten()
         image_float = img_as_float(image_flat)
-        label = sublist_train[index,1]
+        label = sublist_train[index][1]
         yield image_float, label
 
 
 def generator_eval():
     for index in range(0, len(sublist_eval)):
-        image = imread(sublist_eval[index, 0], as_grey=True)
+        image = imread(sublist_eval[index][0], as_grey=True)
         image_flat = image.flatten()
         image_float = img_as_float(image_flat)
-        label = sublist_eval[index,1]
+        label = sublist_eval[index][1]
         yield image_float, label
 
 
 def generator_test():
     for index in range(0, len(sublist_test)):
-        image = imread(sublist_test[index, 0], as_grey=True)
+        image = imread(sublist_test[index][0], as_grey=True)
         image_flat = image.flatten()
         image_float = img_as_float(image_flat)
-        label = sublist_test[index,1]
+        label = sublist_test[index][1]
         yield image_float, label
+
 
 def load_all_data():
     #gives back lists
@@ -50,14 +51,13 @@ def load_all_data():
     ####GET ALL FILES IN A LIST####
     for dir in buchstaben:
         directory = traicy_data_path + dir + "/"
-        for filename in glob.glob(directory + '*.jpg'):  # only jpg
+        for filename in glob.glob(directory + '*.png'):  # only jpg
             file_list.append(filename)
             labels_list.append(dir)
 
     both_lists = np.column_stack((file_list,labels_list))
 
     np.random.shuffle(both_lists)
-
 
     return both_lists
 
@@ -141,58 +141,20 @@ class TraicyData:
             self.test = test
 
 
-lists = load_all_data()
-sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30,30,30)#1923, 385, 140) #49.998 Trainingsdaten, 10010 Evaluierungsdaten, 3640 Testdaten
-#print(sublist_test[0])
-print("Hey, die sublisten sind fertig!")
-train, test, eval = set_all_datasets() #funktioniert das??
-print("Hey, die datasets sind fertig!")
+def parse_data():
+    global sublist_train, sublist_eval, sublist_test
 
-td = TraicyData(train, test, eval)
-iterator = td.test.make_one_shot_iterator()
+    lists = load_all_data()
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30,30,30)#1923, 385, 140) #49.998 Trainingsdaten, 10010 Evaluierungsdaten, 3640 Testdaten
+    train, test, eval = set_all_datasets() #funktioniert das??
+    td = TraicyData(train, test, eval)
+
+    return td
+
+
+traicy = parse_data()
+iterator = traicy.test.make_one_shot_iterator()
 iterValue = iterator.get_next()
 
 sess = tf.Session()
-# print(sess.run(iterValue))
 print(sess.run(iterValue))
-
-
-generator = generator_test()
-generator_result = next(generator)
-# print("image " + str(generator_result[0]))
-# print("label " + str(generator_result[1]))
-
-
-#print(train, test,eval)
-#neues TraicyData erstellen mit train, test, eval
-#serialisieren
-
-
-#mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-#train_data = mnist.train.images                                 # Returns np.array
-#train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
-#eval_data = mnist.test.images                                   # Returns np.array
-#eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
-
-#myData = TraicyData()
-#myData.test = mnist.test
-#myData.train = mnist.train
-
-#file_save = open("ser.obj", "wb")
-#pickle.dump(myData, file_save)
-
-#file_load = open("ser.obj", "rb")
-#myLoadedData = pickle.load(file_load)
-
-#myLoadedTraicyData = TraicyData(myLoadedData.train, myLoadedData.test)
-
-#print(type(myLoadedData))
-
-#print(type(myLoadedTraicyData))
-#print(myLoadedTraicyData.train.labels)
-
-# myLoadedData = pickle.loads(data.encode("utf-8"))
-#
-# print(type(myLoadedData))
-
-
