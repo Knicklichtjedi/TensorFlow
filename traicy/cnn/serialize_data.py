@@ -40,12 +40,12 @@ def load_all_data():
             file_list.append(filename)
             labels_list.append(dir)
 
-    both_lists0 = np.column_stack((file_list,labels_list))
+    both_lists = np.column_stack((file_list,labels_list))
 
-    np.random.shuffle(both_lists0)
+    np.random.shuffle(both_lists)
 
 
-    return both_lists0
+    return both_lists
 
 
 def get_sublist(list_complete, size_train, size_eval, size_test):
@@ -110,6 +110,10 @@ def set_all_datasets():
 
 
 class TraicyData:
+
+    train = None
+    eval = None
+    test = None
 
     def __init__(self, train=None, eval=None, test=None):
         if train is not None:
