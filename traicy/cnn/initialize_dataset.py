@@ -15,6 +15,7 @@ sublist_train = []
 sublist_eval = []
 sublist_test = []
 
+
 def generator_train():
     for index in range(0, len(sublist_train)):
         image = imread(sublist_train[index][0], as_grey=True)
@@ -145,8 +146,11 @@ def parse_data():
     global sublist_train, sublist_eval, sublist_test
 
     lists = load_all_data()
-    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30,30,30)#1923, 385, 140) #49.998 Trainingsdaten, 10010 Evaluierungsdaten, 3640 Testdaten
-    train, test, eval = set_all_datasets() #funktioniert das??
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30, 30, 30)  # 1923, 385, 140
+                                                                                # 49.998 Trainingsdaten,
+                                                                                # 10010 Evaluierungsdaten,
+                                                                                # 3640 Testdaten
+    train, test, eval = set_all_datasets() # funktioniert das??
     td = TraicyData(train, test, eval)
 
     return td
