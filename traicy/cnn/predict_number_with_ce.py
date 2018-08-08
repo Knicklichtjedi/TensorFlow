@@ -1,5 +1,5 @@
 import ImageFilter_noLoad
-import load_model_with_fully_custom_estimator
+import NUMBER_load_model_with_fully_custom_estimator
 import sys
 import cv2
 import numpy as np
@@ -20,7 +20,7 @@ def predict_images(img_list):
 
         img_to_predict = image.flatten().reshape(1, 784).astype(np.float32, copy=True)
 
-        number, confidence = load_model_with_fully_custom_estimator.predict_image(img_to_predict)
+        number, confidence = NUMBER_load_model_with_fully_custom_estimator.predict_image(img_to_predict)
 
         predictions += (str(number) + ", " + str(confidence)) + "\n"
         predictions_list.append((number, confidence))

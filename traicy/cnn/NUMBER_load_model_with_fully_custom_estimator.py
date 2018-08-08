@@ -3,14 +3,14 @@ import tensorflow as tf
 from skimage.io import imread
 from skimage.util import img_as_float
 from os.path import abspath
-import train_model_with_fully_custom_estimator
+import NUMBER_train_model_with_fully_custom_estimator
 
 static_image_reference = None
-model_dir = "./model"
+model_dir = "./model_number"
 
 
 def main():
-    mnist_classifier = tf.estimator.Estimator(model_fn=train_model_with_fully_custom_estimator.cnn_model_fn,
+    mnist_classifier = tf.estimator.Estimator(model_fn=NUMBER_train_model_with_fully_custom_estimator.cnn_model_fn,
                                               model_dir=model_dir)
 
     generator_result = None
@@ -27,7 +27,7 @@ def main():
 
 
 def predict_image(image):
-    mnist_classifier = tf.estimator.Estimator(model_fn=train_model_with_fully_custom_estimator.cnn_model_fn,
+    mnist_classifier = tf.estimator.Estimator(model_fn=NUMBER_train_model_with_fully_custom_estimator.cnn_model_fn,
                                               model_dir=model_dir)
     global static_image_reference
     static_image_reference = image  # image_list[0]

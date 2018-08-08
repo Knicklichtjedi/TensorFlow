@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-
+import initialize_dataset
 
 def convolution(layer, filters):
     # Convolutional Layer
@@ -64,7 +64,7 @@ def cnn_model_fn(features, labels, mode):
     dropout = dropout_layer(dense, 0.4, mode)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=10)
+    logits = tf.layers.dense(inputs=dropout, units=26)
 
     loss = None
     predictions = None
@@ -109,18 +109,14 @@ def cnn_model_fn(features, labels, mode):
 
 def main(argv):
     # Load training and eval data
-    mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-    train_data = mnist.train.images                                 # Returns np.array
-    train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
-    eval_data = mnist.test.images                                   # Returns np.array
-    eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
+    train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="./model")
+        model_fn=cnn_model_fn, model_dir="./model_letter")
 
     # steps
-    training_steps = 1000
+    training_steps = 100
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -130,7 +126,8 @@ def main(argv):
     logging_hook = tf.train.LoggingTensorHook(
         tensors=tensors_to_log, every_n_iter=logging_steps)
 
-    # Train the model
+
+    # Train the model_number
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
@@ -143,7 +140,7 @@ def main(argv):
         steps=training_steps,
         hooks=[logging_hook])
 
-    # Evaluate the model and print results
+    # Evaluate the model_number and print results
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": eval_data},
         y=eval_labels,
@@ -157,15 +154,16 @@ def main(argv):
     print(str(result) + "  ||  " + str(result is not None))
 
     generator_result = next(result)
-    generator_result_list = list(x for x in generator_result['probabilities'])
+    generator_result_list_prob = list(x for x in generator_result['probabilities'])
 
-    for i in generator_result_list:
+    for i in generator_result_list_prob:
         print("{:.10f}".format(i*100))
+
+    print("class id: " + str(generator_result['class_ids']))
 
 
 def get_prediction_mnist_fn():
-    mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-    eval_data = mnist.test.images  # Returns np.array
+    train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
 
     features = {'x': eval_data[0].flatten()}
     labels = None # np.array([eval_labels[0]])
