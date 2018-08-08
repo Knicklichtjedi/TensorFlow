@@ -496,6 +496,19 @@ def draw_rectangle(x, y, w, h, picture, chunk_border):
             picture[y + h - contour_strength, width] = color
 
 
+def draw_red_rectangle(x, y, w, h, picture, chunk_border):
+
+    color = (1, 0, 0)
+
+    for contour_strength in range(0, chunk_border):
+        for height in range(y, y + h):
+            picture[height, x + contour_strength] = color
+            picture[height, x + w - contour_strength] = color
+        for width in range(x + contour_strength, x + w - contour_strength):
+            picture[y + contour_strength, width] = color
+            picture[y + h - contour_strength, width] = color
+
+
 def cropping(contours, img_PIL, filename, folder):
     """
     goes through all contours and creates a list of images

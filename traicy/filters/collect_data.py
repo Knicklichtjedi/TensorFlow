@@ -4,17 +4,32 @@ import glob
 
 import cv2
 from PIL import Image
-from skimage.io import imread, imsave
-from skimage.color import rgb2gray
 from skimage import filters as filters, img_as_uint, img_as_ubyte, img_as_float
-
-import ImageFilter_noLoad as im_filter
+from skimage.color import rgb2gray, gray2rgb
+from skimage.io import imread, imsave
+import ImageFilter_noLoad
 
 file_list = []
 labels_list = []
 
 data_path_raw = ""
 traicy_data_path = ""
+
+buchstaben = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+
+def get_labels_and_data():
+    ####SET PATHS####
+    path = abspath(__file__ + "/../../")  # change directory to traicy
+    traicy_data_path = path + "/cnn/TRAICY_data/"  # save in folder
+
+    ####GET ALL FILES IN A LIST####
+    for dir in buchstaben:
+        directory = data_path_raw + dir + "/"
+        for filename in glob.glob(directory + '*.jpg'):  # only jpg
+            file_list.append(filename)
+            labels_list.append(dir)
+    return file_list, labels_list
 
 
 def set_lists():
@@ -97,11 +112,12 @@ def get_contours(img, filename):
     return best_contours
 
 
-def get_cropped_image(contour, image):
+def get_cropped_image(contour, image, label, index, indexSheet):
     x, y, w, h = cv2.boundingRect(contour)
     cropped_image = image.crop((x, y, x + w, y + h))
 
-    imsave(traicy_data_path + str(x) + str(y) + str(w) + str(h) + "crop.png", img_as_uint(cropped_image))
+    imsave(traicy_data_path +  label + "/" + str(indexSheet) + str(index) + ".jpg", img_as_uint(cropped_image))
+    #print(traicy_data_path +  label + "/" + str(indexSheet) + str(index) + ".jpg")
 
     return cropped_image
 
@@ -112,26 +128,26 @@ def main():
 
     #go through all files
     if (file_list.__len__() == labels_list.__len__()):
-        for index in range(0, file_list.__len__()):
+        for index in range(90, 96): #len(file_list)  #A: 0-6 B: 6-12 C: 12-18 D: 18-24 E: 24-30 F: 30-36 G: 36-42 H: 42-48 I: 48-54 (Konturlänge 5) J: 54-60 K: 60-66 L: 66-72 M: 72-78 N: 78-84 O: 84-90 P: 90-96 !!! Q 96-102 R: 102-108 S: 108-114 T: 114-120, U: 120-126 V: 126-132 W: 132-138 X: 138-144 Y: 144-150 Z: 150-156
+            label = labels_list[index]
             binary_file = toBinary(file_list[index])
             border_file = borders(binary_file, file_list[index])
             contours = get_contours(border_file, file_list[index])
+            rgb_border_file = gray2rgb(border_file)
+
 
             cropped_images = []
             for cnt in contours:
-                crop = get_cropped_image(cnt, Image.open(file_list[index]))
+                x, y, w, h = cv2.boundingRect(cnt)
+                ImageFilter_noLoad.draw_red_rectangle(x, y, w, h, rgb_border_file, 1)
+
+                crop = get_cropped_image(cnt, Image.open(file_list[index]), label, indexCrops, index)
                 cropped_images.append(crop)
 
-            print("Anzahl der crops:" + str(cropped_images.__len__()))
-            print(labels_list[index])
+            imsave(data_path_raw +"binary/"+ "borders_" + label + str(index) + "_K_" + str(len(contours)) + ".png", img_as_uint(rgb_border_file))
 
-
- # get labels (csv textfile) for specific original image file and write an array: labels_arr
-# get image, use threshold function to create binary image
-# get letters with contours function and save the location in an array: contours_arr
-# go through labels_arr with index
-# take contours at index and save image from contours coordinates
-# take a time stamp as name and save it at a specific location for your training data, in a folder with the name of the label
+    #with open(traicy_data_path + "labels.txt", 'w') as the_file:
+    #    the_file.write(all_labels)
 
 
 if __name__ == "__main__":
