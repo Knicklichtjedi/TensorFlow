@@ -3,8 +3,7 @@ from skimage.feature import canny
 from skimage.morphology import skeletonize
 from skimage.io import imread, imsave
 from skimage.transform import rotate
-from skimage import img_as_ubyte
-from skimage import img_as_uint
+from skimage import img_as_ubyte, img_as_uint, img_as_float
 from skimage import filters as filters
 from skimage.color import rgb2hsv, hsv2rgb, rgb2gray
 # openCV
@@ -447,7 +446,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
-    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0   # count contours that fit the threshold
 
@@ -466,7 +465,7 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     img_binary_PIL = Image.fromarray(img_binary)
     #save image with drawn chunks
 
-    img_with_chunks = np.copy(originalImage)#draw Chunks at original image
+    img_with_chunks = img_as_float(np.copy(originalImage))#draw Chunks at original image
 
     if best_contours:
 
@@ -486,6 +485,19 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
 def draw_rectangle(x, y, w, h, picture, chunk_border):
 
     color = (255 / 255, 179 / 255, 0)
+
+    for contour_strength in range(0, chunk_border):
+        for height in range(y, y + h):
+            picture[height, x + contour_strength] = color
+            picture[height, x + w - contour_strength] = color
+        for width in range(x + contour_strength, x + w - contour_strength):
+            picture[y + contour_strength, width] = color
+            picture[y + h - contour_strength, width] = color
+
+
+def draw_red_rectangle(x, y, w, h, picture, chunk_border):
+
+    color = (1, 0, 0)
 
     for contour_strength in range(0, chunk_border):
         for height in range(y, y + h):
@@ -1091,7 +1103,7 @@ def read_image_with_chunks_from_location(directory):
 
     # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
-    list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, img_reading, main_folder, img_reading)
+    list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, filename, main_folder, img_reading)
 
     list_wi_length = len(list_of_work_images)
     list_wc_length = len(list_of_work_contours)

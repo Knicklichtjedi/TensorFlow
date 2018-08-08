@@ -52,8 +52,8 @@ def predict_image(img):
 
     with tf.Session() as sess:
 
-        saver = tf.train.import_meta_graph(path + "/model/CNN_MNIST.meta")
-        saver.restore(sess, tf.train.latest_checkpoint(path + "/model/"))
+        saver = tf.train.import_meta_graph(path + "/model_number/CNN_MNIST.meta")
+        saver.restore(sess, tf.train.latest_checkpoint(path + "/model_number/"))
 
         graph = tf.get_default_graph()
         x = graph.get_tensor_by_name("x:0")
@@ -74,8 +74,8 @@ def predict_image(img):
 def main():
     with tf.Session() as sess:
 
-        saver = tf.train.import_meta_graph('./model/CNN_MNIST.meta')
-        saver.restore(sess, tf.train.latest_checkpoint('./model/'))
+        saver = tf.train.import_meta_graph('./model_number/CNN_MNIST.meta')
+        saver.restore(sess, tf.train.latest_checkpoint('./model_number/'))
 
         graph = tf.get_default_graph()
         x = graph.get_tensor_by_name("x:0")
