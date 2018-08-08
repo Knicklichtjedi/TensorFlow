@@ -1,6 +1,7 @@
 #ignore all letter datas
 TRAICY_data/
 data_RAW/
+data_cut/
 
 # Exclude DEBUG files
 # traicy/DEBUG/

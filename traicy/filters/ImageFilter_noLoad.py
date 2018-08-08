@@ -117,19 +117,12 @@ def save_image_with_drawn_chunks(img):
     imsave(chunk_path + filename, img)
 
 
-def create_borders(img_read, filename, folder):
+def create_borders(img_read, filename=None, folder=None):
 
     # nd = imread(folder + filename + '_binary.png')
     nd = img_read
 
     new_name = '_borders.png'
-
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append(new_name)
-
-    newfilename = ''.join(strl)
 
     new_color = 0
 
@@ -149,12 +142,20 @@ def create_borders(img_read, filename, folder):
         for x in range(xrange - image_border, xrange):
             nd[x, y] = new_color
 
-    imsave(newfilename, nd)
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append(new_name)
+
+        newfilename = ''.join(strl)
+
+        imsave(newfilename, nd)
 
     return nd
 
 
-def create_canny_image(img_read, filename, folder):
+def create_canny_image(img_read, filename=None, folder=None):
     """
     Filters a given binary image array with the canny algorithm and saves it to a given directory
 
@@ -169,19 +170,21 @@ def create_canny_image(img_read, filename, folder):
     img_canny = canny(img_read, filter_canny_strength)
     img_conv = img_as_ubyte(img_canny)
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_canny.png')
+    if filename is not None and folder is not None:
 
-    new_filename = ''.join(strl)
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_canny.png')
 
-    imsave(new_filename, img_conv)
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_conv)
 
     return img_canny
 
 
-def create_skeleton_image(img_read, filename, folder):
+def create_skeleton_image(img_read, filename=None, folder=None):
     """
     Uses a binary image and creates a skeleton of it and saves it to a given directory
 
@@ -196,19 +199,21 @@ def create_skeleton_image(img_read, filename, folder):
     
     img_skeletonized = skeletonize(img_read)
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_skeleton.png')
+    if filename is not None and folder is not None:
 
-    new_filename = ''.join(strl)
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_skeleton.png')
 
-    imsave(new_filename, img_as_uint(img_skeletonized))
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_as_uint(img_skeletonized))
 
     return img_skeletonized
 
 
-def create_binary_image(img_read, filename, folder):
+def create_binary_image(img_read, filename=None, folder=None):
     """
         Converts a given image into a binary image via threshold comparison and saves it to a given directory
 
@@ -228,19 +233,20 @@ def create_binary_image(img_read, filename, folder):
     # Threshold comparison
     img_binary = img_gaussian < img_threshold
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_binary.png')
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_binary.png')
 
-    new_filename = ''.join(strl)
+        new_filename = ''.join(strl)
 
-    imsave(new_filename, img_as_uint(img_binary))
+        imsave(new_filename, img_as_uint(img_binary))
 
     return img_binary
 
 
-def create_greenfiltered_image(img_read, filename, folder):
+def create_greenfiltered_image(img_read, filename=None, folder=None):
 
     icol = (36, 202, 59, 76, 255, 255)  # green
 
@@ -262,14 +268,15 @@ def create_greenfiltered_image(img_read, filename, folder):
     img_hsv = rgb2hsv(frame)
     # img_shape = img_hsv.reshape()
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_binary_hsv.png')
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_binary_hsv.png')
 
-    new_filename = ''.join(strl)
+        new_filename = ''.join(strl)
 
-    imsave(new_filename, hsv2rgb(img_hsv))
+        imsave(new_filename, hsv2rgb(img_hsv))
 
     for pixel_row in img_hsv:
         for pixel_col in pixel_row:
@@ -293,14 +300,16 @@ def create_greenfiltered_image(img_read, filename, folder):
     mask_inv = cv2.bitwise_not(mask)
     #  cv2.imshow('mask_inv', mask_inv)
 
-    strl_2 = list()
-    strl_2.append(folder)
-    strl_2.append(filename)
-    strl_2.append('_binary.png')
+    if filename is not None and folder is not None:
 
-    new_filename_2 = ''.join(strl_2)
+        strl_2 = list()
+        strl_2.append(folder)
+        strl_2.append(filename)
+        strl_2.append('_binary.png')
 
-    imsave(new_filename_2, img_as_uint(mask_inv))
+        new_filename_2 = ''.join(strl_2)
+
+        imsave(new_filename_2, img_as_uint(mask_inv))
 
     img_ndarray = np.array(img_as_uint(mask_inv))
     img_gray = rgb2gray(hsv2rgb(img_ndarray))
@@ -311,17 +320,17 @@ def create_greenfiltered_image(img_read, filename, folder):
 
 def create_fillout_image(img_read, filename, folder):
     """
-                Iterates 4 times over the image-array and adds white pixels after every last white pixel inside the image
-                The form of an object will mostly be kept or even stabilised
-                At half the iterations the image will be transposed so rotating should happen afterwards maybe
+        Iterates 4 times over the image-array and adds white pixels after every last white pixel inside the image
+        The form of an object will mostly be kept or even stabilised
+        At half the iterations the image will be transposed so rotating should happen afterwards maybe
 
-                :parameter
-                    img_read: binary image array
-                    filename: name of the original image
-                    folder: directory of the new image
+        :parameter
+            img_read: binary image array
+            filename: name of the original image
+            folder: directory of the new image
 
-                :returns
-                    array of the new binary image
+        :returns
+            array of the new binary image
     """
     lastWhite = False
 
@@ -332,12 +341,10 @@ def create_fillout_image(img_read, filename, folder):
     for i in range(it):
 
         if i != 1:
-            #print(i)
             for row in test:
                 for col in range(len(row)):
 
                     if row[col] > 0:
-
 
                         row[col] = 1
 
@@ -351,7 +358,6 @@ def create_fillout_image(img_read, filename, folder):
                         row[col] = 0
                         # print('black')
 
-
                 lastWhite = False
         else:
             test = cv2.transpose(test)
@@ -363,10 +369,12 @@ def create_fillout_image(img_read, filename, folder):
     return imread(folder + filename + "_fillout" + '.png', plugin="matplotlib")
 
 
-def create_chromakey_image(img_read, filename, folder):
+def create_chromakey_image(img_read, filename=None, folder=None):
     hsv = rgb2hsv(img_read)
 
-    imsave(folder + filename + "_pre_chromakey.png", hsv)
+    if filename is not None and folder is not None:
+
+        imsave(folder + filename + "_pre_chromakey.png", hsv)
 
     for pixel_row in hsv:
         for pixel_col in pixel_row:
@@ -384,7 +392,9 @@ def create_chromakey_image(img_read, filename, folder):
                 pixel_col[1] = 1
                 pixel_col[2] = 1
 
-    imsave(folder + filename + "_post_chromakey.png", hsv)
+    if filename is not None and folder is not None:
+
+        imsave(folder + filename + "_post_chromakey.png", hsv)
 
     img_ndarray = np.array(hsv)
     img_rgb = hsv2rgb(img_ndarray)
@@ -402,14 +412,16 @@ def create_chromakey_image(img_read, filename, folder):
             else:
                 img_gray_copy[i, j] = 0
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_binary.png')
+    if filename is not None and folder is not None:
 
-    new_filename = ''.join(strl)
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_binary.png')
 
-    imsave(new_filename, img_gray_copy)
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_gray_copy)
 
     # return imread(folder + filename + '_' + 'binary' + '.png', as_grey=True)
     return img_gray_copy
@@ -441,16 +453,12 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
     :return: a list of chunks (smaller images) and a second list with their location in the big image
     """
 
-
-
-
     thresh = img_as_ubyte(img_binary) # loads image as ubyte
 
     # finds the contours and gives back the original picture and a hierarchy of the contours
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     count = 0   # count contours that fit the threshold
-
 
     best_contours = []   # save contours in a list
     for cnt in contours:
@@ -460,7 +468,6 @@ def create_chunked_image(img_binary, filename, folder, originalImage):
             best_contours.append(cnt)
     # how many contours were found?
     # print (len(best_contours))
-
 
     # open Image with PIL
     img_binary_PIL = Image.fromarray(img_binary)
@@ -528,7 +535,7 @@ def cropping(contours, img_PIL, filename, folder):
     return cropped_list
 
 
-def create_extended_chunk(image_chunk, filename, folder):
+def create_extended_chunk(image_chunk, filename=None, folder=None):
     h, w = image_chunk.shape
 
     if h > w:
@@ -541,7 +548,9 @@ def create_extended_chunk(image_chunk, filename, folder):
                 image_container[h_in_container, w_in_container] = \
                     image_chunk[h_in_container, w_in_container - extension_range]
 
-        imsave(folder + filename + "_h_extened.png", image_container)
+        if filename is not None and folder is not None:
+            imsave(folder + filename + "_h_extened.png", image_container)
+
         return image_container
 
     elif w > h:
@@ -554,15 +563,39 @@ def create_extended_chunk(image_chunk, filename, folder):
                 image_container[h_in_container, w_in_container] = \
                     image_chunk[h_in_container - extension_range, w_in_container]
 
-        imsave(folder + filename + "_w_extened.png", image_container)
+        if filename is not None and folder is not None:
+            imsave(folder + filename + "_w_extended.png", image_container)
         return image_container
 
     else:
-        imsave(folder + filename + "_q_extened.png", image_chunk)
+        if filename is not None and folder is not None:
+            imsave(folder + filename + "_q_extended.png", image_chunk)
         return image_chunk
 
 
-def create_com_image(img_read, filename, folder):
+def create_max_extended_image(image_chunk, filename=None, folder=None):
+    h, w = image_chunk.shape
+
+    h_extension = image_dimension - h
+    w_extension = image_dimension - w
+
+    h_displacement = int(h_extension/2)
+    w_displacement = int(w_extension/2)
+
+    img_container = np.zeros(image_dimension_t)
+
+    if h_extension >= 0 and w_extension >= 0:
+
+        for h_index in range(h_displacement, h):
+            for w_index in range(w_displacement, w):
+                img_container[h_index, w_index] = image_chunk[h_index - h_displacement, w_index - w_displacement]
+
+    if filename is not None and folder is not None:
+        imsave(folder + filename + "_all_extended.png", img_container)
+    return img_container
+
+
+def create_com_image(img_read, filename=None, folder=None):
     """
         Calculates the center of mass of all white pixels and moves them towards it and saves it to a given directory
 
@@ -574,13 +607,6 @@ def create_com_image(img_read, filename, folder):
         :returns
             array of the new centered image
     """
-
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_centered.png')
-
-    new_filename = ''.join(strl)
 
     img_copy = np.zeros(image_dimension_t)
 
@@ -635,7 +661,15 @@ def create_com_image(img_read, filename, folder):
         else:
             img_copy[int(element[0])][int(element[1])] = 1.0
 
-    imsave(new_filename, img_copy)
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_centered.png')
+
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_copy)
 
     return img_copy
 
@@ -659,7 +693,7 @@ def clamp_float_values(img):
     return img_np_array
 
 
-def create_scaled_image(img_read, filename, folder):
+def create_max_scaled_image(img_read, filename=None, folder=None):
     """
         Resize and change to aspect ratio of the image and save it to a given directory
 
@@ -672,12 +706,38 @@ def create_scaled_image(img_read, filename, folder):
             array of the scaled image
     """
 
-    strl = list()
-    strl.append(folder)
-    strl.append(filename)
-    strl.append('_scaled.png')
+    img_pil_array = img_read
 
-    new_filename = ''.join(strl)
+    img_cropped = img_pil_array.resize(image_dimension_t)
+    img_ndarray = np.array(img_cropped)
+
+    img_ndarray = clamp_float_values(img_ndarray)
+
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_scaled.png')
+
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_ndarray)
+
+    return img_ndarray
+
+
+def create_scaled_image(img_read, filename=None, folder=None):
+    """
+        Resize and change to aspect ratio of the image and save it to a given directory
+
+        :parameter
+            img_read: binary image array
+            filename: name of the original image
+            folder: directory of the new image
+
+        :returns
+            array of the scaled image
+    """
 
     # OLD CODE : USE IF IMAGE HAS TO KEEP ITS ASPECT RATIO
     # y_dim, x_dim, rgb = img_read.shape
@@ -709,6 +769,17 @@ def create_scaled_image(img_read, filename, folder):
 
     # reload image due to pillow using its own image class
     # return imread(newfilename)
+
+    if filename is not None and folder is not None:
+        strl = list()
+        strl.append(folder)
+        strl.append(filename)
+        strl.append('_scaled.png')
+
+        new_filename = ''.join(strl)
+
+        imsave(new_filename, img_ndarray)
+
     return img_ndarray
 
 
@@ -789,7 +860,7 @@ def rotate_image(img_read, rotation):
         return img_read
 
 
-def create_cropped_image(image, crop_border, filename, folder):
+def create_cropped_image(image, crop_border, filename=None, folder=None):
 
     image_cropped = image[crop_border:-crop_border, crop_border:-crop_border]
 
