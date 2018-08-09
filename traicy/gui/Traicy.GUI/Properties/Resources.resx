@@ -180,6 +180,9 @@
   <data name="MNIST" xml:space="preserve">
     <value>MNIST</value>
   </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>number</value>
+  </data>
   <data name="NoCameraUri" xml:space="preserve">
     <value>pack://application:,,,/Traicy.GUI;component/resources/no-camera.png</value>
   </data>
@@ -211,7 +214,7 @@
     <value>Verarbeitung...</value>
   </data>
   <data name="PythonModelPath" xml:space="preserve">
-    <value>python_resources\model_number</value>
+    <value>python_resources\</value>
   </data>
   <data name="PythonScriptPath" xml:space="preserve">
     <value>python_resources\predict_number_with_ce.py</value>

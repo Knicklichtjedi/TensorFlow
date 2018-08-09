@@ -250,6 +250,15 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die number ähnelt.
+        /// </summary>
+        internal static string ModelNumber {
+            get {
+                return ResourceManager.GetString("ModelNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die pack://application:,,,/Traicy.GUI;component/resources/no-camera.png ähnelt.
         /// </summary>
         internal static string NoCameraUri {
@@ -340,7 +349,7 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\model_number ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\ ähnelt.
         /// </summary>
         internal static string PythonModelPath {
             get {
