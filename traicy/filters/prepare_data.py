@@ -3,12 +3,12 @@ from skimage.io import imread, imsave
 from skimage.color import rgb2gray
 from skimage.filters import gaussian
 import os
-from skimage.util import img_as_float, img_as_uint, img_as_ubyte, img_as_bool
+from skimage.util import img_as_float
 import ImageFilter_noLoad as image_filter
 import numpy as np
 from skimage.morphology import skeletonize
 from PIL import Image
-import uuid
+from os.path import exists
 
 # SET PATHS
 path = abspath(__file__ + "/../../")  # change directory to traicy
@@ -17,20 +17,34 @@ data_path_prepared_data = path + "/cnn/TRAICY_data/"
 data_json_path = str(path) + "/configs/settings.json"
 
 # SET CENTER OF MASS
-center_of_mass_boolean = True
+center_of_mass_boolean = False
+
+# SET SKELETON
+skeleton_boolean = False
 
 
 def main():
     image_filter.assign_json_values(data_json_path)
 
+    print("starting preparation.")
+
     file_list, labels_list = set_lists()
     file_list_prepared, labels_list_prepared = prepare_image_data_list(file_list, labels_list,
-                                                                       center_of_mass=center_of_mass_boolean)
+                                                                       center_of_mass=center_of_mass_boolean,
+                                                                       skeleton=skeleton_boolean)
+
+    print("images are prepared.")
 
     for index in range(0, len(file_list_prepared)):
         image = file_list_prepared[index]
         label = labels_list_prepared[index]
-        imsave(data_path_prepared_data + str(label) + "_" + str(index) + "_" + str(center_of_mass_boolean) + ".png",
+
+        prepared_image_path = data_path_prepared_data + label + "/"
+
+        if not exists(prepared_image_path):
+            image_filter.create_folder(prepared_image_path)
+
+        imsave(prepared_image_path + str(label) + "_" + str(index) + "_" + str(center_of_mass_boolean) + ".png",
                image)
 
 
@@ -44,7 +58,7 @@ def create_binary_image(image, gaussian_strength=0.5, threshold=0.775):
     return img_clamped
 
 
-def prepare_image(image, center_of_mass):
+def prepare_image(image, center_of_mass, skeleton):
 
     img_binary = create_binary_image(image)
 
@@ -58,12 +72,15 @@ def prepare_image(image, center_of_mass):
     else:
         img_max_scale = image_filter.create_max_extended_image(img_scaled)
 
-    img_skeleton = img_as_float(skeletonize(img_max_scale))
+    if skeleton:
+        img_skeleton = img_as_float(skeletonize(img_max_scale))
+    else:
+        img_skeleton = np.copy(img_max_scale)
 
     return img_skeleton
 
 
-def prepare_image_data_list(file_list, labels_list, center_of_mass=False):
+def prepare_image_data_list(file_list, labels_list, center_of_mass=False, skeleton=False):
     prepared_images = list()
     prepared_labels = list()
 
@@ -73,8 +90,10 @@ def prepare_image_data_list(file_list, labels_list, center_of_mass=False):
     letter_start = letter_factor * letter_index
     letter_end = (letter_factor * letter_index) + 10
 
-    for index in range(letter_start, letter_end):
-        prepared_image = prepare_image(file_list[index], center_of_mass)
+    for index in range(0, len(file_list)):       # letter_start, letter_end
+        prepared_image = prepare_image(file_list[index], center_of_mass, skeleton)
+
+        print("image {} as {} has been prepared.".format(index, labels_list[index]))
 
         prepared_images.append(prepared_image)
         prepared_labels.append(labels_list[index])
