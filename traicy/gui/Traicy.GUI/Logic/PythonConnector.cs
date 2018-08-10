@@ -42,7 +42,8 @@ namespace Traicy.GUI.Logic
 				}
 				if (parsedPrediction.Count == 1)
 				{
-					bool isNumber = Directory.EnumerateFiles(Properties.Resources.PythonModelPath).Any(f => f.Contains(Properties.Resources.MNIST));
+					bool isNumber = Directory.GetDirectories(Properties.Resources.PythonModelPath).Any(d => d.Contains(Properties.Resources.ModelNumber));
+					//bool isNumber = Directory.EnumerateFiles(Properties.Resources.PythonModelPath).Any(f => f.Contains(Properties.Resources.MNIST));
 					stringBuilder.Append(isNumber ? Properties.Resources.FoundNumber : Properties.Resources.FoundLetter);
 
 					var number = parsedPrediction[0].PredictedValue;
