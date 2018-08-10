@@ -58,14 +58,20 @@ def cnn_model_fn(features, labels, mode):
     # Pooling Layer #2
     pool2 = pooling(conv2, 2, 2)
 
+    # Convolutional Layer #3
+    conv3 = convolution(pool2, 128)
+
+    # Pooling Layer #3
+    pool3 = pooling(conv3, 2, 2)
+
     # Dense Layer
-    dense = densely_connected(pool2, 7 * 7 * 64, 1024)
+    dense = densely_connected(pool3, 3 * 3 * 128, 1024)
 
     # Dropout layer
     dropout = dropout_layer(dense, 0.4, mode)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=26)
+    logits = tf.layers.dense(inputs=dropout, units=12)
 
     loss = None
     predictions = None
@@ -119,12 +125,14 @@ def main(argv):
     train_labels = traicy_data.train_label
     eval_labels = traicy_data.eval_label
 
+    print(train_data.shape)
+
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
         model_fn=cnn_model_fn, model_dir="./model_letter")
 
     # steps
-    training_steps = 2500
+    training_steps = 100
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -138,7 +146,7 @@ def main(argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=25,
+        batch_size=150,
         num_epochs=None,
         shuffle=True)
 
