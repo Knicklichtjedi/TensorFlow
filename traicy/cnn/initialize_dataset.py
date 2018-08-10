@@ -1,6 +1,7 @@
 import glob
 import pickle
 from os.path import abspath
+from pathlib import Path
 from random import shuffle
 from skimage.io import imread
 from skimage.util import img_as_float
@@ -86,7 +87,7 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     sublist_test = []
     s_index = 0
 
-    print(str(len(list)))
+    #(str(len(list)))
 
     indexBuch = 0
     for let in buchstaben: #für jeden buchstaben
@@ -202,7 +203,7 @@ def parse_data_as_array():
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
 
-    print (str(len(lists)) + " sublists: " + str(len(sublist_train)))
+    #print (str(len(lists)) + " sublists: " + str(len(sublist_train)))
 
     train_img = np.asarray(list(generator_train_img()), dtype=np.float32)
     eval_img = np.asarray(list(generator_eval_img()), dtype=np.float32)
@@ -214,6 +215,30 @@ def parse_data_as_array():
     return train_img, eval_img, test_img, train_label, eval_label, test_label
 
 
+def write_datafile(filename, obj):
+    with open(filename, 'wb') as f:
+        pickle.dump(obj, f)
+
+def read_datafile(filename):
+    with open(filename, 'rb') as f:
+        var = pickle.load(f)
+        return var
+
+def get_serialized_file(filename):
+    train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
+    td = TraicyData(train_img, eval_img, test_img, train_label, eval_label, test_label)
+    write_datafile(filename, td)
+
+    file = Path(filename)
+    try:
+        path = file.resolve()
+    except FileNotFoundError:
+        return False
+    else:
+        return True
+
+b = get_serialized_file("trai.cy")
+print(b)
 #train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 
 #print(next(generator_train_img()))
