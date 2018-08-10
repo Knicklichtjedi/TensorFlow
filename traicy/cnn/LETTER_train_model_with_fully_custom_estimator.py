@@ -2,6 +2,7 @@ import numpy as np
 import tensorflow as tf
 import initialize_dataset
 
+
 def convolution(layer, filters):
     # Convolutional Layer
     conv = tf.layers.conv2d(
@@ -109,14 +110,21 @@ def cnn_model_fn(features, labels, mode):
 
 def main(argv):
     # Load training and eval data
-    train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
+    # train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
+
+    traicy_data = initialize_dataset.read_datafile("trai.cy")
+
+    train_data = traicy_data.train_img
+    eval_data = traicy_data.eval_img
+    train_labels = traicy_data.train_label
+    eval_labels = traicy_data.eval_label
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
         model_fn=cnn_model_fn, model_dir="./model_letter")
 
     # steps
-    training_steps = 1000
+    training_steps = 2500
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -130,7 +138,7 @@ def main(argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=100,
+        batch_size=25,
         num_epochs=None,
         shuffle=True)
 
@@ -162,12 +170,38 @@ def main(argv):
 
 
 def get_prediction_mnist_fn():
-    train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
+    traicy_data = initialize_dataset.read_datafile("trai.cy")
+    test_data = traicy_data.test_img
+    test_labels = traicy_data.test_label
 
-    features = {'x': eval_data[0].flatten()}
-    labels = None # np.array([eval_labels[0]])
+    features = {'x': test_data[0].flatten()}
+    labels = None  # np.array([eval_labels[0]])
 
     return features, labels
+
+
+class TraicyData:
+
+    train_img = None
+    eval_img = None
+    test_img = None
+    train_label = None
+    eval_label = None
+    test_label = None
+
+    def __init__(self, train_img=None, eval_img=None, test_img=None, train_label=None, eval_label=None, test_label=None):
+        if train_img is not None:
+            self.train_img = train_img
+        if eval_img is not None:
+            self.eval_img = eval_img
+        if test_img is not None:
+            self.test_img = test_img
+        if train_label is not None:
+            self.train_label = train_label
+        if eval_label is not None:
+            self.eval_label = eval_label
+        if test_label is not None:
+            self.test_label = test_label
 
 
 if __name__ == "__main__":

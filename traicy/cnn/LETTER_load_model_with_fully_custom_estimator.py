@@ -24,7 +24,7 @@ def main():
 
     for image in image_list:
         global static_image_reference
-        static_image_reference = image # image_list[0]
+        static_image_reference = image  # image_list[0]
         generator_result = mnist_classifier.predict(input_fn=prediction_image_fn)
 
         print_generator_content(generator_result)
@@ -91,7 +91,7 @@ def print_generator_content(generator, print_loop=False):
                 for index in range(0, len(generator_result_list)):
                     confidence = generator_result_list[index]
                     print("{}: {:.10f}".format(letters[index], confidence * 100))
-                print("best: {}".format(letters[best_class_id]))
+                print("best: {} with {:.3f}".format(letters[best_class_id], generator_result_list[best_class_id] * 100))
                 print('\n')
 
             keep_print_loop = print_loop
