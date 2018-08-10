@@ -8,7 +8,37 @@ from skimage.util import img_as_float
 import numpy as np
 import tensorflow as tf
 
-buchstaben = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+buchstaben = ["A", "B", "C", "D", "E"]# "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+# list_a = []
+# list_b = []
+# list_c = []
+# list_d = []
+# list_e = []
+# list_f = []
+# list_g = []
+# list_h = []
+# list_i = []
+# list_j = []
+# list_k = []
+# list_l = []
+# list_m = []
+# list_n = []
+# list_o = []
+# list_p = []
+# list_q = []
+# list_r = []
+# list_s = []
+# list_t = []
+# list_u = []
+# list_v = []
+# list_w = []
+# list_x = []
+# list_y = []
+# list_z = []
+
+
+
+
 file_list = []  # bilddateien
 labels_list = []
 
@@ -97,6 +127,7 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
             index = 0
             found = False
             while found is not True and index < len(list):
+
                 a = list[index, 1]
                 if int(list[index, 1]) == indexBuch:
                     # sublist[s_index, 0] = list[index, 0]
@@ -211,10 +242,11 @@ def parse_data_as_array():
     lists = load_all_data()
     print("image data has been loaded.")
 
-    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 1923, 385, 140)  # 1923, 385, 140
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 2252, 192, 4)  # 1923, 385, 140
                                                                                 # 49.998 Trainingsdaten,
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
+
 
     print("sublists have been created.")
 
@@ -259,11 +291,11 @@ def get_serialized_file(filename):
         return True
 
 
-# def main():
-#
-#     # b = get_serialized_file("trai.cy")
-#     b = read_datafile("trai.cy")
-#     print(b)
+def main():
+
+    b = get_serialized_file("traicy_new.cy")
+    #b = read_datafile("trai.cy")
+    print(b)
 
 # train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 
@@ -276,6 +308,6 @@ def get_serialized_file(filename):
 # sess = tf.Session()
 # print(sess.run(iterValue))
 
-#
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()
