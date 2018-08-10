@@ -259,11 +259,11 @@ def get_serialized_file(filename):
         return True
 
 
-# def main():
-#
-#     # b = get_serialized_file("trai.cy")
-#     b = read_datafile("trai.cy")
-#     print(b)
+def main():
+
+    b = get_serialized_file("trai_nS_nC.cy")
+    # b = read_datafile("trai.cy")
+    print(b)
 
 # train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 
@@ -276,6 +276,6 @@ def get_serialized_file(filename):
 # sess = tf.Session()
 # print(sess.run(iterValue))
 
-#
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()

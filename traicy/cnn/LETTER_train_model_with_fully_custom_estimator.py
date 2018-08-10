@@ -112,7 +112,7 @@ def main(argv):
     # Load training and eval data
     # train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
 
-    traicy_data = initialize_dataset.read_datafile("trai.cy")
+    traicy_data = initialize_dataset.read_datafile("trai_wS_nC.cy")
 
     train_data = traicy_data.train_img
     eval_data = traicy_data.eval_img
@@ -170,7 +170,7 @@ def main(argv):
 
 
 def get_prediction_mnist_fn():
-    traicy_data = initialize_dataset.read_datafile("trai.cy")
+    traicy_data = initialize_dataset.read_datafile("trai_wS_nC.cy")
     test_data = traicy_data.test_img
     test_labels = traicy_data.test_label
 
