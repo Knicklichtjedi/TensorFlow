@@ -7,8 +7,8 @@ from skimage.util import img_as_float
 import numpy as np
 import tensorflow as tf
 
-buchstaben = ["A", "B"]#, "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-file_list = [] #bilddateien
+buchstaben = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+file_list = []  # bilddateien
 labels_list = []
 
 sublist_train = []
@@ -57,13 +57,14 @@ def generator_test_label():
         label = int(sublist_test[index][1])
         yield label
 
+
 def load_all_data():
-    #gives back lists
-    ####SET PATHS####
+    # gives back lists
+    # SET PATHS #
     path = abspath(__file__ + "/../../")  # change directory to traicy
     traicy_data_path = path + "/cnn/TRAICY_data/"  # save in folder
 
-    ####GET ALL FILES IN A LIST####
+    # GET ALL FILES IN A LIST #
     index = 0
     for dir in buchstaben:
         directory = traicy_data_path + dir + "/"
@@ -72,8 +73,9 @@ def load_all_data():
             labels_list.append(index)
         index+=1
 
-    both_lists = np.column_stack((file_list,labels_list))
+    both_lists = np.column_stack((file_list, labels_list))
 
+    print("shuffling data.")
     np.random.shuffle(both_lists)
 
     return both_lists
@@ -86,53 +88,62 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     sublist_test = []
     s_index = 0
 
-    print(str(len(list)))
+    print("starting sublist creation")
 
     indexBuch = 0
-    for let in buchstaben: #für jeden buchstaben
-        for count in range(size_train): #jeder buchstabe wird x mal gebraucht
+    for let in buchstaben:  # für jeden buchstaben
+        for count in range(size_train):  # jeder buchstabe wird x mal gebraucht
             index = 0
             found = False
-            while (found is not True and index < len(list)):
-                a = list[index,1]
-                if(int(list[index,1]) == indexBuch):
-                    #sublist[s_index, 0] = list[index, 0]
-                    #sublist[s_index, 1] = list[index, 1]
+            while found is not True and index < len(list):
+                a = list[index, 1]
+                if int(list[index, 1]) == indexBuch:
+                    # sublist[s_index, 0] = list[index, 0]
+                    # sublist[s_index, 1] = list[index, 1]
                     sublist_train.append((list[index, 0], list[index, 1]))
                     np.delete(list, index)
                     found = True
-                else: index += 1
+                else:
+                    index += 1
+        print("{} has been prepared.".format(let))
         indexBuch += 1
 
+    print("train data ready.")
+
     indexBuch = 0
-    for let in buchstaben: #für jeden buchstaben
-        for count in range(size_eval): #jeder buchstabe wird x mal gebraucht
+    for let in buchstaben:  # für jeden buchstaben
+        for count in range(size_eval):  # jeder buchstabe wird x mal gebraucht
             index = 0
             found = False
-            while (found is not True and index < len(list)):
-                if(int(list[index,1]) == indexBuch):
-                    #sublist[s_index, 0] = list[index, 0]
-                    #sublist[s_index, 1] = list[index, 1]
+            while found is not True and index < len(list):
+                if int(list[index, 1]) == indexBuch:
+                    # sublist[s_index, 0] = list[index, 0]
+                    # [s_index, 1] = list[index, 1]
                     sublist_eval.append((list[index, 0], list[index, 1]))
                     np.delete(list, index)
                     found = True
-                else: index += 1
+                else:
+                    index += 1
         indexBuch += 1
 
+    print("eval data ready.")
+
     indexBuch = 0
-    for let in buchstaben: #für jeden buchstaben
-        for count in range(size_test): #jeder buchstabe wird x mal gebraucht
+    for let in buchstaben:  # für jeden buchstaben
+        for count in range(size_test):  # jeder buchstabe wird x mal gebraucht
             index = 0
             found = False
-            while (found is not True and index < len(list)):
-                if(int(list[index,1]) == indexBuch):
-                    #sublist[s_index, 0] = list[index, 0]
-                    #sublist[s_index, 1] = list[index, 1]
+            while found is not True and index < len(list):
+                if int(list[index, 1]) == indexBuch:
+                    # sublist[s_index, 0] = list[index, 0]
+                    # sublist[s_index, 1] = list[index, 1]
                     sublist_test.append((list[index, 0], list[index, 1]))
                     np.delete(list, index)
                     found = True
                 else: index += 1
         indexBuch += 1
+
+    print("test data ready.")
 
     np.random.shuffle(sublist_train)
     np.random.shuffle(sublist_eval)
@@ -183,11 +194,11 @@ def parse_data():
     global sublist_train, sublist_eval, sublist_test
 
     lists = load_all_data()
-    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30, 30, 30)  # 1923, 385, 140
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 1923, 385, 140)  # 1923, 385, 140
                                                                                 # 49.998 Trainingsdaten,
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
-    train_img, eval_img, test_img, train_label, eval_label, test_label = set_all_datasets() # funktioniert das??
+    train_img, eval_img, test_img, train_label, eval_label, test_label = set_all_datasets()
     td = TraicyData(train_img, eval_img, test_img, train_label, eval_label, test_label)
 
     return td
@@ -197,12 +208,14 @@ def parse_data_as_array():
     global sublist_train, sublist_eval, sublist_test
 
     lists = load_all_data()
-    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 30, 30, 30)  # 1923, 385, 140
+    print("image data has been loaded.")
+
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 1923, 385, 140)  # 1923, 385, 140
                                                                                 # 49.998 Trainingsdaten,
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
 
-    print (str(len(lists)) + " sublists: " + str(len(sublist_train)))
+    print("sublists have been created.")
 
     train_img = np.asarray(list(generator_train_img()), dtype=np.float32)
     eval_img = np.asarray(list(generator_eval_img()), dtype=np.float32)
@@ -211,12 +224,14 @@ def parse_data_as_array():
     eval_label = np.asarray(list(generator_eval_label()), dtype=np.int32)
     test_label = np.asarray(list(generator_test_label()), dtype=np.int32)
 
+    print("generators are ready.")
+
     return train_img, eval_img, test_img, train_label, eval_label, test_label
 
 
-#train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
+# train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 
-#print(next(generator_train_img()))
+# print(next(generator_train_img()))
 
 # traicy = parse_data()
 # iterator = traicy.test_img.make_one_shot_iterator()

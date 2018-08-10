@@ -116,7 +116,7 @@ def main(argv):
         model_fn=cnn_model_fn, model_dir="./model_letter")
 
     # steps
-    training_steps = 100
+    training_steps = 1000
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -125,7 +125,6 @@ def main(argv):
 
     logging_hook = tf.train.LoggingTensorHook(
         tensors=tensors_to_log, every_n_iter=logging_steps)
-
 
     # Train the model_number
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
