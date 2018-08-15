@@ -8,7 +8,7 @@ from skimage.util import img_as_float
 import numpy as np
 import tensorflow as tf
 
-buchstaben = ["A", "B", "C", "D", "E"]# "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+buchstaben = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 # list_a = []
 # list_b = []
@@ -245,7 +245,6 @@ def parse_data_as_array():
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
 
-
     print("sublists have been created.")
 
     train_img = np.asarray(list(generator_train_img()), dtype=np.float32)
@@ -291,7 +290,7 @@ def get_serialized_file(filename):
 
 def main():
 
-    b = get_serialized_file("trai_nS_nC.cy")
+    b = get_serialized_file("trai_nS_wC.cy")
     # b = read_datafile("trai.cy")
     print(b)
 

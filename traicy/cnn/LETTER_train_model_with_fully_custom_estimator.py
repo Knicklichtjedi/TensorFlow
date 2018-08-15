@@ -2,6 +2,8 @@ import numpy as np
 import tensorflow as tf
 import initialize_dataset
 
+training_data_file = "trai_wS_nC.cy"
+
 
 def convolution(layer, filters):
     # Convolutional Layer
@@ -71,7 +73,7 @@ def cnn_model_fn(features, labels, mode):
     dropout = dropout_layer(dense, 0.4, mode)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=12)
+    logits = tf.layers.dense(inputs=dropout, units=26)
 
     loss = None
     predictions = None
@@ -97,7 +99,7 @@ def cnn_model_fn(features, labels, mode):
         loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
         # Configure the Training Op (for TRAIN mode)
-        optimizer = tf.train.AdamOptimizer(learning_rate=1e-4)
+        optimizer = tf.train.AdamOptimizer(learning_rate=1e-5)
         train_op = optimizer.minimize(
             loss=loss,
             global_step=tf.train.get_global_step())
@@ -118,21 +120,19 @@ def main(argv):
     # Load training and eval data
     # train_data, eval_data, test_data, train_labels, eval_labels, test_labels = initialize_dataset.parse_data_as_array()
 
-    traicy_data = initialize_dataset.read_datafile("trai_wS_nC.cy")
+    traicy_data = initialize_dataset.read_datafile(training_data_file)
 
     train_data = traicy_data.train_img
     eval_data = traicy_data.eval_img
     train_labels = traicy_data.train_label
     eval_labels = traicy_data.eval_label
 
-    print(train_data.shape)
-
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
         model_fn=cnn_model_fn, model_dir="./model_letter")
 
     # steps
-    training_steps = 100
+    training_steps = 1000
     logging_steps = int(training_steps / 100)
 
     # Set up logging for predictions
@@ -178,7 +178,7 @@ def main(argv):
 
 
 def get_prediction_mnist_fn():
-    traicy_data = initialize_dataset.read_datafile("trai_wS_nC.cy")
+    traicy_data = initialize_dataset.read_datafile(training_data_file)
     test_data = traicy_data.test_img
     test_labels = traicy_data.test_label
 
