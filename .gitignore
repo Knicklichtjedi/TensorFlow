@@ -1,6 +1,9 @@
 #ignore all letter datas
 TRAICY_data/
 data_RAW/
+data_cut
+images_letters/
+
 
 # Exclude DEBUG files
 # traicy/DEBUG/
@@ -8,6 +11,8 @@ data_RAW/
 # Filtered images (data)
 filtered/
 images_green/
+image_green/
+chunked/
 
 # Visual Studio
 bin/

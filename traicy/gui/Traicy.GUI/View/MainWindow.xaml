@@ -35,8 +35,8 @@
         <Rectangle Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Fill="#FFB300" Height="4"/>
 
         <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Background="gray"></Border>
-		<Image Margin="10,10" Grid.Row="2" Grid.Column="0" x:Name="WebcamVideo" Stretch="Uniform" Source="{Binding LiveVideo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-		<Image Margin="10,10" Grid.Row="2" Grid.Column="1" x:Name="WebCamPicture" Stretch="Uniform" Source="{Binding LiveImage, Mode= TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+		<Image Margin="10,10" Grid.Row="2" Grid.Column="0" x:Name="WebcamVideo" Stretch="Uniform" Source="{Binding LiveVideo}"/>
+		<Image Margin="10,10" Grid.Row="2" Grid.Column="1" x:Name="WebCamPicture" Stretch="Uniform" Source="{Binding LiveImage}"/>
 		<Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ConnectButtonText, Mode=TwoWay}" Width="200px" Height="20px" Name="ConnectButton" HorizontalAlignment="Center" Command="{Binding ButtonConnectWebcamClickCommand}"></Button>
 
 		<Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Command="{Binding ButtonStartObjectDetectionClickCommand}" Content="{Binding StartObjectDetectionButtonText, Mode=TwoWay}"></Button>

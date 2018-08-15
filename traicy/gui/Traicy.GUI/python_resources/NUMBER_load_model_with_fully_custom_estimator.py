@@ -6,7 +6,7 @@ from os.path import abspath
 import NUMBER_train_model_with_fully_custom_estimator
 
 static_image_reference = None
-model_dir = "./model_number"
+model_dir = abspath("./python_resources/model_number/")
 
 
 def main():

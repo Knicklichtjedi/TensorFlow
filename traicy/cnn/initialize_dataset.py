@@ -10,7 +10,6 @@ import tensorflow as tf
 
 buchstaben = ["T", "R", "A", "I", "C", "Y"]#["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
-
 file_list = []  # bilddateien
 labels_list = []
 
@@ -228,7 +227,6 @@ def parse_data_as_array():
                                                                                 # 49.998 Trainingsdaten,
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
-
 
     print("sublists have been created.")
 

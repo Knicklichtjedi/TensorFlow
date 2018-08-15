@@ -17,10 +17,7 @@ def main():
     mnist_classifier = tf.estimator.Estimator(model_fn=LETTER_train_model_with_fully_custom_estimator.cnn_model_fn,
                                               model_dir=model_dir)
 
-    generator_result = None
     image_list = load_cust_images()
-
-    print(len(image_list))
 
     for image in image_list:
         global static_image_reference
