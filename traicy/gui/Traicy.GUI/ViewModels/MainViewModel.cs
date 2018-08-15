@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using MetriCam;
 using Microsoft.Win32;
 using Traicy.GUI.Commands;
@@ -125,9 +126,22 @@ namespace Traicy.GUI.ViewModels
 					imagePath = absoluteFilteredImagePath;
 				}
 
+				//disconnect camera to avoid problems with backgroundworker while doing object detection
+				if (_camera.IsConnected())
+				{
+					_camera.Disconnect();
+				}
+
+
 				PredictImageFromPath(imagePath);
 
 				await UpdateObjectDetectionButtonAsTask(Properties.Resources.StartObjectDetection); //processing stopped
+
+				//connect camera if it is was started before object detection
+				if (!_isImageFromDisk)
+				{
+					_camera.Connect();
+				}
 			}
 			else
 			{
@@ -238,8 +252,7 @@ namespace Traicy.GUI.ViewModels
 			{
 				if (!_camera.IsConnected())
 				{
-					_camera.Connect();
-					ConnectButtonText = Properties.Resources.DisconnectWebcam;
+					ConnectWebcam();
 					_isImageFromDisk = false;
 
 					_backgroundWorker.RunWorkerAsync();
@@ -267,17 +280,24 @@ namespace Traicy.GUI.ViewModels
 		{
 			try
 			{
-				OpenFileDialog openFileDialog =
-					new OpenFileDialog { Filter = Properties.Resources.ImageFilterOpenFileDialog };
-
-				if (openFileDialog.ShowDialog() == true)
+				if (_camera.IsConnected())
 				{
-					string fileName = openFileDialog.FileName;
-					LiveVideo = new BitmapImage(new Uri(fileName));
-					_imageFromDisk = fileName;
+					MessageBox.Show(Properties.Resources.DisconnectWebcamFirst, Properties.Resources.Attention, MessageBoxButton.OK, MessageBoxImage.Warning);
 				}
+				else
+				{
+					OpenFileDialog openFileDialog =
+							new OpenFileDialog { Filter = Properties.Resources.ImageFilterOpenFileDialog };
 
-				_isImageFromDisk = true;
+					if (openFileDialog.ShowDialog() == true)
+					{
+						string fileName = openFileDialog.FileName;
+						LiveVideo = new BitmapImage(new Uri(fileName));
+						_imageFromDisk = fileName;
+					}
+
+					_isImageFromDisk = true;
+				}
 
 			}
 			catch (FileFormatException fileFormatException)
@@ -324,8 +344,7 @@ namespace Traicy.GUI.ViewModels
 		{
 			try
 			{
-				_camera.Disconnect();
-				ConnectButtonText = Properties.Resources.ConnectWebcam;
+				DisconnectWebcam();
 
 				LiveVideo = new BitmapImage(new Uri(Properties.Resources.NoCameraUri));
 			}
@@ -334,7 +353,6 @@ namespace Traicy.GUI.ViewModels
 				Logger.Log(exception.Message);
 			}
 		}
-
 
 		/// <summary>
 		/// Is invoked while the backgroundworker is doing work.
@@ -348,25 +366,15 @@ namespace Traicy.GUI.ViewModels
 			{
 				try
 				{
-					_camera.Update();
-
-					//convert camera image (bitmap) to imagesource that is freezable (fixed image) 
-					Freezable webcamFrame = WebcamHelper.ImageSourceForBitmap(_camera.CalcBitmap()).GetAsFrozen();
-
-					void UpdateWebCamVideoImageSource()
+					if (_camera.IsConnected())
 					{
-						try
-						{
-							_backgroundWorker.ReportProgress(0, webcamFrame);
-						}
-						catch (Exception exception)
-						{
-							Logger.Log(exception.Message);
-						}
-					}
+						_camera.Update();
 
-					//use Dispatcher to update the objects in the UI from non-UI thread (backgroundWorker)
-					LiveVideo.Dispatcher.Invoke(UpdateWebCamVideoImageSource);
+						//convert camera image (bitmap) to imagesource that is freezable (fixed image) 
+						Freezable webcamFrame = WebcamHelper.ImageSourceForBitmap(_camera.CalcBitmap()).GetAsFrozen();
+
+						_backgroundWorker.ReportProgress(0, webcamFrame);
+					}
 				}
 				catch (Exception exception)
 				{
@@ -375,5 +383,24 @@ namespace Traicy.GUI.ViewModels
 				}
 			}
 		}
+
+		/// <summary>
+		/// Connects the webcam and updates the GUI as user feedback.
+		/// </summary>
+		private void ConnectWebcam()
+		{
+			_camera.Connect();
+			ConnectButtonText = Properties.Resources.DisconnectWebcam;
+		}
+
+		/// <summary>
+		/// Disconnects the webcam and updates the GUI as user feedback.
+		/// </summary>
+		private void DisconnectWebcam()
+		{
+			_camera.Disconnect();
+			ConnectButtonText = Properties.Resources.ConnectWebcam;
+		}
+
 	}
 }

@@ -106,6 +106,15 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bitte trennen Sie zuerst die Verbindung zur Kamera, bevor Sie mit der Verarbeitung fortfahren! ähnelt.
+        /// </summary>
+        internal static string DisconnectWebcamFirst {
+            get {
+                return ResourceManager.GetString("DisconnectWebcamFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Fehler ähnelt.
         /// </summary>
         internal static string Error {

@@ -132,6 +132,9 @@
   <data name="DisconnectWebcam" xml:space="preserve">
     <value>Verbindung trennen</value>
   </data>
+  <data name="DisconnectWebcamFirst" xml:space="preserve">
+    <value>Bitte trennen Sie zuerst die Verbindung zur Kamera, bevor Sie mit der Verarbeitung fortfahren!</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>
