@@ -15,9 +15,6 @@ def predict_images(img_list):
     for index in range(0, len(img_list)):
         image = img_list[index]
 
-        path = abspath(__file__ + "/../../") + "/data/image_green/"
-        imsave(path + "binary " + str(index) + ".png", image)
-
         img_to_predict = image.flatten().reshape(1, 784).astype(np.float32, copy=True)
 
         number, confidence = NUMBER_load_model_with_fully_custom_estimator.predict_image(img_to_predict)
@@ -39,7 +36,7 @@ def add_results_to_image(img_with_chunks, img_list, contour_list, predictions_li
         # font = ImageFont.truetype("Raleway-Regular.ttf", 24)          # try to load raleway
         font = ImageFont.truetype("GOTHIC.TTF", 24)                     # try to load century gothic
     except OSError:
-        pass
+        print("")
 
     if font is None:
         font = ImageFont.load_default().font
@@ -96,7 +93,7 @@ def main():
     if len(sys.argv) > 1:
         image_path = sys.argv[1]        # G:\Projekte\GitHub\TensorFlow\TensorFlow\traicy\data\image_green\test0.png
     else:
-        raise Exception("No path was given via system arguments!")
+        print("")
 
     if image_path is not None:
 
@@ -104,14 +101,14 @@ def main():
 
         if len(img_list) == len(contour_list):
             if len(img_list) == 0:
-                raise Exception("No greenscreen result!")
+                print("")
 
             predictions_list, predictions = predict_images(img_list)
             add_results_to_image(img_with_chunks, img_list, contour_list, predictions_list)
 
             print(predictions)
         else:
-            raise Exception("the length of the image list and the contour list is not equal!")
+            print("")
 
 
 if __name__ == "__main__":
