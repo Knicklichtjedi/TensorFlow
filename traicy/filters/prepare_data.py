@@ -17,7 +17,7 @@ data_path_prepared_data = path + "/cnn/TRAICY_data/"
 data_json_path = str(path) + "/configs/settings.json"
 
 # SET CENTER OF MASS
-center_of_mass_boolean = False
+center_of_mass_boolean = True
 
 # SET SKELETON
 skeleton_boolean = False
@@ -44,8 +44,8 @@ def main():
         if not exists(prepared_image_path):
             image_filter.create_folder(prepared_image_path)
 
-        imsave(prepared_image_path + str(label) + "_" + str(index) + "_" + str(center_of_mass_boolean) + ".png",
-               image)
+        imsave(prepared_image_path + str(label) + "_" + str(index) + "_" + str(skeleton_boolean)
+               + "_" + str(center_of_mass_boolean) + ".png", image)
 
 
 def create_binary_image(image, gaussian_strength=0.5, threshold=0.775):
