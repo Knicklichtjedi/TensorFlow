@@ -111,7 +111,7 @@ namespace Traicy.GUI.ViewModels
 		private async Task StartObjectDetection()
 		{
 			//if the webcam has been connected or the user has choosen an image from disk
-			if (_camera.IsConnected() || LiveVideo != null)
+			if (_camera.IsConnected() || _isImageFromDisk)
 			{
 				await UpdateObjectDetectionButtonAsTask(Properties.Resources.Processing); //processing
 				string imagePath;

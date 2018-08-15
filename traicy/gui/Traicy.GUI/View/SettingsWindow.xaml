@@ -46,6 +46,7 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"></RowDefinition>
 						<RowDefinition Height="Auto"></RowDefinition>
+						<RowDefinition Height="Auto"></RowDefinition>
 					</Grid.RowDefinitions>
 
 					<Label  Grid.Column="0" Grid.Row="0" Content="Sprachausgabe:" HorizontalAlignment="Right" Margin="5,5" ></Label>
@@ -54,7 +55,10 @@
 					<Label Grid.Column="0" Grid.Row="1" Content="Python-Interpreter:" HorizontalAlignment="Right" Margin="5,5"></Label>
 					<TextBox Grid.Column="1" Grid.Row="1"  Name="ChoosePythonInterpreterTextBox" Text="{Binding PythonInterpreterText, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,5"></TextBox>
 					<Button Grid.Column="2" Grid.Row="1" Width="20px" Height="20px" Name="ChoosePythonInterpreterButton" Command="{Binding ChoosePythonInterpreterButtonClickCommand}" Content="..." Margin="5,5"></Button>
-				</Grid>
+
+                    <Label  Grid.Column="0" Grid.Row="2" Content="TensorFlow-Modell:" HorizontalAlignment="Right" Margin="5,5" ></Label>
+                    <ToggleButton Grid.Column="1" Grid.Row="2" Height="20px" Name="ButtonTFModel" Command="{Binding ToggleTFModelButtonClickCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Content="{Binding TFModelMode, Mode=TwoWay}" Margin="5,5" Width="60px" HorizontalAlignment="Left"></ToggleButton>
+                </Grid>
 
 			</GroupBox>
 			<GroupBox Header="Python Filter" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="5,10">

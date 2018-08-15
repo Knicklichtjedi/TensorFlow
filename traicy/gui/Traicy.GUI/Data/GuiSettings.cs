@@ -9,5 +9,7 @@
         public bool TextToSpeechIsEnabled { get; set; }
         [Newtonsoft.Json.JsonProperty(PropertyName = "python_interpreter_path")]
         public string PythonInterpreterPath { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "tf_model_mode")]
+        public string TFModelMode { get; set; }
     }
 }

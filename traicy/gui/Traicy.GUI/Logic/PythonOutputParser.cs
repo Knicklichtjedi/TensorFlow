@@ -29,21 +29,41 @@ namespace Traicy.GUI.Logic
 		private static Prediction ParseToPrediction(string toParse)
 	    {
 		    var parsedLine = Parse(toParse);
-		    Prediction prediction = new Prediction
-		    {
-			    PredictedValue = parsedLine[0],
-			    PredictionPercentage = parsedLine[1]
+            Prediction prediction = new Prediction
+            {
+                PredictedValue = parsedLine[0],
+                PredictionPercentage = ParsePercentage(parsedLine[1])
 		    };
 
 		    return prediction;
 	    }
 
-		/// <summary>
-		/// Converts a string to a list of strings. The string is split and parsed to a string array, which is converted into a list.
-		/// </summary>
-		/// <param name="toParse">String that is parsed.</param>
-		/// <returns>A list of strings.</returns>
-		public static List<string> ParseStringToList(string toParse)
+        /// <summary>
+        /// Formats a percentage value with the style "XX.XX" to "XX Komma X X" for the TTS integration. 
+        /// </summary>
+        /// <param name="toParse">Given string of the percentage to format.</param>
+        /// <returns>The formatted string that contains the probability.</returns>
+        private static string ParsePercentage(string toParse)
+        {
+            string[] splitted = toParse.Split('.');
+            char[] postComma = splitted[1].ToCharArray();
+
+            string stringForTTS = splitted[0] + " Komma";
+
+            foreach(char c in postComma)
+            {
+                stringForTTS += " " + c;
+            }
+
+            return stringForTTS;
+        }
+
+        /// <summary>
+        /// Converts a string to a list of strings. The string is split and parsed to a string array, which is converted into a list.
+        /// </summary>
+        /// <param name="toParse">String that is parsed.</param>
+        /// <returns>A list of strings.</returns>
+        public static List<string> ParseStringToList(string toParse)
         {
             var parsedLoadingString = Parse(toParse);
 
@@ -101,5 +121,15 @@ namespace Traicy.GUI.Logic
 	    {
 		    return isEnabled ? Properties.Resources.On : Properties.Resources.Off;
 	    }
+
+        /// <summary>
+        /// Converts a boolean to a string. If the value is true the string will be "number", otherwise it will be "letter".
+        /// </summary>
+        /// <param name="isEnabled">Boolean value that represents if a control is enabled.</param>
+        /// <returns>The converted string.</returns>
+        public static string ParseToModelMode(bool isEnabled)
+        {
+            return isEnabled ? Properties.Resources.ModelNumber : Properties.Resources.ModelLetter;
+        }
     }
 }

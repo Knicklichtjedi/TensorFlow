@@ -259,6 +259,15 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die letter ähnelt.
+        /// </summary>
+        internal static string ModelLetter {
+            get {
+                return ResourceManager.GetString("ModelLetter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die number ähnelt.
         /// </summary>
         internal static string ModelNumber {
@@ -331,11 +340,20 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Prozent ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die  Prozent ähnelt.
         /// </summary>
         internal static string Percent {
             get {
                 return ResourceManager.GetString("Percent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die .  ähnelt.
+        /// </summary>
+        internal static string Point {
+            get {
+                return ResourceManager.GetString("Point", resourceCulture);
             }
         }
         
@@ -367,7 +385,7 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\predict_number_with_ce.py ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die python_resources\predict_with_ce.py ähnelt.
         /// </summary>
         internal static string PythonScriptPath {
             get {

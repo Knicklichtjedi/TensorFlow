@@ -7,10 +7,13 @@ import LETTER_train_model_with_fully_custom_estimator
 import glob
 
 static_image_reference = None
-model_dir = "./model_letter"
+model_dir = abspath("./python_resources/model_letter/")
+model_dir_main = "./model_letter"
 
-letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-           "W", "X", "Y", "Z"]
+# letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+#            "W", "X", "Y", "Z"]
+
+letters = ["T", "R", "A", "I", "C", "Y"]
 
 
 def main():

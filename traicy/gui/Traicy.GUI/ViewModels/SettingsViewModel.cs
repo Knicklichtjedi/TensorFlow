@@ -45,8 +45,21 @@ namespace Traicy.GUI.ViewModels
 			}
 		}
 
-		/*-------------------------image settings--------------------------*/
-		private string _dimensionText;
+        private string _tfModelMode;
+        public string TFModelMode
+        {
+            get => _tfModelMode;
+            set
+            {
+                if (_tfModelMode == value)
+                    return;
+                _tfModelMode = value;
+                OnPropertyChanged(nameof(TFModelMode));
+            }
+        }
+
+        /*-------------------------image settings--------------------------*/
+        private string _dimensionText;
 		public string DimensionText
 		{
 			get => _dimensionText;
@@ -274,11 +287,13 @@ namespace Traicy.GUI.ViewModels
 		/*-------------------------commands--------------------------*/
 		private ICommand _toggleSpeechButtonClickCommand;
 		private ICommand _choosePythonInterpreterButtonClickCommand;
+		private ICommand _toggleTFModelButtonClickCommand;
 		private ICommand _saveSettingsButtonClickCommand;
 
 		public ICommand ToggleSpeechButtonClickCommand => _toggleSpeechButtonClickCommand ?? (_toggleSpeechButtonClickCommand = new DelegateCommand(ClickToggleSpeechButton));
 		public ICommand ChoosePythonInterpreterButtonClickCommand => _choosePythonInterpreterButtonClickCommand ?? (_choosePythonInterpreterButtonClickCommand = new DelegateCommand(ChoosePythonInterpreterButton));
-		public ICommand SaveSettingsButtonClickCommand => _saveSettingsButtonClickCommand ?? (_saveSettingsButtonClickCommand = new DelegateCommand(SaveSettings));
+		public ICommand ToggleTFModelButtonClickCommand => _toggleTFModelButtonClickCommand ?? (_toggleTFModelButtonClickCommand = new DelegateCommand(ClickTFModelModeButton));
+        public ICommand SaveSettingsButtonClickCommand => _saveSettingsButtonClickCommand ?? (_saveSettingsButtonClickCommand = new DelegateCommand(SaveSettings));
 
 		/// <summary>
 		/// Sets (and converts if necessary) all settings loaded from the settings model to each of the binded properties of the view so that the settings are displayed in the settings window.
@@ -289,6 +304,7 @@ namespace Traicy.GUI.ViewModels
 
 			//set gui settings
 			TextToSpeechEnabled = PythonOutputParser.ParseToString(_jsonSettingsModel.GuiSettings.TextToSpeechIsEnabled);
+			TFModelMode = _jsonSettingsModel.GuiSettings.TFModelMode;
 			PythonInterpreterText = _jsonSettingsModel.GuiSettings.PythonInterpreterPath;
 
 			//set image settings
@@ -332,12 +348,25 @@ namespace Traicy.GUI.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// This method is Invoked when the ToggleSpeechButtonClickCommand is executed.
-		/// Sets the Text-To-Speech setting according to the status of the TextToSpeechButton in the settings window.
-		/// </summary>
-		/// <param name="obj">Command parameter that indicates whether the Text-To-Speech setting is enabled or disabled.</param>
-		private void ClickToggleSpeechButton(object obj)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        private void ClickTFModelModeButton(object obj)
+        {
+            var isEnabled = (bool)obj;
+            //toggle between 
+            TFModelMode = PythonOutputParser.ParseToModelMode(isEnabled);
+            _jsonSettingsModel.GuiSettings.TFModelMode = TFModelMode;
+            SettingsHaveBeenSaved = false;
+        }
+
+        /// <summary>
+        /// This method is Invoked when the ToggleSpeechButtonClickCommand is executed.
+        /// Sets the Text-To-Speech setting according to the status of the TextToSpeechButton in the settings window.
+        /// </summary>
+        /// <param name="obj">Command parameter that indicates whether the Text-To-Speech setting is enabled or disabled.</param>
+        private void ClickToggleSpeechButton(object obj)
 		{
 			var isEnabled = (bool) obj;
 			//toggle between 

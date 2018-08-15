@@ -83,9 +83,7 @@ def load_all_data():
         listenliste = np.column_stack((list_file, list_label))
         np.random.shuffle(listenliste)
         size = len(listenliste)
-        print(listenliste)
         for indexlist in range(0,size):
-            print("Hallo!" + str(listenliste[indexlist, 0]))
             both_lists.append((listenliste[indexlist, 0], listenliste[indexlist, 1]))
 
         index+=1
@@ -108,8 +106,8 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     print("starting sublist creation.")
     indexBuch = 0
     for let in buchstaben:  # für jeden buchstaben
-        for count in range(int(size_train/26)):  # jeder buchstabe wird x mal gebraucht
-            index = int(0+(indexBuch*(size_train/26)))
+        for count in range(int(size_train)):  # jeder buchstabe wird x mal gebraucht
+            index = int(indexBuch*size_train)
             found = False
             while found is not True and index < len(liste):
 
@@ -129,8 +127,8 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
 
     indexBuch = 0
     for let in buchstaben:  # für jeden buchstaben
-        for count in range(int(size_train / 26)):  # jeder buchstabe wird x mal gebraucht
-            index = int(0 + (indexBuch * (size_train / 26)))
+        for count in range(int(size_eval)):  # jeder buchstabe wird x mal gebraucht
+            index = int(indexBuch * size_eval)
             found = False
             while found is not True and index < len(liste):
                 if int(liste[index][1]) == indexBuch:
@@ -147,8 +145,8 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
 
     indexBuch = 0
     for let in buchstaben:  # für jeden buchstaben
-        for count in range(int(size_train / 26)):  # jeder buchstabe wird x mal gebraucht
-            index = int(0 + (indexBuch * (size_train / 26)))
+        for count in range(int(size_test)):  # jeder buchstabe wird x mal gebraucht
+            index = int(indexBuch * (size_test))
             found = False
             while found is not True and index < len(liste):
                 if int(liste[index][1]) == indexBuch:
@@ -223,7 +221,7 @@ def parse_data_as_array():
     lists = load_all_data()
     print("image data has been loaded.")
 
-    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 2252, 208, 4)  # 1923, 385, 140
+    sublist_train, sublist_eval, sublist_test = get_sublist(lists, 2236, 208, 4)  # 1923, 385, 140
                                                                                 # 49.998 Trainingsdaten,
                                                                                 # 10010 Evaluierungsdaten,
                                                                                 # 3640 Testdaten
@@ -273,9 +271,10 @@ def get_serialized_file(filename):
 
 def main():
 
-    b = get_serialized_file("trai.cy")
-    #b = read_datafile("trai.cy")
-    print(b)
+    b = get_serialized_file("traicybd.cy")
+    b = read_datafile("traicybd.cy")
+    print(b.train_label, b.eval_label, b.test_label)
+    #print(b)
 
 # train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 

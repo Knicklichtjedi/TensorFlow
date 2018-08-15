@@ -23,18 +23,18 @@ namespace Traicy.GUI.Logic
 				Canny = 0.5f,
 				BinaryGauss = 0.5f,
 				BinaryThreshold = 0.5f,
-				GreenBrightness = 0.5f,
-				GreenHigh = 160,
-				GreenLow = 60,
-				GreenSaturation = 0.25f,
-				MinimalOutlineSizeChunking = 90000,
+				GreenBrightness = 0.25f,
+				GreenHigh = 170,
+				GreenLow = 50,
+				GreenSaturation = 0.5f,
+				MinimalOutlineSizeChunking = 9000,
 				Schmiering = 2,
 				ChunkBorder = 5
 			};
 
-			GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, PythonInterpreterPath = Properties.Resources.StandardPythonInterpreterPath };
+			GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, PythonInterpreterPath = Properties.Resources.StandardPythonInterpreterPath, TFModelMode = Properties.Resources.ModelNumber };
 
-			ImageSettings imageSettings = new ImageSettings { Border = 2, Dimension = 28, DimensionSmall = 27 };
+			ImageSettings imageSettings = new ImageSettings { Border = 2, Dimension = 28, DimensionSmall = 26 };
 
 			List<string> loadingPictureStrings = new List<string> { Properties.Resources.ImageTypePNG, Properties.Resources.ImageTypeJPG };
 			LoadingSettings loadingSettings = new LoadingSettings { PossibleImageFileTypes = loadingPictureStrings };
@@ -120,5 +120,18 @@ namespace Traicy.GUI.Logic
 			}
 			return GetSettings().GuiSettings.TextToSpeechIsEnabled;
 		}
-	}
+
+        /// <summary>
+		/// Returns the information which TFModelMode is set from the cached settings or reads them if there aren't any cached settings.
+		/// </summary>
+		/// <returns>Information which TFModelMode is set as string.</returns>
+        public string GetTFModelMode()
+        {
+            if (CachedSettings != null)
+            {
+                return CachedSettings.GuiSettings.TFModelMode;
+            }
+            return GetSettings().GuiSettings.TFModelMode;
+        }
+    }
 }

@@ -171,66 +171,108 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="python_resources\initialize_dataset.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\LETTER_load_model_with_fully_custom_estimator.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\LETTER_train_model_with_fully_custom_estimator.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="python_resources\NUMBER_load_model_with_fully_custom_estimator.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="python_resources\NUMBER_train_model_with_fully_custom_estimator.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="python_resources\predict_number_with_ce.py">
+    <Content Include="python_resources\predict_with_ce.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="python_resources\model_number\checkpoint">
+    <None Include="python_resources\model_letter\checkpoint">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\eval\events.out.tfevents.1533048112.DESKTOP-R3FL427">
+    </None>
+    <None Include="python_resources\model_letter\eval\events.out.tfevents.1534334019.LAPTOP-E5MCRBUP">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\eval\events.out.tfevents.1533048198.DESKTOP-R3FL427">
+    </None>
+    <None Include="python_resources\model_letter\events.out.tfevents.1534333978.LAPTOP-E5MCRBUP">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\events.out.tfevents.1533048097.DESKTOP-R3FL427">
+    </None>
+    <None Include="python_resources\model_letter\graph.pbtxt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\events.out.tfevents.1533048127.DESKTOP-R3FL427">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1.data-00000-of-00001">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\graph.pbtxt">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1.index">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1.data-00000-of-00001">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1.meta">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1.index">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1000.data-00000-of-00001">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1.meta">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1000.index">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1000.data-00000-of-00001">
+    </None>
+    <None Include="python_resources\model_letter\model.ckpt-1000.meta">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1000.index">
+    </None>
+    <None Include="python_resources\model_number\checkpoint">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1000.meta">
+    </None>
+    <None Include="python_resources\model_number\eval\events.out.tfevents.1533048112.DESKTOP-R3FL427">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-10000.data-00000-of-00001">
+    </None>
+    <None Include="python_resources\model_number\eval\events.out.tfevents.1533048198.DESKTOP-R3FL427">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-10000.index">
+    </None>
+    <None Include="python_resources\model_number\events.out.tfevents.1533048097.DESKTOP-R3FL427">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-10000.meta">
+    </None>
+    <None Include="python_resources\model_number\events.out.tfevents.1533048127.DESKTOP-R3FL427">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1001.data-00000-of-00001">
+    </None>
+    <None Include="python_resources\model_number\graph.pbtxt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1001.index">
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1.data-00000-of-00001">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\model_number\model.ckpt-1001.meta">
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1.index">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1.meta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1000.data-00000-of-00001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1000.index">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1000.meta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-10000.data-00000-of-00001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-10000.index">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-10000.meta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1001.data-00000-of-00001">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1001.index">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="python_resources\model_number\model.ckpt-1001.meta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="resources\icons8-checkmark-80.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -243,9 +285,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="python_resources\JSONSettings.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\NUMBER_load_model_with_fully_custom_estimator.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="python_resources\ImageFilter_noLoad.py">

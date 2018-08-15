@@ -183,6 +183,9 @@
   <data name="MNIST" xml:space="preserve">
     <value>MNIST</value>
   </data>
+  <data name="ModelLetter" xml:space="preserve">
+    <value>letter</value>
+  </data>
   <data name="ModelNumber" xml:space="preserve">
     <value>number</value>
   </data>
@@ -208,7 +211,10 @@
     <value>An</value>
   </data>
   <data name="Percent" xml:space="preserve">
-    <value>Prozent</value>
+    <value> Prozent</value>
+  </data>
+  <data name="Point" xml:space="preserve">
+    <value>. </value>
   </data>
   <data name="Probability" xml:space="preserve">
     <value> mit einer Wahrscheinlichkeit von </value>
@@ -220,7 +226,7 @@
     <value>python_resources\</value>
   </data>
   <data name="PythonScriptPath" xml:space="preserve">
-    <value>python_resources\predict_number_with_ce.py</value>
+    <value>python_resources\predict_with_ce.py</value>
   </data>
   <data name="StandardPythonInterpreterPath" xml:space="preserve">
     <value>C:\Users\Eva\Anaconda3\envs\customTFLearn\python.exe</value>

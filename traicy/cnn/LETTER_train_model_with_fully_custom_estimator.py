@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 import initialize_dataset
 
-training_data_file = "trai_wS_nC.cy"
+training_data_file = "trai.cy"
 
 
 def convolution(layer, filters):
@@ -73,7 +73,7 @@ def cnn_model_fn(features, labels, mode):
     dropout = dropout_layer(dense, 0.4, mode)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=26)
+    logits = tf.layers.dense(inputs=dropout, units=6)
 
     loss = None
     predictions = None
@@ -99,7 +99,7 @@ def cnn_model_fn(features, labels, mode):
         loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
         # Configure the Training Op (for TRAIN mode)
-        optimizer = tf.train.AdamOptimizer(learning_rate=1e-5)
+        optimizer = tf.train.AdamOptimizer(learning_rate=1e-4)
         train_op = optimizer.minimize(
             loss=loss,
             global_step=tf.train.get_global_step())
@@ -146,7 +146,7 @@ def main(argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=150,
+        batch_size=100,
         num_epochs=None,
         shuffle=True)
 

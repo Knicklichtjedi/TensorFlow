@@ -32,8 +32,9 @@ namespace Traicy.GUI.Logic
 			if (!string.IsNullOrEmpty(result))
 			{
 				var parsedPrediction = PythonOutputParser.ParseToListOfPredictions(result);
-
-				StringBuilder stringBuilder = new StringBuilder();
+                //bool isNumber = Directory.GetDirectories(Properties.Resources.PythonModelPath).Any(d => d.Contains(Properties.Resources.ModelNumber));
+                bool isNumber = new SettingsController().GetTFModelMode() == Properties.Resources.ModelNumber ? true : false;
+                StringBuilder stringBuilder = new StringBuilder();
 
 				if (parsedPrediction.Count == 0)
 				{
@@ -42,8 +43,6 @@ namespace Traicy.GUI.Logic
 				}
 				if (parsedPrediction.Count == 1)
 				{
-					bool isNumber = Directory.GetDirectories(Properties.Resources.PythonModelPath).Any(d => d.Contains(Properties.Resources.ModelNumber));
-					//bool isNumber = Directory.EnumerateFiles(Properties.Resources.PythonModelPath).Any(f => f.Contains(Properties.Resources.MNIST));
 					stringBuilder.Append(isNumber ? Properties.Resources.FoundNumber : Properties.Resources.FoundLetter);
 
 					var number = parsedPrediction[0].PredictedValue;
@@ -62,8 +61,7 @@ namespace Traicy.GUI.Logic
 					string numberOfChunksFound = parsedPrediction.Count.ToString();
 					stringBuilder.Append(numberOfChunksFound);
 
-					bool isNumber = Directory.EnumerateFiles(Properties.Resources.PythonModelPath).Any(f => f.Contains(Properties.Resources.MNIST));
-					stringBuilder.Append(isNumber ? Properties.Resources.FoundNumbers : Properties.Resources.FoundLetters);
+                    stringBuilder.Append(isNumber ? Properties.Resources.FoundNumbers : Properties.Resources.FoundLetters);
 
 					foreach (var pred in parsedPrediction)
 					{
@@ -77,7 +75,6 @@ namespace Traicy.GUI.Logic
 						stringBuilder.Append(Properties.Resources.Comma);
 					}
 
-					stringBuilder.Append(Properties.Resources.ThatIsAll);
 				}
 
 				stringBuilder.Append(Properties.Resources.ThatIsAll);
