@@ -7,6 +7,6 @@ The project consists of following folders:
 cnn     - datasets and scripts to read data, train a CNN model and make predictions
 configs - json files and a script, that is used for the communicaton between the GUI and the image filters
 data    - several image files that were used to test the CNNs or to make a dataset
-DEBUG   -
+DEBUG   - scripts to show and solve performance issues
 filters - image filter scripts and scripts to prepare image data for a dataset
 gui     - everything belonging to our user interface written in C#
