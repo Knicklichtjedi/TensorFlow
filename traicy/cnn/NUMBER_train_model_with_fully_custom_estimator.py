@@ -3,6 +3,12 @@ import tensorflow as tf
 
 
 def convolution(layer, filters):
+    """
+    Creates a convolutional layer with a number of filters on a 5x5 field
+    :param layer: input tensor
+    :param filters: count of filters to apply
+    :return: convolutional layer tensor
+    """
     # Convolutional Layer
     conv = tf.layers.conv2d(
         inputs=layer,
@@ -14,19 +20,40 @@ def convolution(layer, filters):
 
 
 def pooling(layer, pool_size, strides):
+    """
+    Creates a pooling layer
+    :param layer: input tensor
+    :param pool_size: reduction rate, 2 = half the size
+    :param strides: reduction type, 2 = use every second value
+    :return: pooling layer tensor
+    """
     # Pooling Layer
     pool = tf.layers.max_pooling2d(inputs=layer, pool_size=[pool_size, pool_size], strides=strides)
     return pool
 
 
 def densely_connected(layer, size, neurons):
+    """
+    Creates a densely connected layer
+    :param layer: input tensor
+    :param size: size of how many features have been extracted
+    :param neurons: count of neuron that connect all the data
+    :return: densely connected layer tensor
+    """
     # Dense Layer
-    layer_flat = tf.reshape(layer, [-1, size])
+    layer_flat = tf.reshape(layer, [-1, size])  # resize to match neuron count
     dense = tf.layers.dense(inputs=layer_flat, units=neurons, activation=tf.nn.relu)
     return dense
 
 
 def dropout_layer(layer, rate,  mode):
+    """
+    Creates a dropout layer
+    :param layer: input tensor
+    :param rate: dropout rate, 0.4 = keep the 40% best neurons
+    :param mode: mode when dropout should take effect (always training)
+    :return: dropout layer tensor
+    """
     # Dropout layer
     dropout = tf.layers.dropout(
         inputs=layer, rate=rate, training=mode == tf.estimator.ModeKeys.TRAIN)
@@ -34,13 +61,19 @@ def dropout_layer(layer, rate,  mode):
 
 
 def logits_layer(layer, units):
+    """
+    Creates a logits layer (densely connected)
+    :param layer: input tensor
+    :param units: count of categories to learn
+    :return: logits layer tensor
+    """
     # Logits Layer
     logits = tf.layers.dense(inputs=layer, units=units)
     return logits
 
 
 def cnn_model_fn(features, labels, mode):
-    """Model function for CNN."""
+    """Model function for CNN"""
 
     # Input Layer
     input_layer = tf.reshape(features["x"], [-1, 28, 28, 1])
@@ -58,18 +91,20 @@ def cnn_model_fn(features, labels, mode):
     pool2 = pooling(conv2, 2, 2)
 
     # Dense Layer
-    dense = densely_connected(pool2, 7 * 7 * 64, 1024)
+    dense = densely_connected(pool2, 7 * 7 * 64, 1024)      # different to letter prediction
 
     # Dropout layer
     dropout = dropout_layer(dense, 0.4, mode)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=10)
+    logits = tf.layers.dense(inputs=dropout, units=10)      # different to letter prediction
 
     loss = None
     predictions = None
     eval_metric_ops = None
     train_op = None
+
+    # return argument when predicting
     prediction_dict = {
         'class_ids': tf.argmax(input=logits, axis=1),
         'probabilities': tf.nn.softmax(logits, name="softmax_tensor"),
@@ -107,8 +142,12 @@ def cnn_model_fn(features, labels, mode):
         eval_metric_ops=eval_metric_ops)
 
 
-def main(argv):
-    # Load training and eval data
+def main():
+    """
+    Loads all training data, starts training and evaluates the training cycle
+    """
+
+    # Load training and eval data from mnist dataset
     mnist = tf.contrib.learn.datasets.load_dataset("mnist")
     train_data = mnist.train.images                                 # Returns np.array
     train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
@@ -125,7 +164,6 @@ def main(argv):
 
     # Set up logging for predictions
     tensors_to_log = ['softmax_tensor']
-    # {"probabilities": "softmax_tensor"} , "classes": "class_tensor"
 
     logging_hook = tf.train.LoggingTensorHook(
         tensors=tensors_to_log, every_n_iter=logging_steps)
@@ -150,10 +188,11 @@ def main(argv):
         num_epochs=1,
         shuffle=False)
 
+    # Evaluate training
     eval_results = mnist_classifier.evaluate(input_fn=eval_input_fn)
     print(eval_results)
 
-    result = mnist_classifier.predict(input_fn=get_prediction_mnist_fn)
+    result = mnist_classifier.predict(input_fn=get_prediction_fn)
     print(str(result) + "  ||  " + str(result is not None))
 
     generator_result = next(result)
@@ -165,12 +204,17 @@ def main(argv):
     print("class id: " + str(generator_result['class_ids']))
 
 
-def get_prediction_mnist_fn():
+def get_prediction_fn():
+    """
+    Input function for the prediction.
+    Uses the provided test data to create the input dictionary
+    :return: tuple of an image and a None label
+    """
     mnist = tf.contrib.learn.datasets.load_dataset("mnist")
     eval_data = mnist.test.images  # Returns np.array
 
     features = {'x': eval_data[0].flatten()}
-    labels = None # np.array([eval_labels[0]])
+    labels = None  # np.array([eval_labels[0]])
 
     return features, labels
 
@@ -179,5 +223,5 @@ if __name__ == "__main__":
     # Enable logging
     tf.logging.set_verbosity(tf.logging.INFO)
 
-    # start programm
+    # start program
     tf.app.run(main)

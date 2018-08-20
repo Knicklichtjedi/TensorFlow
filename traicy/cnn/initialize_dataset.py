@@ -274,7 +274,7 @@ def main():
     b = get_serialized_file("traicybd.cy")
     b = read_datafile("traicybd.cy")
     print(b.train_label, b.eval_label, b.test_label)
-    #print(b)
+    # print(b)
 
 # train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()
 
