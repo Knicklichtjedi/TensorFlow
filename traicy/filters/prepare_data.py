@@ -24,17 +24,24 @@ skeleton_boolean = False
 
 
 def main():
+    """
+    Starts data preparation.
+    Converts image slices into valid training data.
+    Warning: 63.648 files take a while to process!
+    """
     image_filter.assign_json_values(data_json_path)
 
     print("starting preparation.")
 
     file_list, labels_list = set_lists()
+    # prepare data
     file_list_prepared, labels_list_prepared = prepare_image_data_list(file_list, labels_list,
                                                                        center_of_mass=center_of_mass_boolean,
                                                                        skeleton=skeleton_boolean)
 
     print("images are prepared.")
 
+    # save data
     for index in range(0, len(file_list_prepared)):
         image = file_list_prepared[index]
         label = labels_list_prepared[index]
@@ -49,6 +56,13 @@ def main():
 
 
 def create_binary_image(image, gaussian_strength=0.5, threshold=0.775):
+    """
+    Creates an binary image via gaussian threshold comparision
+    :param image: image to filter
+    :param gaussian_strength: strength of the gaussian blur
+    :param threshold: threshold when a pixel is white or black
+    :return: binary image with values of 0 and 1
+    """
     img_gaussian = gaussian(image, gaussian_strength)
 
     # Threshold comparison
@@ -59,7 +73,13 @@ def create_binary_image(image, gaussian_strength=0.5, threshold=0.775):
 
 
 def prepare_image(image, center_of_mass, skeleton):
-
+    """
+    Prepares an image to match the training format
+    :param image: image to prepare
+    :param center_of_mass: bool if center of mass should be used
+    :param skeleton: bool if skeletonize should be used
+    :return: prepared image
+    """
     img_binary = create_binary_image(image)
 
     img_extended = image_filter.create_extended_chunk(img_binary)
@@ -81,16 +101,18 @@ def prepare_image(image, center_of_mass, skeleton):
 
 
 def prepare_image_data_list(file_list, labels_list, center_of_mass=False, skeleton=False):
+    """
+    Starts data preparation for a list of images
+    :param file_list: list of images to prepare
+    :param labels_list: list of corresponding labels
+    :param center_of_mass: bool if center of mass should be used
+    :param skeleton: bool if skeletonize should be used
+    :return: list of prepared images and list of labels
+    """
     prepared_images = list()
     prepared_labels = list()
 
-    letter_factor = 2448
-    letter_index = 15
-
-    letter_start = letter_factor * letter_index
-    letter_end = (letter_factor * letter_index) + 10
-
-    for index in range(0, len(file_list)):       # letter_start, letter_end
+    for index in range(0, len(file_list)):
         prepared_image = prepare_image(file_list[index], center_of_mass, skeleton)
 
         print("image {} as {} has been prepared.".format(index, labels_list[index]))
@@ -102,14 +124,20 @@ def prepare_image_data_list(file_list, labels_list, center_of_mass=False, skelet
 
 
 def set_lists():
+    """
+    Reads images from a directory with their folder names and returns them as lists
+    :return: list of images and list of folder names that represent their labels
+    """
 
     file_list = list()
     labels_list = list()
 
+    # iterate over "labels"
     for letter_folder in os.listdir(data_path_raw):
 
         data_path_image_raw = data_path_raw + letter_folder + "/"
 
+        # iterate over images per label
         for image_file in os.listdir(data_path_image_raw):
 
             img_conv = rgb2gray(imread(data_path_image_raw + image_file, plugin='matplotlib'))

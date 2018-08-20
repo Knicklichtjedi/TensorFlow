@@ -7,16 +7,21 @@ import LETTER_train_model_with_fully_custom_estimator
 import glob
 
 static_image_reference = None
-model_dir = abspath("./python_resources/model_letter/")
-model_dir_main = "./model_letter"
+model_dir = abspath("./python_resources/model_letter/")         # model dir when GUI uses script
+model_dir_main = "./model_letter"                               # model dir when main() uses script
 
-# letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-#            "W", "X", "Y", "Z"]
-
+# possible categories
 letters = ["T", "R", "A", "I", "C", "Y"]
 
 
 def main():
+    """
+    Loads the model with a certain model function from a certain directory.
+    Then loads custom images for the letter prediction.
+    Prints the content of the prediction generator.
+    """
+
+    # load model
     mnist_classifier = tf.estimator.Estimator(model_fn=LETTER_train_model_with_fully_custom_estimator.cnn_model_fn,
                                               model_dir=model_dir)
 
@@ -24,13 +29,20 @@ def main():
 
     for image in image_list:
         global static_image_reference
-        static_image_reference = image  # image_list[0]
+        static_image_reference = image
         generator_result = mnist_classifier.predict(input_fn=prediction_image_fn)
 
         print_generator_content(generator_result)
 
 
 def predict_image(image):
+    """
+    Predicts a letter in an image and returns the results
+    :param image: binary flat image (1x784) where the number is in
+    :return: category (letter) and confidence of that prediction
+    """
+
+    # load model
     mnist_classifier = tf.estimator.Estimator(model_fn=LETTER_train_model_with_fully_custom_estimator.cnn_model_fn,
                                               model_dir=model_dir)
     global static_image_reference
@@ -43,6 +55,12 @@ def predict_image(image):
 
 
 def prediction_image_fn():
+    """
+    Input function for the prediction.
+    Uses the static image reference to create the input dictionary
+    :return: tuple of an image and a None label
+    """
+
     if static_image_reference is not None:
 
         features = {'x': static_image_reference.flatten()}
@@ -54,6 +72,12 @@ def prediction_image_fn():
 
 
 def load_cust_images():
+    """
+    Loads images from /data/images_letters/ an prepares them for prediction.
+    Load, flatten, reshape (1x784) and convert to float32
+    :return: list of prepared images
+    """
+
     image_list = list()
 
     path = abspath(__file__ + "/../../")
@@ -70,6 +94,12 @@ def load_cust_images():
 
 
 def extract_prediction_result(generator_content):
+    """
+    Extracts one prediction result from the generator
+    :param generator_content: generator to extract data from
+    :return: best category index and the corresponding confidence
+    """
+
     best_category_index = generator_content['class_ids']
     best_category_confidence = generator_content['probabilities'][best_category_index]
 
@@ -77,6 +107,11 @@ def extract_prediction_result(generator_content):
 
 
 def print_generator_content(generator, print_loop=False):
+    """
+    Prints all content of an letter prediction generator
+    :param generator: generator to extract data from
+    :param print_loop: if False the generator will only print one result
+    """
     if generator is not None:
 
         keep_print_loop = True

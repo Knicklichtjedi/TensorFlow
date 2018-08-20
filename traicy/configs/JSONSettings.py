@@ -30,6 +30,9 @@ __data__ = {}
 
 
 class JSONValues (Enum):
+    """
+    Loaded input identifiers from JSON file
+    """
     IMAGE_DIMENSION = 0
     IMAGE_DIMENSION_SMALL = 1
     IMAGE_BORDER = 2
@@ -52,6 +55,11 @@ class JSONValues (Enum):
 
 
 def parse_data(filename):
+    """
+    Opens a json file and tries to parse them for JSON values.
+    If sufficient data is found it is added to the data structure.
+    :param filename: path to json file
+    """
     with open(filename, encoding='utf-8') as data_file:
 
         data = json.loads(data_file.read())        
@@ -104,6 +112,12 @@ def parse_data(filename):
 
 
 def get_data(json_value, *filename):
+    """
+    Gives JSON values back depending on the enum identifier json_value
+    :param json_value: enum identifier for possible json value
+    :param filename: opt. filename to parse before
+    :return: Requested data
+    """
     if __imported__:
 
         if json_value == JSONValues.IMAGE_DIMENSION:
@@ -146,6 +160,12 @@ def get_data(json_value, *filename):
 
 
 def write_data(filename, json_value, value):
+    """
+    Writes new json data to file
+    :param filename: file to write in
+    :param json_value: value that needs to change
+    :param value: new value for json file
+    """
     if not __imported__:
         parse_data(filename)
 
