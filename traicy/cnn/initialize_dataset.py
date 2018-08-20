@@ -64,8 +64,11 @@ eval_size = 208
 test_size = 4
 
 
-# gets arrays of trainings, test and evaluation data for images and labels, saves them in an TraicyData instance and writes it to a binary file
 def get_serialized_file():
+    """
+    gets arrays of trainings, test and evaluation data for images and labels, saves them in an TraicyData instance and writes it to a binary file
+    :return: True if file was written, False if not
+    """
     train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()  # get arrays
     td = TraicyData(train_img, eval_img, test_img, train_label, eval_label, test_label)  # save into object
     write_datafile(filename, td)  # write binary file
@@ -80,8 +83,11 @@ def get_serialized_file():
         return True
 
 
-# loads all TRAICY_data and changes them into useful images and labels arrays for training, testing and evaluation and gives them back
 def parse_data_as_array():
+    """
+    loads all TRAICY_data and changes them into useful images and labels arrays for training, testing and evaluation and gives them back
+    :return: six arrays of training-, test- and evaluation images and labels
+    """
     global sublist_train, sublist_eval, sublist_test  # get global variables
 
     lists = load_all_data()  # load all data rom TRAICY_data directory
@@ -100,9 +106,12 @@ def parse_data_as_array():
     return train_img, eval_img, test_img, train_label, eval_label, test_label
 
 
-# read all data from the traicy_data_path directory according to the directories that have the names of the labels defined in the letters array
-# writes both, images and corresponding labels, into one list and returns it
 def load_all_data():
+    """
+    read all data from the traicy_data_path directory according to the directories that have the names of the labels defined in the letters array
+    :return: list of images and labels
+    """
+
     # initialize array for both images and labels list
     images_and_labels_list = []
 
@@ -131,9 +140,11 @@ def load_all_data():
     return images_and_labels_list
 
 
-# generator for the Dataset of the train_img array
-# gives back every image separately in float format through yield statement
 def generator_train_img():
+    """
+    generator for the Dataset of the train_img array
+    :return: train_img
+    """
     for index in range(0, len(sublist_train)):
         image = imread(sublist_train[index][0], as_grey=True)
         image_flat = image.flatten()
@@ -141,17 +152,21 @@ def generator_train_img():
         yield image_float
 
 
-# generator for the Dataset of the train_label array
-# gives back every label separetly through yield statement
 def generator_train_label():
+    """
+    generator for the Dataset of the train_label array
+    :return: train_label
+    """
     for index in range(0, len(sublist_train)):
         label = int(sublist_train[index][1])
         yield label
 
 
-# generator for the Dataset of the eval_img array
-# gives back every image separately in float format through yield statement
 def generator_eval_img():
+    """
+    generator for the Dataset of the eval_label array
+    :return: eval_img
+    """
     for index in range(0, len(sublist_eval)):
         image = imread(sublist_eval[index][0], as_grey=True)
         image_flat = image.flatten()
@@ -159,17 +174,21 @@ def generator_eval_img():
         yield image_float
 
 
-# generator for the Dataset of the eval_label array
-# gives back every label separetly through yield statement
 def generator_eval_label():
+    """
+    generator for the Dataset of the eval_label array
+    :return: eval_label
+    """
     for index in range(0, len(sublist_eval)):
         label = int(sublist_eval[index][1])
         yield label
 
 
-# generator for the Dataset of the test_img array
-# gives back every image separately in float format through yield statement
 def generator_test_img():
+    """
+    generator for the Dataset of the test_img array
+    :return: test_img
+    """
     for index in range(0, len(sublist_test)):
         image = imread(sublist_test[index][0], as_grey=True)
         image_flat = image.flatten()
@@ -177,17 +196,25 @@ def generator_test_img():
         yield image_float
 
 
-# generator for the Dataset of the test_label array
-# gives back every label separetly through yield statement
 def generator_test_label():
+    """
+    generator for the Dataset of the test_label array
+    :return: test_label
+    """
     for index in range(0, len(sublist_test)):
         label = int(sublist_test[index][1])
         yield label
 
 
-# this method is used to change extract three sublists of one list.
-# the given parameters are the complete list and the three sizes that say how many images/labels of every letter should be inserted
 def get_sublist(list_complete, size_train, size_eval, size_test):
+    """
+    this method is used to change extract three sublists of one list.
+    :param list_complete: full list
+    :param size_train: number of images per label to be inserted into training data
+    :param size_eval: number of images per label to be inserted into eval data
+    :param size_test: number of images per label to be inserted into test data
+    :return: three sublists of former list
+    """
     main_list = list_complete
     # create sublists
     sublist_train = []
@@ -243,14 +270,22 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     return np.asarray(sublist_train), np.asarray(sublist_eval), np.asarray(sublist_test)
 
 
-# writes a serilized file from an object using pickle
-def write_datafile(filname, obj):
+def write_datafile(filename, obj):
+    """
+    writes a serilized file from an object using pickle
+    :param filename: filepath
+    :param obj: object that should be written
+    """
     with open(filename, 'wb') as f:
         pickle.dump(obj, f)
 
 
-# reads a datafile using pickle and converts it to a TraicyData object.
 def read_datafile(filename):
+    """
+    reads a datafile using pickle and converts it to a TraicyData object.
+    :param filename: filepath
+    :return: TracyData object with arrays of labels and image for training, test and evaltuation purposes
+    """
     with open(filename, 'rb') as f:
         var = pickle.load(f)
 
@@ -259,8 +294,10 @@ def read_datafile(filename):
         return traicy
 
 
-# this method is only called to debug the script. it creates and reads a dataset. it should NOT be called from another script.
 def main():
+    """
+    this method is only called to debug the script. it creates and reads a dataset. it should NOT be called from another script.
+    """
     global traicy_data_path, filename  # global statement gets variables from outer scope
 
     traicy_data_path = "TRAICY_data/"  # set path to TRAICY_data

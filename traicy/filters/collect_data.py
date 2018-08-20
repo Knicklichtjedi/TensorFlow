@@ -7,9 +7,11 @@ from PIL import Image
 from skimage import filters as filters, img_as_uint, img_as_ubyte, img_as_float
 from skimage.color import rgb2gray, gray2rgb
 from skimage.io import imread, imsave
-import image_filter
+
 
 # list of files /pathnames
+from image_filters.contours import draw_red_rectangle
+
 file_list = []
 # list of labels corresponding to the image file_list
 labels_list = []
@@ -30,8 +32,12 @@ contour_size = 100
 img_threshold = 0.8
 
 
-# reads the raw data and gives them back in two lists for image paths and labels
+
 def get_labels_and_data():
+    """
+    reads the raw data and gives them back in two lists for image paths and labels
+    :return: file_list with image filenames and labels_list with labels
+    """
 
     # get all files and labels in a list
     for dir in letters:  # for every directory
@@ -42,8 +48,13 @@ def get_labels_and_data():
     return file_list, labels_list
 
 
-# get binary coloured file
+
 def to_binary(file):
+    """
+    get binary coloured file
+    :param file: image file
+    :return: binary image
+    """
     img_conv = rgb2gray(imread(file, plugin='matplotlib')) # convert to gray
 
     img_conv_float = img_as_float(img_conv)  # get float image
@@ -56,8 +67,14 @@ def to_binary(file):
     return img_binary
 
 
-# create borders on an image
+#
 def borders(img, filename):
+    """
+    create borders on an image
+    :param img: image
+    :param filename: filepath
+    :return: image with borders
+    """
     new_color = 0 # color of border
     image_border = 10 # size of border
     xrange, yrange = img.shape # get range of image
@@ -82,8 +99,13 @@ def borders(img, filename):
     return img
 
 
-# gets contours of an binary image and returns an array of the best contours
 def get_contours(img, filename):
+    """
+    gets contours of an binary image and returns an array of the best contours
+    :param img: image
+    :param filename: filepath
+    :return: list of best contours
+    """
     thresh = img_as_ubyte(img) # threshold
     im2, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # find contours. RETR_EXTERNAL = only gets external contours, CHAIN_APPROX_SIMPLE = gives a list, not a tree
 
@@ -97,8 +119,16 @@ def get_contours(img, filename):
     return best_contours
 
 
-# this method gets a contour and an image and cuts out the contour from the original image to save the new crop and give it back
 def get_cropped_image(contour, image, label, index, indexSheet):
+    """
+    this method gets a contour and an image and cuts out the contour from the original image to save the new crop and give it back
+    :param contour: contour with x,y,w,h of a rectangle
+    :param image: image to take crop from
+    :param label: label of the crop
+    :param index: index of the crop
+    :param indexSheet: index of the sheet where the crop came from
+    :return: cropped image
+    """
     x, y, w, h = cv2.boundingRect(contour)  # get coordinates of contours
     cropped_image = image.crop((x, y, x + w, y + h))  # crop image
 
@@ -108,8 +138,11 @@ def get_cropped_image(contour, image, label, index, indexSheet):
     return cropped_image
 
 
-# main method that is called to extract crops 
+
 def main():
+    """
+    main method that is called to extract crops
+    """
     # set paths & create the file lists
     file_list, labels_list = get_labels_and_data()
 
@@ -128,7 +161,7 @@ def main():
             cropped_images = []
             for cnt in contours:  # for every contours
                 x, y, w, h = cv2.boundingRect(cnt)  # get rectangle
-                image_filter.draw_red_rectangle(x, y, w, h, rgb_border_file, 1)  # draw rectangle
+                draw_red_rectangle(x, y, w, h, rgb_border_file, 1)  # draw rectangle
                 crop = get_cropped_image(cnt, Image.open(file_list[index]), label, index_crops, index)  # get crop
                 cropped_images.append(crop)  # append to list
 

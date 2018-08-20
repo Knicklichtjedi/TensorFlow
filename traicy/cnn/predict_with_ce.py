@@ -87,7 +87,6 @@ def add_results_to_image(img_with_chunks, img_list, contour_list, predictions_li
                 img_combined[y_i, x_i] = (1, 1, 1)
                 pass
 
-
     # pil_img.save(path + "font_image_solo_font" + ".png")
     # imsave(path + "font_image_solo_chunk" + ".png", arr=np.copy(img_with_chunks))
     # imsave(path + "font_image_combined" + ".png", arr=img_combined)
