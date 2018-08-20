@@ -30,11 +30,8 @@ contour_size = 100
 img_threshold = 0.8
 
 
-# sets paths to read from and write to and reads the raw data and gives them bac in two lists for image paths and labels
+# reads the raw data and gives them back in two lists for image paths and labels
 def get_labels_and_data():
-    # set path
-    path = abspath(__file__ + "/../../")  # change directory to traicy
-    traicy_data_path = path + "/cnn/TRAICY_data/"  # save in folder
 
     # get all files and labels in a list
     for dir in letters:  # for every directory
@@ -46,7 +43,7 @@ def get_labels_and_data():
 
 
 # get binary coloured file
-def toBinary(file):
+def to_binary(file):
     img_conv = rgb2gray(imread(file, plugin='matplotlib')) # convert to gray
 
     img_conv_float = img_as_float(img_conv)  # get float image
@@ -57,6 +54,7 @@ def toBinary(file):
     imsave(file + "binary.png", img_as_uint(img_binary)) # save image
 
     return img_binary
+
 
 # create borders on an image
 def borders(img, filename):
@@ -110,7 +108,7 @@ def get_cropped_image(contour, image, label, index, indexSheet):
     return cropped_image
 
 
-# main method that is called
+# main method that is called to extract crops 
 def main():
     # set paths & create the file lists
     file_list, labels_list = get_labels_and_data()
@@ -119,7 +117,7 @@ def main():
     if (len(file_list) == len(labels_list)):  # if the lists have the same length
         for index in range(len(labels_list)):  # go through list
             label = labels_list[index]  # get label
-            binary_file = toBinary(file_list[index])  # get binary coloured image file
+            binary_file = to_binary(file_list[index])  # get binary coloured image file
             border_file = borders(binary_file, file_list[index])  # apply borders to image
             contours = get_contours(border_file, file_list[index])  # get contours of letters
             rgb_border_file = gray2rgb(border_file)  # get grey file
