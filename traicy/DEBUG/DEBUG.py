@@ -6,4 +6,4 @@ p = pstats.Stats('FilterResult')
 p.sort_stats("tottime")
 p.print_stats()
 
-# $ python -m cProfile -o FilterResult ImageFilter_noLoad.py
+# $ python -m cProfile -o FilterResult image_filter.py

@@ -180,6 +180,9 @@
     <Content Include="python_resources\LETTER_train_model_with_fully_custom_estimator.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="python_resources\image_filter.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="python_resources\NUMBER_load_model_with_fully_custom_estimator.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -285,9 +288,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="python_resources\JSONSettings.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="python_resources\ImageFilter_noLoad.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,4 +1,4 @@
-import ImageFilter_noLoad
+import image_filter
 import NUMBER_load_model_with_fully_custom_estimator
 import LETTER_load_model_with_fully_custom_estimator
 import sys
@@ -76,7 +76,7 @@ def add_results_to_image(img_with_chunks, img_list, contour_list, predictions_li
     # imsave(path + "font_image_solo_chunk" + ".png", arr=np.copy(img_with_chunks))
     # imsave(path + "font_image_combined" + ".png", arr=img_combined)
 
-    ImageFilter_noLoad.save_image_with_drawn_chunks(img_combined)
+    image_filter.save_image_with_drawn_chunks(img_combined)
 
 
 def is_pixel_black(pixel):
@@ -108,7 +108,7 @@ def main():
 
     if image_path is not None:
 
-        img_list, contour_list, img_with_chunks = ImageFilter_noLoad.read_image_with_chunks_from_location(image_path)
+        img_list, contour_list, img_with_chunks = image_filter.read_image_with_chunks_from_location(image_path)
 
         if len(img_list) == len(contour_list):
             if len(img_list) == 0:

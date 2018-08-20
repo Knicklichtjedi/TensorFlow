@@ -4,7 +4,7 @@ from skimage.color import rgb2gray
 from skimage.filters import gaussian
 import os
 from skimage.util import img_as_float
-import ImageFilter_noLoad as image_filter
+import image_filter as image_filter
 import numpy as np
 from skimage.morphology import skeletonize
 from PIL import Image

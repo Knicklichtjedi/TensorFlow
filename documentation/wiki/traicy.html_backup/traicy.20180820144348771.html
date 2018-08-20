@@ -194,8 +194,6 @@ Error message and password prompt
 
 <li>TableOfContents</li>
 
-<li>TraicyData</li>
-
 </ul>
 </p>
 
@@ -8786,8 +8784,8 @@ Error message and password prompt
 <div created="20180502214929211" modified="20180502214932480" title="$:/state/editpreviewtype">
 <pre>$:/core/ui/EditTemplate/body/preview/output</pre>
 </div>
-<div created="20180502214934355" modified="20180820144735686" title="$:/state/showeditpreview">
-<pre>yes</pre>
+<div created="20180502214934355" modified="20180502214937363" title="$:/state/showeditpreview">
+<pre>no</pre>
 </div>
 <div created="20180502212404501" modified="20180820142337564" title="$:/state/sidebar">
 <pre>yes</pre>
@@ -8813,7 +8811,7 @@ Error message and password prompt
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
-<div list="TableOfContents initialize_dataset.py TraicyData" title="$:/StoryList">
+<div list="initialize_dataset.py" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -8997,61 +8995,30 @@ Error message and password prompt
 <div created="20180502212432937" modified="20180502213735423" title="$:/view">
 <pre>classic</pre>
 </div>
-<div created="20180820142405633" modified="20180820151005624" tags="$:/tags/SideBar TableOfContents dataset script python" title="initialize_dataset.py" type="text/vnd.tiddlywiki">
-<pre>Das //initialize_dataset.py// Script dient dazu, die Bilder mit den dazugehörigen Labels aus dem TRAICY_DATA-Datensatz zu lesen und diese in einer Instanz der Klasse TraicyData zu speichern, welche im Anschluss serialisiert und in einer Binärdatei gesichert wird.
+<div created="20180820142405633" modified="20180820144348501" tags="dataset script python" title="initialize_dataset.py" type="text/vnd.tiddlywiki">
+<pre>Das initialize_dataset.py Script dient dazu, die Bilder mit den dazugehörigen Labels aus dem TRAICY_DATA-Datensatz zu lesen und diese in einer Instanz der Klasse TraicyData zu speichern, welche im Anschluss serialisiert und in einer Binärdatei gesichert wird.
 
 !! Variablen
 !!! letters
-Das //letters//-Array enthält alle Buchstaben, welche im aussortierten Datensatz vorhanden sein sollen und später vom Neuronalen Netz erkannt werden. Dies kann nur ein Buchstabe sein oder aber auch das ganze Alphabet. Es sind hierbei nur die 26 Buchstaben des englischen Alphabets zu verwenden ohne jegliche Sonderzeichen oder deutsche Umlaute wie Ä,Ü und Ö.
+Das letters-Array enthält alle Buchstaben, welche im aussortierten Datensatz vorhanden sein sollen und später vom Neuronalen Netz erkannt werden. Dies kann nur ein Buchstabe sein oder aber auch das ganze Alphabet. Es sind hierbei nur die 26 Buchstaben des englischen Alphabets zu verwenden ohne jegliche Sonderzeichen oder deutsche Umlaute wie Ä,Ü und Ö.
 
 !!! traicy_data_path
-Der String //traicy_data_path// gibt den Ort des TRAICY_data Ordners an, in welchem der Datensatz liegt. 
+Der String traicy_data_path gibt den Ort des TRAICY_data Ordners an, in welchem der Datensatz liegt. 
 
 !!! filename
-Der String //filename// gibt den Speicherort und –namen der serialisierten Datei an. Standartmäßig wird die Datei in demselben Ordner wie das Skript und mit dem Namen „trai.cy“ gespeichert. 
+Der String filename gibt den Speicherort und –namen der serialisierten Datei an. Standartmäßig wird die Datei in demselben Ordner wie das Skript und mit dem Namen „trai.cy“ gespeichert. 
 
 !!! Sublisten
-Die drei Arrays //sublist_train, sublist_eval// und //sublist_test// sind die drei Sublisten-Arrays, in welchen die Buchstaben gespeichert werden, mit denen das Neuronale Netz arbeiten soll.
+Die drei Arrays sublist_train, sublist_eval und sublist_test sind die drei Sublisten-Arrays, in welchen die Buchstaben gespeichert werden, mit denen das Neuronale Netz arbeiten soll.
 
-* //sublist_train//  -  Trainingsdaten zum Trainieren des Neuronalen Netzes
+* sublist_train
+Trainingsdaten zum Trainieren des Neuronalen Netzes
 
-* //sublist_eval//  -  Evaluierungsdaten für das Neuronale Netz um die Fehlerquote (engl. error rate) zu errechnen.
+* sublist_eval
+Evaluierungsdaten für das Neuronale Netz um die Fehlerquote (engl. error rate) zu errechnen.
 
-* //sublist_test//  -  Testdaten, welche dem Nutzer zur Verfügung stehen, um zu erkennen, wie das Neuronale Netz auf bisher ungesehene Beispiele reagiert, welche aber denselben Ursprung wie die Trainings- und Evaluierungsdaten haben.
-
-!!! Listengrößen
-Die integers //train_size, eval_size// und //test_size// geben die Größe der Sublisten-Arrays an. Sie ergeben sich daraus, dass der Datensatz bei einer Gesamtgröße von 63.648 jeden Buchstaben genau 2448 Mal enthält. Diese Zahl muss auf die drei Listen verteilt werden. Dabei spielt das Verhältnis eine maßgebliche Rolle im Training.
-
-!! Methoden
-!!! get_serialized_file
-Die Methode //get_serialized_file// erstellt durch die //parse_data_as_array//-Methode die Arrays von Trainings-, Evaluierungs- und Testdaten und speichert diese in einer TraicyData-Instanz, welche durch die //write_datafile//-Methode serialisiert und gespeichert wird. Gibt True zurück, falls die Datei erfolgreich erstellt wurde.
-
-!!! parse_data_as_array
-Die Methode //parse_data_as_array// lädt durch load_all_data alle Dateien in einer Liste und ändert diese mithilfe von der //get_sublist//-Methode und mit den generators in sechs Arrays, welche jeweils die Bild- bzw. die Labeldaten der Trainings-, Evaluierungs- und Testlisten enthalten und gibt diese zurück.
-
-```
-train_img = np.asarray(list(generator_train_img()), dtype=np.float32)
-```
-Diese Zeile ruft einen Generator auf, welcher Arrays erstellt. 
-!!! load_all_data
-Die //load_all_data//-Methode liest jene Bilddateien aus TRAICY_data, welche sich in einem Unterordner befinden, der den Namen eines Labels hat. Die Labels werden im //letters//-Array definiert. Die Bilder und ihre dazugehörigen Labels werden in einer Gesamtliste gespeichert und zurückgegeben.
-
-!!! generators
-&quot;&quot;&quot;Die generators //generator_train_img, generator_test_img// und //generator_eval_img// gehen alle Bilddaten in den Listen durch und ändern die Bilder in ein eindimensionales float-Format durch die Funktionen flatten() und die Scikit-Image Funktion image_as_float. 
-Die generators //generator_train_label, generator_test_label// und //generator_eval_label// gehen alle Labeldaten durch und geben sie einzeln zurück.
-Das einzelne zurückgeben ist möglich durch das //yield//-Statement, welches die Methode anhält und einen Wert zurückgibt, bis die Methode erneut aufgerufen wird. &quot;&quot;&quot;
-
-!!! get_sublist
-Die Methode //get_sublist// erstellt aus einer Ausgangsliste list_complete drei Sublisten. Diese haben die Länge Anzahl der Labels x *// train_size//, x*//eval_size// und x*//test_size//. Dadurch wird die Ausgangsliste durchiteriert und die Tupel in die Sublisten eingetragen. Die Sublisten werden dann zurückgegeben.
-
-!!! write_datafile
-Die Methode //write_datafile// benutzt die Methode //dump// aus dem Framwork pickle, um aus einem Objekt obj eine Binärdatei zu schreiben.
-
-!!! read_datafile
-Die Methode //read_datafile// liest eine Datei aus dem angegebenen Pfad aus und deserialisiert sie mithilfe Methode //load// aus dem Framework pickle. Anschließend wird das object zu einem TraicyData-Objekt instanziiert und zurückgegeben.
-
-!! TraicyData
-Das Skript enthält außerdem die Klasse TraicyData.</pre>
+* sublist_test    
+Testdaten, welche dem Nutzer zur Verfügung stehen, um zu erkennen, wie das Neuronale Netz auf bisher ungesehene Beispiele reagiert, welche aber denselben Ursprung wie die Trainings- und Evaluierungsdaten haben.</pre>
 </div>
 <div created="20180502211540111" modified="20180502220251766" tags="TableOfContents" title="Neuronen">
 <pre>test</pre>
@@ -9094,16 +9061,6 @@ opt.apply_gradients(capped_grads_and_vars)
 &lt;&lt;toc-selective-expandable 'TableOfContents'&gt;&gt;
 
 &lt;/div&gt;</pre>
-</div>
-<div created="20180820151033437" modified="20180820151242804" tags="$:/tags/SideBar TableOfContents python dataset" title="TraicyData">
-<pre>Die Klasse TraicyData wird als Speicher für die von Tensorflow benötigten Arrays gebraucht. Ihr kann man beim Initialiseren sechs Arrays mit Bild- und Labeldaten übergeben.
-
-* train_img  -  Trainingsbilder
-* eval_img - Evaluierungsbilder
-* test_img - Testbilder
-* train_label - Trainingslabels
-* eval_label - Evaluierungslabels
-* test_label - Testlabels</pre>
 </div>
 
 </div>
