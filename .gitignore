@@ -1,4 +1,7 @@
-#ignore all letter datas
+# ignore serialized data
+*.cy
+
+#ignore all letter data
 TRAICY_data/
 data_RAW/
 data_cut
