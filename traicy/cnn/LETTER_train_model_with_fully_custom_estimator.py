@@ -140,7 +140,6 @@ def cnn_model_fn(features, labels, mode):
 
     if mode == tf.estimator.ModeKeys.PREDICT:
         predictions = prediction_dict
-        # return tf.estimator.EstimatorSpec(mode, predictions=predictions)
 
     return tf.estimator.EstimatorSpec(
         mode=mode,

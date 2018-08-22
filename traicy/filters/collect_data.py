@@ -59,7 +59,7 @@ def toBinary(file):
     img_conv_float = img_as_float(img_conv)
 
     img_gaussian = filters.gaussian(img_conv_float, 0.5)
-    #img_threshold = filters.threshold_mean(img_conv_float)
+    # img_threshold = filters.threshold_mean(img_conv_float)
     img_threshold = 0.8
     img_binary = img_gaussian < img_threshold
 

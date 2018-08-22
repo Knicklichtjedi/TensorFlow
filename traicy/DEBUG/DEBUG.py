@@ -11,4 +11,5 @@ p = pstats.Stats('FilterResult')
 p.sort_stats("tottime")
 p.print_stats()
 
+# CALL WITH:
 # $ python -m cProfile -o FilterResult ImageFilter_noLoad.py

@@ -32,7 +32,7 @@ def predict_images(img_list, model_mode):
             predictions += "{}, {:.2f}\n".format(number, confidence * 100)
             predictions_list.append((number, confidence))
         elif model_mode == "letter":
-            #predict
+            # predict
             number, confidence = LETTER_load_model_with_fully_custom_estimator.predict_image(img_to_predict)
 
             predictions += "{}, {:.2f}\n".format(letters[number], confidence * 100)

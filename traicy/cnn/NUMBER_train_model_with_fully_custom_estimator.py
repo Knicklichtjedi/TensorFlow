@@ -132,7 +132,6 @@ def cnn_model_fn(features, labels, mode):
 
     if mode == tf.estimator.ModeKeys.PREDICT:
         predictions = prediction_dict
-        # return tf.estimator.EstimatorSpec(mode, predictions=predictions)
 
     return tf.estimator.EstimatorSpec(
         mode=mode,
@@ -149,9 +148,9 @@ def main():
 
     # Load training and eval data from mnist dataset
     mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-    train_data = mnist.train.images                                 # Returns np.array
+    train_data = mnist.train.images
     train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
-    eval_data = mnist.test.images                                   # Returns np.array
+    eval_data = mnist.test.images
     eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
 
     # Create the Estimator
@@ -211,10 +210,10 @@ def get_prediction_fn():
     :return: tuple of an image and a None label
     """
     mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-    eval_data = mnist.test.images  # Returns np.array
+    eval_data = mnist.test.images
 
     features = {'x': eval_data[0].flatten()}
-    labels = None  # np.array([eval_labels[0]])
+    labels = None
 
     return features, labels
 
