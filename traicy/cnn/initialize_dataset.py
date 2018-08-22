@@ -69,6 +69,7 @@ def get_serialized_file():
     :return: True if file was written, False if not
     """
     train_img, eval_img, test_img, train_label, eval_label, test_label = parse_data_as_array()  # get arrays
+
     td = TraicyData(train_img, eval_img, test_img, train_label, eval_label, test_label)  # save into object
     write_datafile(filename, td)  # write binary file
 
@@ -218,11 +219,10 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
     """
     main_list = list_complete
     # create sublists
-    sublist_train = []
-    sublist_eval = []
-    sublist_test = []
+    list_train = []
+    list_eval = []
+    list_test = []
     sublist = []
-    size = 0
 
     for lists in range(3):  # go through all sublists
 
@@ -230,31 +230,28 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
 
         # set size
         if lists == 0:
-            size = train_size
+            size = size_train
         elif lists == 1:
-            size = eval_size
+            size = size_eval
         elif lists == 2:
-            size = test_size
+            size = size_test
         else:
             size = 0
 
-        print(size)
-
         # index for the letter labels
         index_letter = 0
-        for let in letters:  # for every letter
+        for let in range(len(letters)):  # for every letter
             for count in range(int(size)):  # for every picture/label you want to insert
-
                 # final index. helps to not go through parts of the lists that has already been visited
                 index = 0
                 # boolean that says whether the correct letter was found or not
                 found = False
-                while found is not True and index < len(
-                        main_list):  # while the correct letter wasnt found and below the length of the list
+                while found is not True and index < len(main_list):
+                    # while the correct letter wasn't found and below the length of the list
                     if int(main_list[index][1]) == index_letter:  # if you found the correct label
                         sublist.append((main_list[index][0], main_list[index][1]))  # add to sublist
                         np.delete(main_list, index)  # delete from main_list to avoid duplicate
-                        found = True  # set found true ... repeat cylce
+                        found = True  # set found true ... repeat cycle
                     else:  # if label is incorrect
 
                         index += 1  # next row in the main_list
@@ -262,13 +259,16 @@ def get_sublist(list_complete, size_train, size_eval, size_test):
 
         # set sublists
         if lists == 0:
-            sublist_train = sublist
+            list_train = sublist.copy()
+            print("sublist train created")
         elif lists == 1:
-            sublist_eval = sublist
+            list_eval = sublist.copy()
+            print("sublist eval created")
         elif lists == 2:
-            sublist_test = sublist
+            list_test = sublist.copy()
+            print("sublist test created")
 
-    return np.asarray(sublist_train), np.asarray(sublist_eval), np.asarray(sublist_test)
+    return np.asarray(list_train), np.asarray(list_eval), np.asarray(list_test)
 
 
 def write_datafile(filename_obj, obj):
@@ -309,9 +309,10 @@ def main():
     traicy_data_loaded = read_datafile(filename)  # read and deserialize the file
 
     # print the labels of the three arrays you created to check if they are correct
-    print(traicy_data_loaded.train_label, traicy_data_loaded.eval_label, traicy_data_loaded.test_label)
+    print("\nCreated {} train data elements \nCreated {} eval data elements \nCreated {} test data elements \n".format(
+        len(traicy_data_loaded.train_label), len(traicy_data_loaded.eval_label), len(traicy_data_loaded.test_label)))
 
 
-# calls the main method for debugging
+# calls the main method
 if __name__ == "__main__":
     main()
