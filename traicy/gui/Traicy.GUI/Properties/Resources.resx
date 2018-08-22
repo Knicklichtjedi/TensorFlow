@@ -127,7 +127,7 @@
     <value>, </value>
   </data>
   <data name="ConnectWebcam" xml:space="preserve">
-    <value>Kamera Verbinden</value>
+    <value>Kamera verbinden</value>
   </data>
   <data name="DisconnectWebcam" xml:space="preserve">
     <value>Verbindung trennen</value>

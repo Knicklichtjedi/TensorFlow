@@ -88,7 +88,7 @@ namespace Traicy.GUI.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Kamera Verbinden ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Kamera verbinden ähnelt.
         /// </summary>
         internal static string ConnectWebcam {
             get {
