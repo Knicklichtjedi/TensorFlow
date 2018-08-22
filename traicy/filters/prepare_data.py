@@ -4,13 +4,18 @@ from skimage.color import rgb2gray
 from skimage.filters import gaussian
 import os
 from skimage.util import img_as_float
-import ImageFilter_noLoad as ImageFilter
 import numpy as np
 from skimage.morphology import skeletonize
 from PIL import Image
 from os.path import exists
 
 # SET PATHS
+from image_filter import assign_json_values, create_folder, save_image, image_dimension_t_small, image_dimension, \
+    image_dimension_small, image_dimension_t, filter_binary_filter_threshold, image_border
+from image_filters.binary_filters import clamp_binary_values
+from image_filters.center_of_mass_and_fillout import create_com_image
+from image_filters.cropping_scaling_borders import create_extended_chunk, create_scaled_image, create_max_extended_image
+
 path = abspath(__file__ + "/../../")  # change directory to traicy
 data_path_raw = path + "/data/data_cut/"  # read from folder
 data_path_prepared_data = path + "/cnn/TRAICY_data/"
@@ -29,7 +34,7 @@ def main():
     Converts image slices into valid training data.
     Warning: 63.648 files take a while to process!
     """
-    ImageFilter.assign_json_values(data_json_path)
+    assign_json_values(data_json_path)
 
     print("starting preparation.")
 
@@ -49,7 +54,7 @@ def main():
         prepared_image_path = data_path_prepared_data + label + "/"
 
         if not exists(prepared_image_path):
-            ImageFilter.create_folder(prepared_image_path)
+            create_folder(prepared_image_path)
 
         imsave(prepared_image_path + str(label) + "_" + str(index) + "_" + str(skeleton_boolean)
                + "_" + str(center_of_mass_boolean) + ".png", image)
@@ -67,7 +72,7 @@ def create_binary_image(image, gaussian_strength=0.5, threshold=0.775):
 
     # Threshold comparison
     img_binary = img_as_float(img_gaussian < threshold)
-    img_clamped = ImageFilter.clamp_binary_values(img_binary)
+    img_clamped = clamp_binary_values(img_binary)
 
     return img_clamped
 
@@ -82,15 +87,15 @@ def prepare_image(image, center_of_mass, skeleton):
     """
     img_binary = create_binary_image(image)
 
-    img_extended = ImageFilter.create_extended_chunk(img_binary)
+    img_extended = create_extended_chunk(img_binary)
 
     img_pil = Image.fromarray(img_extended)
-    img_scaled = ImageFilter.create_scaled_image(img_pil)
+    img_scaled = create_scaled_image(img_pil, image_dimension_t_small)
 
     if center_of_mass:
-        img_max_scale = ImageFilter.create_com_image(img_scaled)
+        img_max_scale = create_com_image(img_scaled, image_dimension, image_dimension_t, image_dimension_small, filter_binary_filter_threshold, image_border)
     else:
-        img_max_scale = ImageFilter.create_max_extended_image(img_scaled)
+        img_max_scale = create_max_extended_image(img_scaled, image_dimension, image_dimension_t)
 
     if skeleton:
         img_skeleton = img_as_float(skeletonize(img_max_scale))

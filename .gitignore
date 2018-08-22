@@ -4,6 +4,8 @@ data_RAW/
 data_cut
 images_letters/
 
+# ignore all tiddly wiki backup files
+traicy.html_backup/
 
 # Exclude DEBUG files
 # traicy/DEBUG/
