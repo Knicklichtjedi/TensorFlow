@@ -160,6 +160,8 @@ Error message and password prompt
 
 <li>$:/state/tab-1749438307</li>
 
+<li>$:/state/tab/moresidebar-401116514</li>
+
 <li>$:/state/tab/sidebar--1835078512</li>
 
 <li>$:/state/tabs/controlpanel/toolbars-1345989671</li>
@@ -188,11 +190,19 @@ Error message and password prompt
 
 <li>Big Book Of Concepts - Zusammenfassung</li>
 
+<li>binary_filters.py</li>
+
 <li>Capsule Network</li>
+
+<li>center_of_mass_and_fillout.py</li>
 
 <li>ChromakeyingV3 Algorithmus</li>
 
 <li>collect_data.py</li>
+
+<li>contours.py</li>
+
+<li>cropping_scaling_borders.py</li>
 
 <li>FilloutImage Algorithmus (Schmiering)</li>
 
@@ -206,6 +216,8 @@ Error message and password prompt
 
 <li>Hinge Loss</li>
 
+<li>image_filter.py</li>
+
 <li>initialize_dataset.py</li>
 
 <li>MNIST</li>
@@ -213,6 +225,8 @@ Error message and password prompt
 <li>Neuronen</li>
 
 <li>Optimizer</li>
+
+<li>rotation.py</li>
 
 <li>Stochastic Gradient Descent</li>
 
@@ -8816,8 +8830,8 @@ Error message and password prompt
 <div created="20180502214929211" modified="20180502214932480" title="$:/state/editpreviewtype">
 <pre>$:/core/ui/EditTemplate/body/preview/output</pre>
 </div>
-<div created="20180502214934355" modified="20180502214937363" title="$:/state/showeditpreview">
-<pre>no</pre>
+<div created="20180502214934355" modified="20180823131907543" title="$:/state/showeditpreview">
+<pre>yes</pre>
 </div>
 <div created="20180502212404501" modified="20180820143026906" title="$:/state/sidebar">
 <pre>yes</pre>
@@ -8834,13 +8848,16 @@ Error message and password prompt
 <div created="20180502212423159" modified="20180502220504738" title="$:/state/tab-1749438307">
 <pre>$:/core/ui/ControlPanel/Settings</pre>
 </div>
-<div created="20180502211811908" modified="20180820143037471" title="$:/state/tab/sidebar--1835078512">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div created="20180823140049366" modified="20180823140150173" title="$:/state/tab/moresidebar-401116514">
+<pre>$:/core/ui/MoreSideBar/Recent</pre>
+</div>
+<div created="20180502211811908" modified="20180823140411721" title="$:/state/tab/sidebar--1835078512">
+<pre>$:/core/ui/SideBar/Open</pre>
 </div>
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
-<div list="TraicyData collect_data.py initialize_dataset.py" title="$:/StoryList">
+<div list="rotation.py cropping_scaling_borders.py contours.py [[ChromakeyingV3 Algorithmus]] [[Google Tesseract]] center_of_mass_and_fillout.py binary_filters.py image_filter.py [[Capsule Network]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -8856,7 +8873,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/full&quot;: {
             &quot;title&quot;: &quot;$:/info/url/full&quot;,
-            &quot;text&quot;: &quot;file:///C:/Users/Moritz/Desktop/traicy.html&quot;
+            &quot;text&quot;: &quot;file:///C:/Users/katha/OneDrive/Dokumente/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/host&quot;: {
             &quot;title&quot;: &quot;$:/info/url/host&quot;,
@@ -8876,7 +8893,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/pathname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/pathname&quot;,
-            &quot;text&quot;: &quot;/C:/Users/Moritz/Desktop/traicy.html&quot;
+            &quot;text&quot;: &quot;/C:/Users/katha/OneDrive/Dokumente/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/search&quot;: {
             &quot;title&quot;: &quot;$:/info/url/search&quot;,
@@ -8884,15 +8901,15 @@ Error message and password prompt
         },
         &quot;$:/info/url/origin&quot;: {
             &quot;title&quot;: &quot;$:/info/url/origin&quot;,
-            &quot;text&quot;: &quot;null&quot;
+            &quot;text&quot;: &quot;file://&quot;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
-            &quot;text&quot;: &quot;1920&quot;
+            &quot;text&quot;: &quot;1536&quot;
         },
         &quot;$:/info/browser/screen/height&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/height&quot;,
-            &quot;text&quot;: &quot;1080&quot;
+            &quot;text&quot;: &quot;864&quot;
         }
     }
 }</pre>
@@ -9390,6 +9407,15 @@ Prototyp- und Knowledge-Approach sind gut, aber nicht allgemeingültig.
 Die Exemplar-View wurde teilweise widerlegt  einiges trifft zu (Kategorie-Learning).
 Man muss viele Daten statt eines einzelnen Paradigmas berücksichtigen.</pre>
 </div>
+<div created="20180823134902794" modified="20180823140625935" tags="$:/tags/SideBar TableOfContents script python ImageFilter" title="binary_filters.py">
+<pre>Das Skript //binary_filters.py// enthält Methoden zum Erstellen eines Binärbilds. Dazu gehören:
+
+* //clamp_float_values// - Erstellt ein binäres numpy array aus einem float-value Bild.
+* //clamp_binary_values// - Erstellt ein binäres numpy array aus einem integer-value Bild.
+* //[[create_chromakey_image|ChromakeyingV3 Algorithmus]]// - Erstellt ein Binärbild indem die angegebenen Farben gelöscht und der Rest weiß gesetzt wird.
+
+</pre>
+</div>
 <div created="20180822141151650" modified="20180822141316465" tags="capsulenet" title="Capsule Network">
 <pre>Die Informationen stammen zum einen aus diesem Video von Siraj:
 https://www.youtube.com/watch?v=VKoLGnq15RM
@@ -9444,8 +9470,14 @@ und es werden mehrere Iterationen benötigt, um ein Ergebnis zu erlangen, was da
 Problem der verschwindenden Gradienten erneut aufwirft, wobei diese auch noch
 schwerer zu berechnen sind.</pre>
 </div>
-<div created="20180806114010982" modified="20180806115102435" tags="ChromakeyingAlgorithm" title="ChromakeyingV3 Algorithmus">
-<pre>Die dritte Version der Funktion create_chromakey_image, die im ImageFilter des Projekts verwendet wird, dient dazu, Bilder ,die vor einem Greenscreen (oder anderem einfarbigen Hintergrund) aufgenommen wurden, in Binärbilder umzuwandeln.
+<div created="20180823135642690" modified="20180823140550338" tags="script python $:/tags/SideBar TableOfContents ImageFilter" title="center_of_mass_and_fillout.py">
+<pre>Das Skript //center_of_mass_and_fillout.py// enthält die folgenden zwei Bildverarbeitungsmethoden:
+
+* //create_com_image// - Berechnet das Zentrum der Masse alle weißen Pixel und verschiebt diese in die berechnete Richtung.
+* //[[create_fillout_image|FilloutImage Algorithmus (Schmiering)]]// - Iteriert mehrmals über das Array des Bildes und fügt weiße Pixel hinzu, um die lücken innerhalb der Figur zu füllen und Kanten zu stärken.</pre>
+</div>
+<div created="20180806114010982" modified="20180823140713871" tags="ChromakeyingAlgorithm" title="ChromakeyingV3 Algorithmus">
+<pre>Die dritte Version der Funktion create_chromakey_image, die im Skript //[[image_filter.py|image_filter.py]]// des Projekts verwendet wird, dient dazu, Bilder ,die vor einem Greenscreen (oder anderem einfarbigen Hintergrund) aufgenommen wurden, in Binärbilder umzuwandeln.
 Hierzu wird das eingelesen Bild vom RGB- zum HSV- Farbraum konvertiert, 
 
 hsv = rgb2hsv(img_read)
@@ -9522,6 +9554,23 @@ Die Methode wird am Anfang aufgerufen, um die kleineren Bilder aus den Dateien z
 
 
 </pre>
+</div>
+<div created="20180823140414238" modified="20180823141117651" tags="$:/tags/SideBar TableOfContents ImageFilter script python" title="contours.py">
+<pre>Im Pyhton-Skript //contours.py// sind Methoden aufgelistet, die mit dem Finden und Einzeichnen von Konturen zu tun haben. Dazu gehören:
+
+* //create_chunked_image// - Findet durch das Framework cv2 die Konturen im Bild und extrahiert die größten davon.
+* //draw_rectangle// - Zeichnet ein Viereck im Bild ein.
+* //draw_red_rectangle// - Zeichnet ein rotes Viereck im Bild ein. Der Farbraum ist durch float-Werte angegeben.</pre>
+</div>
+<div created="20180823141132059" modified="20180823141753050" tags="$:/tags/SideBar TableOfContents ImageFilter script python" title="cropping_scaling_borders.py">
+<pre>Im Python-Skript //cropping_scaling_borders.py// werden Cropping-Methoden, Skalierungen und das Einfügen von Rändern behandelt. Dazu gibt es folgende Methoden:
+
+* //create_cropped_image// - die Methode gibt ein kleineres Bild zurück.
+* //create_scaled_image// - Skaliert ein Bild.
+* //create_extended_chunk// - Vergrößert ein Bild, behält aber die aktuelle Skalierung bei.
+* //cropping// - Geht alle angegebenen Konturen durch und erstellt daraus mehrere kleine Bilder.
+* //create_max_extended_image// - Vergrößert das Bild zu den angegebenen Dimensionen.
+* //create_borders// - Zeichnet Rändern um das Bild herum.</pre>
 </div>
 <div created="20180806114141667" modified="20180806115218714" tags="FilloutImageAlgorithm" title="FilloutImage Algorithmus (Schmiering)">
 <pre>Iteriert eine eingestellte Anzahl oft über ein (Graustufen- oder) Binärbild und setzt für alle Werte größer null den Pixel auf 1 (weiß), sowie den boolean „lastWhite“ auf true, damit der nächste schwarze Pixel ebenfalls auf weiß gesetzt wird.
@@ -10548,6 +10597,45 @@ Versionen wie die von Rennie und Srebro:
 
 Oder die quadriert geglättete Funktion:</pre>
 </div>
+<div created="20180823131817493" modified="20180823135151774" tags="$:/tags/SideBar TableOfContents script python" title="image_filter.py">
+<pre>Das Python-Skript //image_filter.py// wird von //predict_with_ce.py// aufgerufen. Es dient hauptsächlich dazu, den komplexen Prozess der Bildverarbeitung zu steuern. Dieser läuft ab, bevor das Bild vom CNN analysiert werden soll.
+
+! Variablen
+
+Die meisten der beschriebenen Variablen werden durch eine JSON Datei definiert und können jederzeit über die GUI geändert werden.
+
+!! Dimensionen
+Unser fertiges Bild soll in 28x28 abgespeichert werden. Für verschiedene Verarbeitungsprozesse benötign wir jedoch kleinere Dimensionen oder Tupel, um unser Bild zu bearbeiten. Deshalb gibt es vier verschiedene Variablen unter diesem Punkt.
+
+!! Border
+Die Ränder des Bildes sollen möglichst schwarz bleiben. Deshalb ggeben die Border-Variablen den Spielraum für die Filter vor.
+
+!! Filterstärken
+Einige Filter wie Canny und Gauss benötigen die Angabe der Stärke des Filters.
+
+!! Chromakeying
+Für die Chromakeying Methode gibt es verschiedene Parameter, die beachtet werden müssen. Diese ergeben sich aus den Eigenschaften de HSV-Farbwerte, z.b. Helligkeit, Sättigung und Farbwert.
+
+!! Konturlänge
+Die Konturlänge gibt an, wie groß eine Form minimal sein muss, damit sie vom Programm im Bild erkannt werden soll.
+
+! Methoden
+
+!! Json
+Für die Übertragung der Daten aus der Json-Datei sind die beiden Methoden //assign_json_values// und //reassign_calculated_variables// zuständig. Die Methode //assign_json_values// überträgt die gelesenen Stärken auf die globalen Variablen, während sie in der anderen Methode umgerechnet werden, damit sie den Standarts der verwendeten Methoden entsprechen.
+
+!! Bilder speichern
+In der Methode //save_image// kann man Bilder im angegebenen Dateiverzeichnis und mit dem angegebenen Namen speichern. Die Methde //save_image_with_drawn_chunks// wird hauptsächlich dazu verwendet, um zu sehen, wo im Bild die einzelnen Figuren gefunden wurden. Das wird ebenfalls in der GUI angezeigt.
+
+!!create_folder
+Die Methode //create_folder// legt einen neuen Ordner an.
+
+!!read_images_with_chunks und read_images_with_chunks_from_location
+In der Methode //read_images_with_chunks// werden die Filtermethoden initialisiert und Bilddateien gespeichert und eingelesen. Sobald die einzelnen Figuren im Bild gefunden wurden, werden diese durch eine Schleife einzeln bearbeitet. Sie gibt eine Liste mit gefundenen Figuren als Bilder zurück, eine Liste mit den gefundenen Konturen und das Originalbild.
+
+Die Methode //read_images_with_chunks_from_location// hat einen ähnlichen Ablauf wie die vorherige Methode, jedoch liest sie ein Bild aus einem Dateipfad aus und bearbeitet dieses.
+</pre>
+</div>
 <div created="20180822143944658" modified="20180822144120128" tags="TableOfContents python dataset script $:/tags/SideBar" title="initialize_dataset.py">
 <pre>Das //initialize_dataset.py// Script dient dazu, die Bilder mit den dazugehörigen Labels aus dem TRAICY_DATA-Datensatz zu lesen und diese in einer Instanz der Klasse TraicyData zu speichern, welche im Anschluss serialisiert und in einer Binärdatei gesichert wird.
 
@@ -10644,6 +10732,13 @@ opt.apply_gradients(capped_grads_and_vars)
 
 
 </pre>
+</div>
+<div created="20180823141754999" modified="20180823142030587" tags="ImageFilter $:/tags/SideBar TableOfContents script python" title="rotation.py">
+<pre>Das Skript //rotation.py// enthält alle Methoden, die Bilder rotieren oder die Rotation eines Bildes herausfinden.
+
+* //rotate_image// - Rotiert das Bild in die angegebene Richtung.
+* //get_image_rotation_from_loacation// - Liest die Rotation eines Bilds.
+* //get_image_rotation// - Liest mehrere Rotationen.</pre>
 </div>
 <div created="20180821094416898" modified="20180821094654766" tags="GradientDescent" title="Stochastic Gradient Descent">
 <pre>1 WAS IST DER GRADIENT DESCENT?

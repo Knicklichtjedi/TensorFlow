@@ -1,5 +1,4 @@
 # scikit image
-from skimage.feature import canny
 from skimage.morphology import skeletonize
 from skimage.io import imread, imsave
 import JSONSettings
@@ -9,7 +8,6 @@ import os
 from os import listdir
 from os.path import abspath
 import errno
-import time
 
 # Define image dimensions and postprocessing values
 from image_filters.binary_filters import create_chromakey_image, clamp_binary_values
@@ -18,36 +16,42 @@ from image_filters.contours import create_chunked_image
 from image_filters.cropping_scaling_borders import create_scaled_image, create_cropped_image, create_borders
 from image_filters.rotation import get_image_rotation_from_location, get_image_rotation, rotate_image
 
+# image dimensions
 image_dimension = 28
 image_dimension_small = 27
-
-image_border = 2
-
 image_dimension_t = (image_dimension, image_dimension)
 image_dimension_t_small = (image_dimension_small, image_dimension_small)
 
+# border thickness
+image_border = 2
+filter_chunk_border = 5
+
+#filter strengths/threshold for canny & gaussian & fillout
 filter_canny_strength = 0.5
 filter_binary_gaussian_strength = 0.5
+filter_fill_out_length = 2
 filter_binary_filter_threshold = 0.5
 
+#chromakey filter variables
 filter_green_low = 50
 filter_green_high = 170
-
 filter_green_low_factor = filter_green_low / 360
 filter_green_high_factor = filter_green_high / 360
-
 filter_green_saturation = 0.5
 filter_green_brightness = 0.25
 
+#filenames
 loading_possible_filename = list()
 
+#minimal contours length for cv2.findContours()
 filter_contours_length = 9000
-
-filter_fill_out_length = 2
-filter_chunk_border = 5
 
 
 def assign_json_values(filename_directory):
+    """
+    reads the JSON data and hands it over to the global variables.
+    :param filename_directory: directory to read from
+    """
     try:
         JSONSettings.parse_data(filename_directory)
 
@@ -86,6 +90,10 @@ def assign_json_values(filename_directory):
 
 
 def reassign_calculated_variables():
+    """
+    calculates variables and passes them over to the globals
+    :return:
+    """
 
     global image_dimension, image_dimension_t, image_dimension_small, image_dimension_t_small
     global filter_green_low_factor, filter_green_high_factor, filter_green_low, filter_green_high
@@ -98,6 +106,10 @@ def reassign_calculated_variables():
 
 
 def save_image_with_drawn_chunks(img):
+    """
+    saves chunk from image in specific folder
+    :param img: smaller image to save (chunk)
+    """
     path = abspath(__file__ + "/../../")
     chunk_path = path + "/chunked/"
     filename = "chunked.png"
@@ -108,6 +120,12 @@ def save_image_with_drawn_chunks(img):
 
 
 def save_image(img, filename, folder):
+    """
+    saves image in the given directory with the given name
+    :param img: image to save
+    :param filename: filename of the saved image
+    :param folder: folder path
+    """
 
     if filename is not None and folder is not None:
         strl = list()
@@ -117,7 +135,6 @@ def save_image(img, filename, folder):
         new_filename = ''.join(strl)
 
         imsave(new_filename, img)
-
 
 
 def create_folder(directory):
@@ -143,7 +160,6 @@ def read_images_with_chunks():
 
     """
 
-    # TODO: add to settings.json
     pre_border = 5
 
     #create path & filename
@@ -255,6 +271,14 @@ def read_images_with_chunks():
 
 def read_image_with_chunks_from_location(directory):
 
+    """
+            Creates a new folder for the process with the necessary sub folder.
+        Starts the filtering process for each image.
+        Read -> Resize -> Rotate -> Binary -> CenterOfMass -> Canny + Skeleton
+    :param directory: directory to read from
+    :return:
+    """
+
     path = abspath(__file__ + "/../../")
     json_path = str(path) + "/configs/settings.json"
 
@@ -289,7 +313,6 @@ def read_image_with_chunks_from_location(directory):
     img_binary = create_chromakey_image(img_pre_crop, filter_green_low_factor, filter_green_high_factor, filter_green_saturation, filter_green_brightness)
     save_image(img_binary, filename + "_borders.png", main_folder)
 
-    # TODO: Add chunking here with image reading from directory
     # Returned lists by chunking
     list_of_work_images, list_of_work_contours, img_with_chunks = create_chunked_image(img_binary, img_reading, filter_contours_length, filter_chunk_border, image_dimension_t_small)
     save_image(img_with_chunks, filename + "_chunk.png", main_folder)
@@ -332,15 +355,13 @@ def read_image_with_chunks_from_location(directory):
 
 
 def main():
-
+    """
+    initialises method used to read from specific folder
+    :return:
+    """
     read_images_with_chunks()
 
 
 if __name__ == "__main__":
-    t1 = time.time()
-
     main()
 
-    t2 = time.time()
-
-    # print("Passed time: " + str(t2 - t1))
