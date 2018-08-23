@@ -40,6 +40,15 @@ def clamp_binary_values(img):
 
 
 def create_chromakey_image(img_read, green_low_factor, green_high_factor, saturation, brightness):
+    """
+    chromakeying method. changes images to hsv and blacks out the given range of colors. The others are left white.
+    :param img_read: original image
+    :param green_low_factor: low green color filter
+    :param green_high_factor: high green color filter
+    :param saturation: saturation of the color
+    :param brightness: brightness of the color
+    :return: binary image
+    """
     hsv = rgb2hsv(img_read)
 
     for pixel_row in hsv:

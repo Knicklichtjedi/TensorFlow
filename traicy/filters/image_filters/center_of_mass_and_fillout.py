@@ -8,7 +8,7 @@ from skimage.morphology import skeletonize
 
 def create_com_image(img_read, image_dimension, image_dimension_t, image_dimension_small, binary_threshold, image_border):
     """
-        Calculates the center of mass of all white pixels and moves them towards it and saves it to a given directory
+        Calculates the center of mass of all white pixels and moves them towards it
 
         :parameter
             img_read: binary image array

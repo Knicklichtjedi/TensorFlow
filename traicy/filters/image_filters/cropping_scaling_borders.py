@@ -106,6 +106,13 @@ def cropping(contours, img_pil, image_dimension):
 
 
 def create_max_extended_image(image_chunk, image_dimension, image_dimension_t):
+    """
+    extends an image to the given dimensions
+    :param image_chunk: original image
+    :param image_dimension: dimension of the image
+    :param image_dimension_t: dimension of the image as a tuple
+    :return:
+    """
     h, w = image_chunk.shape
 
     h_extension = image_dimension - h
