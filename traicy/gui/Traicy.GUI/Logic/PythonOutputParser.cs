@@ -48,14 +48,14 @@ namespace Traicy.GUI.Logic
             string[] splitted = toParse.Split('.');
             char[] postComma = splitted[1].ToCharArray();
 
-            string stringForTTS = splitted[0] + " Komma";
+            string stringForTts = splitted[0] + " Komma";
 
             foreach(char c in postComma)
             {
-                stringForTTS += " " + c;
+                stringForTts += " " + c;
             }
 
-            return stringForTTS;
+            return stringForTts;
         }
 
         /// <summary>
