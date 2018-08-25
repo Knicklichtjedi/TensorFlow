@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using MetriCam;
 using Microsoft.Win32;
 using Traicy.GUI.Commands;
@@ -93,13 +92,13 @@ namespace Traicy.GUI.ViewModels
 		private ICommand _keyDownObjectDetectionCommand;
 		private ICommand _buttonConnectWebcamClickCommand;
 		private ICommand _buttonStartObjectDetectionClickCommand;
-		private ICommand _buttonTakePictureClickCommand;
+		private ICommand _buttonLoadPictureClickCommand;
 		private ICommand _buttonOpenSettingsClickCommand;
 
 		public ICommand KeyDownObjectDetectionCommand => _keyDownObjectDetectionCommand ?? (_keyDownObjectDetectionCommand = new DelegateCommand(BeginObjectDetection));
 		public ICommand ButtonConnectWebcamClickCommand => _buttonConnectWebcamClickCommand ?? (_buttonConnectWebcamClickCommand = new DelegateCommand(ConnectToWebcam));
 		public ICommand ButtonStartObjectDetectionClickCommand => _buttonStartObjectDetectionClickCommand ?? (_buttonStartObjectDetectionClickCommand = new DelegateCommand(BeginObjectDetection));
-		public ICommand ButtonTakePictureClickCommand => _buttonTakePictureClickCommand ?? (_buttonTakePictureClickCommand = new DelegateCommand(TakePicture));
+		public ICommand ButtonLoadPictureClickCommand => _buttonLoadPictureClickCommand ?? (_buttonLoadPictureClickCommand = new DelegateCommand(LoadPicture));
 		public ICommand ButtonOpenSettingsClickCommand => _buttonOpenSettingsClickCommand ?? (_buttonOpenSettingsClickCommand = new DelegateCommand(ShowSettingsWindow));
 
 		/// <summary>
@@ -270,13 +269,13 @@ namespace Traicy.GUI.ViewModels
 		}
 
 		/// <summary>
-		/// This method is Invoked when the ButtonTakePictureClickCommand is executed. 
+		/// This method is Invoked when the ButtonLoadPictureClickCommand is executed. 
 		/// User chooses image from disk which is used for object detection.
 		/// If the button for choosing the image is clicked, an open file dialog opens from which the user can choose the image which is used for object detection. 
 		/// The image is displayed on the left side of the gui (live webcam video). The result is displayed on the right side of the gui.
 		/// </summary>
 		/// <param name="obj">Optional parameter for command.</param>
-		private void TakePicture(object obj)
+		private void LoadPicture(object obj)
 		{
 			try
 			{

@@ -148,7 +148,7 @@ Error message and password prompt
 
 <li>$:/state/editpreviewtype</li>
 
-<li>$:/state/Link/--1408632840/search</li>
+<li>$:/state/image-picker/system-1189210458</li>
 
 <li>$:/state/showeditpreview</li>
 
@@ -175,6 +175,12 @@ Error message and password prompt
 <li>$:/state/toc/TableOfContents/GUI-Logic--81657105</li>
 
 <li>$:/state/toc/TableOfContents/GUI-View--81657105</li>
+
+<li>$:/state/toc/TableOfContents/GUI/Data-Einstellungen--81657105</li>
+
+<li>$:/state/toc/TableOfContents/GUI/Logic-Parsing--81657105</li>
+
+<li>$:/state/toc/TableOfContents/GUI/View-ViewModel--81657105</li>
 
 <li>$:/StoryList</li>
 
@@ -248,6 +254,8 @@ Error message and password prompt
 
 <li>Kontrakte</li>
 
+<li>LoadingSettings</li>
+
 <li>Logging</li>
 
 <li>Logic</li>
@@ -262,15 +270,21 @@ Error message and password prompt
 
 <li>Parsing</li>
 
+<li>Prediction</li>
+
+<li>PythonOutputParser</li>
+
 <li>rotation.py</li>
 
 <li>settings.json</li>
+
+<li>SettingsController</li>
 
 <li>Stochastic Gradient Descent</li>
 
 <li>TableOfContents</li>
 
-<li>Tensorflow</li>
+<li>TensorFlow</li>
 
 <li>Text-to-Speech</li>
 
@@ -279,6 +293,10 @@ Error message and password prompt
 <li>View</li>
 
 <li>ViewModel</li>
+
+<li>WebcamHelper</li>
+
+<li>XAML</li>
 
 <li>Zusammenfassung : Pattern Recognition And Machine Learning</li>
 
@@ -8857,7 +8875,7 @@ Error message and password prompt
     &quot;tiddlers&quot;: {
         &quot;Untitled&quot;: {
             &quot;title&quot;: &quot;Untitled&quot;,
-            &quot;text&quot;: &quot;New Tiddler&quot;
+            &quot;text&quot;: &quot;!!!Kamera&quot;
         }
     }
 }</pre>
@@ -8874,8 +8892,8 @@ Error message and password prompt
 <div created="20180502214929211" modified="20180502214932480" title="$:/state/editpreviewtype">
 <pre>$:/core/ui/EditTemplate/body/preview/output</pre>
 </div>
-<div created="20180824185437098" modified="20180824185445392" title="$:/state/Link/--1408632840/search">
-<pre></pre>
+<div created="20180825155552761" modified="20180825155705902" title="$:/state/image-picker/system-1189210458">
+<pre>hide</pre>
 </div>
 <div created="20180502214934355" modified="20180823131907543" title="$:/state/showeditpreview">
 <pre>yes</pre>
@@ -8904,7 +8922,7 @@ Error message and password prompt
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
-<div created="20180824174640368" modified="20180824183352075" title="$:/state/toc/TableOfContents-GUI--81657105">
+<div created="20180824174640368" modified="20180825230859849" title="$:/state/toc/TableOfContents-GUI--81657105">
 <pre>open</pre>
 </div>
 <div created="20180824175725550" modified="20180824180024541" title="$:/state/toc/TableOfContents/GUI-Data--81657105">
@@ -8916,7 +8934,16 @@ Error message and password prompt
 <div created="20180824181645459" modified="20180824181645459" title="$:/state/toc/TableOfContents/GUI-View--81657105">
 <pre>open</pre>
 </div>
-<div list="settings.json Einstellungen JsonParser SerializeToJson Kontrakte Text-to-Speech ViewModel Objekterkennung Logging Parsing Logic Data GuiSettings ImageSettings FilterSettings View GUI initialize_dataset.py contours.py image_filter.py cropping_scaling_borders.py" title="$:/StoryList">
+<div created="20180825192304008" modified="20180825212430356" title="$:/state/toc/TableOfContents/GUI/Data-Einstellungen--81657105">
+<pre>open</pre>
+</div>
+<div created="20180825192435529" modified="20180825192713143" title="$:/state/toc/TableOfContents/GUI/Logic-Parsing--81657105">
+<pre>open</pre>
+</div>
+<div created="20180824232021639" modified="20180824232023518" title="$:/state/toc/TableOfContents/GUI/View-ViewModel--81657105">
+<pre>open</pre>
+</div>
+<div list="[[ChromakeyingV3 Algorithmus]] Objekterkennung Text-to-Speech WebcamHelper PythonOutputParser TensorFlow Logging Parsing LoadingSettings ImageSettings GuiSettings FilterSettings binary_filters.py collect_data.py contours.py cropping_scaling_borders.py center_of_mass_and_fillout.py Kontrakte ViewModel Einstellungen JsonParser GUI Logic SettingsController Data Prediction View XAML" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -8973,8 +9000,8 @@ Error message and password prompt
     }
 }</pre>
 </div>
-<div created="20180824172936974" modified="20180824172939652" title="$:/temp/search">
-<pre>standart</pre>
+<div created="20180824172936974" modified="20180825225939048" title="$:/temp/search">
+<pre>chroma</pre>
 </div>
 <div created="20180502212425804" modified="20180502212431043" title="$:/theme">
 <pre>$:/themes/tiddlywiki/snowwhite</pre>
@@ -9624,27 +9651,51 @@ Die Methode wird am Anfang aufgerufen, um die kleineren Bilder aus den Dateien z
 * //draw_rectangle// - Zeichnet ein Viereck im Bild ein.
 * //draw_red_rectangle// - Zeichnet ein rotes Viereck im Bild ein. Der Farbraum ist durch float-Werte angegeben.</pre>
 </div>
-<div created="20180823141132059" modified="20180823141753050" tags="$:/tags/SideBar TableOfContents ImageFilter script python" title="cropping_scaling_borders.py">
+<div created="20180823141132059" modified="20180825172338330" tags="$:/tags/SideBar TableOfContents ImageFilter script python" title="cropping_scaling_borders.py">
 <pre>Im Python-Skript //cropping_scaling_borders.py// werden Cropping-Methoden, Skalierungen und das Einfügen von Rändern behandelt. Dazu gibt es folgende Methoden:
 
-* //create_cropped_image// - die Methode gibt ein kleineres Bild zurück.
+* //create_cropped_image// - Die Methode gibt ein kleineres Bild zurück.
 * //create_scaled_image// - Skaliert ein Bild.
 * //create_extended_chunk// - Vergrößert ein Bild, behält aber die aktuelle Skalierung bei.
 * //cropping// - Geht alle angegebenen Konturen durch und erstellt daraus mehrere kleine Bilder.
 * //create_max_extended_image// - Vergrößert das Bild zu den angegebenen Dimensionen.
-* //create_borders// - Zeichnet Rändern um das Bild herum.</pre>
+* //create_borders// - Zeichnet Ränder um das Bild herum.</pre>
 </div>
-<div created="20180824174937901" modified="20180824180050615" tags="C# GUI" title="Data">
-<pre>Die Datenkomponente stellt alle Klassen zur Verfügung, die die Einstellungen und Daten zur Objekterkennung repräsentieren.
-
-!!! ////FilterSettings
-
-!!! ////ImageSettings
-
-!!! ////GuiSettings</pre>
+<div created="20180824174937901" modified="20180825191253948" tags="C# GUI" title="Data">
+<pre>Die Datenkomponente stellt alle Klassen zur Verfügung, die die [[Einstellungen|Einstellungen]] und [[Daten|Prediction]] zur Objekterkennung repräsentieren.</pre>
 </div>
-<div created="20180824184643482" modified="20180824185455931" tags="C# Data" title="Einstellungen">
-<pre>Die Einstellungen werden mittels der Settings-Klassen verwaltet. Alle Einstellungen werden in der JSON-Datei mittels des JsonParsers verwaltet. Die JSON-Datei stellt die Schnittstelle zwischen den Python-Komponenten und der Benutzeroberfläche dar.</pre>
+<div created="20180824184643482" modified="20180825215445993" tags="C# Data" title="Einstellungen">
+<pre>Die Einstellungen werden mittels der Settings-Klassen verwaltet. Alle Einstellungen werden in der JSON-Datei mittels des [[JsonParsers |JsonParser]]verwaltet. Die JSON-Datei stellt die Schnittstelle zwischen den Python-Komponenten und der Benutzeroberfläche dar.
+
+!! Klassen
+
+Die Einstellungen setzen sich aus verschiedenen Klassen zusammen. Zu unterscheiden sind die Einstellungsdaten, die nur innerhalb der Python-Skripts verwendet werden und die Einstellungen, die sowohl in der Benutzeroberfläche als auch in der Python-Komponente Verwendung finden.
+
+Die Klassen bieten als Datenklasse eine Menge von Eigenschaften an, die in der JSON-Datei unter den gewählten Eigenschaftsnamen abgelegt werden, über welche sie auch innerhalb der Python-Komponente angesprochen werden:
+
+```
+[Newtonsoft.Json.JsonProperty(PropertyName = &quot;attributeName&quot;)]
+```
+
+!!!FilterSettings
+
+Die `FilterSettings` stellen die Einstellungen für die Bildfilter in der Python-Komponente dar.
+
+!!!GuiSettings
+
+Die `GuiSettings`-Klasse repräsentiert die gesamten Einstellungen der Benutzeroberfläche.
+
+!!!ImageSettings
+
+Die `ImageSettings` stellen die Einstellungen der zu erkennenden Bilder der Python-Komponente dar.
+
+!!!LoadingSettings
+
+Die `LoadingSettings` geben an, welche Bildtypen durch die Python-Komponente gelesen werden können.
+
+!!! ~SettingProperties
+
+Diese Klasse ist ein Wrapper, welcher alle oben beschriebenen Klassen kombiniert und dazu dient, als Objekt in die JSON-Datei geschrieben zu werden.</pre>
 </div>
 <div created="20180806114141667" modified="20180806115218714" tags="FilloutImageAlgorithm" title="FilloutImage Algorithmus (Schmiering)">
 <pre>Iteriert eine eingestellte Anzahl oft über ein (Graustufen- oder) Binärbild und setzt für alle Werte größer null den Pixel auf 1 (weiß), sowie den boolean „lastWhite“ auf true, damit der nächste schwarze Pixel ebenfalls auf weiß gesetzt wird.
@@ -9683,8 +9734,34 @@ Schwarze Pixel die auf schwarze oder ehemalig schwarze Pixel folgen behalten ihr
     imsave(folder + filename + &quot;_fillout&quot; + '.png', img_as_uint(test))
 </pre>
 </div>
-<div created="20180824174921900" modified="20180824175836459" tags="C# Data" title="FilterSettings">
-<pre>''''</pre>
+<div created="20180824174921900" modified="20180825230220794" tags="C# Einstellungen" title="FilterSettings">
+<pre>!! Eigenschaften
+
+* `Canny` – Diese Property beschreibt den Schwellenwert des Canny-Algorithmus, der zur Kantenerkennung verwendet wird. Desto kleiner der Schwellenwert ist, desto mehr Strukturen werden erkannt. Dies kann auch zur Erkennung ungewünschter Strukturen führen.
+
+* `BinaryGauss` – Der Gauss-Filter wird zur Glättung des Bildes verwendet. Die Eigenschaft beschreibt den dafür genutzten Schwellenwert.
+
+* `BinaryThreshold` –  Der `BinaryThreshold` ist der Schwellenwert, der für das Umwandeln des Bildes in ein Binärbild verwendet wird.
+
+* `GreenLow` und `GreenHigh` – Diese Eigenschaften beschreiben den unteren bzw. oberen Schwellenwert, welche für das Chromakeying verwendet werden. 
+
+Die Schwellenwerte richten sich nach dem HSV-Farbraum, welcher von den Werten 0 bis 360 die Farben beschreibt. 
+
+[img width=25% [HSV_Skala.png]],,[1],,
+
+Da wir Grünwerte aus dem Bild keyen möchten, kann man von Werten zwischen 60 (unterer Schwellenwert) und 180 (oberer Schwellenwert) ausgehen.
+
+*`GreenSaturation` und `GreenBrightness` – Diese Schwellenwerte beschreiben die Sättigung und die Helligkeit des HSV-Farbraumes und sie werden ebenfalls für das Chromakeying verwendet.
+
+* `Schmiering` – Das [[Schmiering|FilloutImage Algorithmus (Schmiering)]] oder [[Fillout|FilloutImage Algorithmus (Schmiering)]] beschreibt das Ausfüllen von benachbarten Pixeln in gefundenen Chunks, um keine Lücken zu erhalten, die Fehler in weiteren Filtern verursachen könnten. Dieser Wert legt die Anzahl der zu betrachtenden Nachbarn fest.
+
+* `MinimalOutlineSizeChunking` – Das [[Chunking|contours.py]] beschreibt den Prozess des Findes von ausreichend großen, zusammenhängen Strukturen in einem Bild. Die minimale Konturgröße beschreibt die Länge des Umfangs der Konturen.
+
+* `ChunkBorder` – Im Prozess des [[Chunkings|contours.py]] werden gefundene Strukturen mittels eines Rahmens im Bild hervorgehoben. Die Rahmensträke wird durch diese Eigenschaft beschrieben. Je größer der Wert ist, desto dicker wird der Rahmen gezeichnet.
+
+!! Einzelnachweise
+
+[1] Wikipedia-Seite zum HSV-Farbraum: https://upload.wikimedia.org/wikipedia/commons/a/ad/HueScale.svg</pre>
 </div>
 <div created="20180821093545550" modified="20180821093814236" tags="FoDL" title="Fundamentals of Deep Learning - Zusammenfassung">
 <pre>1 THE NEURAL NETWORK
@@ -9849,7 +9926,7 @@ folgenden Schritte gelten nur für Regionen, die keine festen Texthöhen haben.
 
 1.4.5 Adaptiver Klassifizierer</pre>
 </div>
-<div created="20180824173802664" modified="20180824184506511" tags="GUI TableOfContents C#" title="GUI" type="text/vnd.tiddlywiki">
+<div created="20180824173802664" modified="20180825192255054" tags="GUI TableOfContents C#" title="GUI" type="text/vnd.tiddlywiki">
 <pre>Die GUI (Grafische Benutzeroberfläche) repräsentiert die Anwendung, welche in C# umgesetzt wurde und als Schnittstelle zur Python-Komponente dient.
 
 Die grafische Benutzeroberfläche wurde mit dem Grafikframework WPF (Windows Presentation Foundation) umgesetzt. Während der Umsetzung wurde das Design Pattern MVVM (Model View ViewModel) verwendet, welches es – ähnlich dem MVC-Muster – ermöglicht, die Oberfläche von der Logik- und der Datenschicht zu trennen.
@@ -10575,8 +10652,14 @@ start_training(mnist, accuracy, train_step, keep_prob, x, y_)
 if __name__ == &amp;quot;__main__&amp;quot;:
 main()</pre>
 </div>
-<div created="20180824180015323" modified="20180824180022251" tags="C# Data" title="GuiSettings">
-<pre></pre>
+<div created="20180824180015323" modified="20180825191541411" tags="Einstellungen C#" title="GuiSettings">
+<pre>!! Eigenschaften
+
+* `TextToSpeechIsEnabled` – Dieser boolesche Wert gibt an, ob die akustische Wiedergabe der Ergebnisse der Objekterkennung in als [[Text-to-Speech|Text-to-Speech]] aktiviert ist.
+
+* `PythonInterpreterPath` – Die Eigenschaft repräsentiert den Dateipfad, welcher den Ort der `python.exe` angibt. Diese wird für das Ausführen des Python-Prozesses benötigt und muss somit angegeben werden, damit eine [[Objekterkennung|Objekterkennung]] stattfinden kann.
+
+* `TfModelMode` – Die Anwendung ist in der Lage, unterscheiden zu können, welche Art von Objekten erkannt werden sollen. Diese Eigenschaft kann zwischen den Datenmodellen für das Erkennen von Ziffern und Buchstaben wechseln.</pre>
 </div>
 <div created="20180806121105718" modified="20180806123508174" tags="Tensorflow" title="HighLevel APIs für Tensorflow (Vergleich)">
 <pre>Keras :
@@ -10724,8 +10807,14 @@ In der Methode //read_images_with_chunks// werden die Filtermethoden initialisie
 Die Methode //read_images_with_chunks_from_location// hat einen ähnlichen Ablauf wie die vorherige Methode, jedoch liest sie ein Bild aus einem Dateipfad aus und bearbeitet dieses.
 </pre>
 </div>
-<div created="20180824180001273" modified="20180824180005963" tags="C# Data" title="ImageSettings">
-<pre></pre>
+<div created="20180824180001273" modified="20180825191549215" tags="Einstellungen C#" title="ImageSettings">
+<pre>!! Eigenschaften
+
+* `Dimension` – Diese Eigenschaft gibt an, wie groß die Dimensionen des Bildes (Höhe und Breite) sein sollen, welches durch die Bildfilter in Python verarbeitet wird. Standardmäßig wird ein Wert von 28x28 Pixeln verwendet.
+
+* `DimensionSmall` – Da ein erkanntes Objekt immer in der Mitte des Bildes ausgerichtet wird ([[Center of mass|center_of_mass_and_fillout.py]]) und wir Artefakte am Rand des Bildes, welche Probleme bereiten könnten, verhindern wollen, wird das Objekt in einem kleineren (inneren) Bild platziert. `DimensionSmall` gibt somit an, wie hoch und breit das innere Bild sein soll.
+
+* `Borders` – Um das innere Bild nach außen mit schwarzen Pixeln aufzufüllen, werden sogenannte [[Borders|cropping_scaling_borders.py]] verwendet, deren Größe durch diesen Wert beschrieben wird. </pre>
 </div>
 <div created="20180822143944658" modified="20180824183338952" tags="TableOfContents python dataset script $:/tags/SideBar" title="initialize_dataset.py">
 <pre>Das //initialize_dataset.py// Script dient dazu, die Bilder mit den dazugehörigen Labels aus dem TRAICY_DATA-Datensatz zu lesen und diese in einer Instanz der Klasse TraicyData zu speichern, welche im Anschluss serialisiert und in einer Binärdatei gesichert wird.
@@ -10783,29 +10872,43 @@ Die Methode //read_datafile// liest eine Datei aus dem angegebenen Pfad aus und 
 !! TraicyData
 Das Skript enthält außerdem die Klasse TraicyData.</pre>
 </div>
-<div created="20180824185502468" modified="20180824193518504" tags="C# Logic" title="JsonParser">
+<div created="20180824185502468" modified="20180825230326449" tags="C# Parsing" title="JsonParser">
 <pre>Diese Komponente ermöglicht das Schreiben und Lesen der Einstellungen aus der JSON-Datei [[settings.json|settings.json]], in welcher die Einstellungen der Benutzeroberfläche und Filter für die Python-Komponente abgelegt werden.
 
-Zum vereinfachten Verwalten von JSON-Dateien wird das Paket `Newtonsoft.Json` verwendet, welche es erlaubt ein Objekt in einen JSON-String umzuwandeln. Dieser kann entsprechend in der JSON-Datei gespeichert oder aus dieser geladen werden. 
+Zum vereinfachten Verwalten von JSON-Dateien wird das Paket //Newtonsoft.Json// verwendet, welche es erlaubt ein Objekt in einen JSON-String umzuwandeln. Dieser kann entsprechend in der JSON-Datei gespeichert oder aus dieser geladen werden. 
 
 !! Methoden
 
-`SerializeToJson` ist eine statische generische Methode, die das Schreiben eines Objektes in eine angegebene JSON-Datei erlaubt. 
+* `SerializeToJson` – Ist eine statische generische Methode, die das Schreiben eines Objektes in eine angegebene JSON-Datei erlaubt. 
 
-`DeserializeFromJson` ist ebenfalls eine statische generische Methode, die aus der angegebenen Datei (`filepath`) ein JSON-Objekt liest, deserialisiert und es zurück an die aufrufende Komponente gibt.</pre>
+* `DeserializeFromJson` – Ist ebenfalls eine statische generische Methode, die aus der angegebenen Datei (`filepath`) ein JSON-Objekt liest, deserialisiert und es zurück an die aufrufende Komponente gibt.</pre>
 </div>
-<div created="20180824183019950" modified="20180824183047345" tags="C# Contracts GUI" title="Kontrakte">
-<pre></pre>
+<div created="20180824183019950" modified="20180825171539681" tags="C# Contracts GUI" title="Kontrakte">
+<pre>Die Kontrakte sind eine Menge von Basisklassen (oder Interfaces), die angeben, welche Funktionalitäten implementiert werden müssen oder vererbt werden.
+
+!!! ~ViewModelBase
+
+Die Klasse `ViewModelBase` stellt die Basisklasse zur Implementierung von Änderungen der Eigenschaften in der Benutzeroberfläche dar. Sie implementiert das Interface `INotifyPropertyChanged`, welches zur Behandlung des `PropertyChanged`-Events verwendet wird und immer dann auslöst, sobald sich im ViewModel eine Eigenschaft geändert hat, die an die Benutzeroberfläche gebunden ist.
+
+!!! ~DelegateCommand
+
+Diese Basisklasse implementiert das Interface `ICommand`, welches die Grundlage bietet, um Commands im ViewModel verwenden zu können. Commands gleichen einem Eventhandler, welcher es ermöglicht, an ein Steuerelement (in diesem Fall Schaltflächen) in der Oberfläche gebunden zu werden. Benutzeraktionen mit dem Steuerlement lösen den Command aus, an welchen wiederum Aktionen gebunden sind, die ausgeführt werden.    
+</pre>
 </div>
-<div created="20180824181257628" modified="20180824194523276" tags="C# Logic" title="Logging">
+<div created="20180824204022865" modified="20180825191558011" tags="Einstellungen C#" title="LoadingSettings">
+<pre>!! Eigenschaften
+
+* `PossibleImageFileTypes` – Dieser Wert gibt an, welche Bilder abhängig vom Datentyp erkannt werden können. Standardmäßig sind das die Formate `.png` und `.jpg`.</pre>
+</div>
+<div created="20180824181257628" modified="20180825175858691" tags="C# Logic" title="Logging">
 <pre>Die Klasse `Logger.cs` ist zuständig für das Loggen von Fehlern und Ausnahmen, die während der Ausführung der Anwendung auftreten.
 
 !! Methoden
 
-Die Methode `Log` schreibt eine Fehler- oder Ausnahmenachricht in die angegebene Log-Datei (standardmäßig `log.txt` und fügt einen Zeitstempel mit Datum und Uhrzeit hinzu. </pre>
+* `Log` – Schreibt eine Fehler- oder Ausnahmenachricht in die angegebene Log-Datei (standardmäßig `log.txt`) und fügt einen Zeitstempel mit Datum und Uhrzeit hinzu. </pre>
 </div>
-<div created="20180824180038237" modified="20180824180125817" tags="C# GUI" title="Logic">
-<pre></pre>
+<div created="20180824180038237" modified="20180825215455502" tags="C# GUI" title="Logic">
+<pre>Diese Komponente ist für die gesamte Verarbeitung zuständig. Sie stellt Klassen zur Verfügung, die für das [[Logging|Logging]] von Fehlern, das [[Parsen/Konvertieren|Parsing]] in benötigte Typen, die [[Objekterkennung|Objekterkennung]], das [[Verwalten der Einstellungen|SettingsController]] und [[Text-to-Speech|Text-to-Speech]] verantwortlich sind.</pre>
 </div>
 <div created="20180806113906991" modified="20180806114020093" tags="MNIST" title="MNIST">
 <pre>Die Modified National Institute of Standards and Technology database, kurz MNIST, ist ein Datensatz, bestehend aus 60.000  handgeschriebenen Ziffern von 250 verschiedenen Personen zum Trainieren und 10.000 Ziffern zum Testen von ebenfalls 250 verschiedenen Personen.
@@ -10816,8 +10919,16 @@ Im Gegensatz zu den 20x20 Pixel Binärbildern des zugrundeliegenden NIST-Datensa
 <div created="20180502211540111" modified="20180502220251766" tags="TableOfContents" title="Neuronen">
 <pre>test</pre>
 </div>
-<div created="20180824181558953" modified="20180824181618524" tags="C# Logic" title="Objekterkennung">
-<pre></pre>
+<div created="20180824181558953" modified="20180825223156528" tags="C# Logic" title="Objekterkennung">
+<pre>Die Objekterkennung ist das Hauptfeature der Anwendung und wird über die Python-Komponente ausgeführt.
+
+!!Klassen
+
+Es gibt zwei Klassen, die für die Objekterkennung verantwortlich sind:
+
+* `PythonConnector` – Er leitet den Bildpfad des zu analysierenden Bildes an die Klasse `ObjectDetection` weiter und parst im Anschluss das erhaltene Ergebnis als String, der vom [[Text-to-Speech|Text-to-Speech]]-Algorithmus verarbeitet werden kann.
+
+* `ObjectDetection` – Die Klasse stellt die Schnittstelle zwischen der GUI und der Python-Komponente dar. Es wird ein Python-Prozess gestartet, der das Skript `predict_with_ce.py` ausführt und an dieses als Argument den Bildpfad des zu analysierenden Bildes und zusätzlich das zu verwendende Datenmodell (Ziffern oder Buchstaben) übergibt. Im Ordner &quot;//python_resources//&quot; liegen alle benötigten Python-Skripte und -module sowie die Datenmodelle, auf die zugegriffen werden muss. Die Anwendung wartet solange auf eine Antwort, bis der Prozess bzw. die Verabeitung des Skriptes abgeschlossen ist. Das Ergebnis (oder ggf. Fehler) wird als String zurückgegeben und von der GUI dargestellt.</pre>
 </div>
 <div created="20180502211859448" modified="20180502220240278" tags="TableOfContents" title="Optimizer">
 <pre>Basisklasse in Tensorflow mit vorimplementierten Optimierungsalgorithmen. Benötigte Algorithmen werden aus Subklassen instanziiert.
@@ -10851,8 +10962,36 @@ opt.apply_gradients(capped_grads_and_vars)
 
 </pre>
 </div>
-<div created="20180824181236028" modified="20180824181255666" tags="C# Logic" title="Parsing">
-<pre></pre>
+<div created="20180824181236028" modified="20180825212320764" tags="C# Logic" title="Parsing">
+<pre>Das Parsing beschreibt den Vorgang des Überführens eines Formates in ein anderes verarbeitbares Format.
+
+!!Klassen
+
+* `JsonParser` – Ist für das Lesen / Schreiben und Umwandeln von serialisierten JSON-Daten in ~SettingsProperties (Wrapperklasse) und umgekehrt zuständig
+
+* `PythonOutputParser` – Ist eine Klasse, die sich um das Konvertieren von Typen kümmert, die für die [[Objekterkennung|Objekterkennung]] und die Verarbeitung und Anzeige in der [[View|View]] verwendet werden
+* `WebcamHelper` – Diese Klasse ist zuständig für das Konvertieren von Formaten, die die Webcam nutzt in  Formate, die in der Oberfläche dargestellt werden können und das Verwalten von Bildformaten.</pre>
+</div>
+<div created="20180825190908325" modified="20180825192331578" tags="Data C#" title="Prediction">
+<pre>`Prediction` ist eine Datenklasse, die einen bei der Objekterkennung erhaltenen Ergebniswert und dessen Wahrscheinlichkeit in einem Objekt kapselt.
+
+* `PredictionValue` – Ist ein String, der je nach gewähltem Datenmodell den erkannten Buchstaben oder die erkannte Ziffer enthält
+* `PredictionPercentage` – Ist ein String, der die Wahrscheinlichkeit enthält, mit dem das gefundene Objekt als solches erkannt wurde (z.B. Wahrscheinlichkeit, dass der gefundene Buchstabe ein &quot;//A//&quot; ist, beträgt 75,5%)
+</pre>
+</div>
+<div created="20180825193711053" modified="20180825230914839" tags="Parsing C#" title="PythonOutputParser">
+<pre>!!Methoden
+
+Es handelt sich um statische Methoden, die ohne das Erzeugen einer Instanz der Klasse verwendet werden können, da es sich nur um eine Hilfsklasse handelt.
+
+* `Parse` – Nimmt einen String entgegen und separiert ihn bei Kommata. Die aufgeteilten Strings werden als String-Array zur weiteren Verarbeitung zurückgegeben.
+* `ParseToPrediction` – Nimmt einen String entgegen, teilt ihn mittels der Methode `Parse` auf und wandelt das Ergebnis in ein [[Prediction|Prediction]]-Objekt um.
+* `ParsePercentage` – Bereitet einen String mit einer Wahrscheinlichkeit in Prozent für den [[Text-To-Speech|Text-to-Speech]]-Algorithmus auf.
+* `ParseStringToList` – Verarbeitet einen String mit der Methode `Parse` und gibt eine Liste von Strings zurück.
+* `ParseListToString` – Macht aus einer Liste von Strings einen einzelnen String. Die Listenelemente werden mittels Kommata untereinander verbunden.
+* `ParseToListOfPredictions` – Konvertiert einen String, der mehrere Ergebnisse der [[Objekterkennung|Objekterkennung]] enthält in eine Liste von [[Predictions|Prediction]] um.
+* `ParseToString` – Gibt einen String auf Basis eines booleschen Wertes zurück (true entspricht dem String &quot;An&quot;, false entspricht dem String &quot;Aus&quot;). Diese Methode wird für den //~ToggleButton// in der GUI verwendet, welcher angibt, ob [[Text-to-Speech|Text-to-Speech]] aktiviert wurde.
+* `ParseToModelMode` – Gibt einen String auf Basis eines booleschen Wertes zurück (true entspricht dem String &quot;number&quot;, false entspricht dem String &quot;letter&quot;). Diese Methode wird für den //~ToggleButton// in der GUI verwendet, welcher angibt, welches Datenmodell für [[TensorFlow|Tensorflow]] verwendet wurde (Ziffern oder Buchstaben).</pre>
 </div>
 <div created="20180823141754999" modified="20180823142030587" tags="ImageFilter $:/tags/SideBar TableOfContents script python" title="rotation.py">
 <pre>Das Skript //rotation.py// enthält alle Methoden, die Bilder rotieren oder die Rotation eines Bildes herausfinden.
@@ -10863,6 +11002,20 @@ opt.apply_gradients(capped_grads_and_vars)
 </div>
 <div created="20180824193245227" modified="20180824193250820" tags="" title="settings.json">
 <pre></pre>
+</div>
+<div created="20180825215300923" modified="20180825220809970" tags="C# Logic" title="SettingsController">
+<pre>Der `SettingsController` ist eine Klasse, die sich um das Bereitstellen und Verwalten der Einstellungsdaten kümmert.
+
+!!Methoden
+
+* `CreateJsonSettingsWithStandardValues` – Erstellt ein `SettingProperties`-Objekt, welches Standardwerte für die Einstellungen enthält und speichert diese in der Datei `settings.json`.
+* `LoadSettingsFromJsonFile` – Lädt die Einstellungen aus der Datei `settings.json` und gibt ein `SettingProperties`-Objekt zurück.
+* `SaveSettingsToJsonFile` – Nimmt ein `SettingProperties`-Objekt entgegen und schreibt dieses in die Datei `settings.json`.
+* `GetSettings` – Gibt die Einstellungen als `SettingProperties`-Objekt zurück. Sollte das Verzeichnis und die Datei `settings.json` noch nicht existieren, wird diese angelegt.
+* `CreateSettingsDirectory` – Legt das Verzeichnis &quot;//configs//&quot; an, falls es nicht existieren sollte.
+* `GetPythonInterpreterPath` – Gibt den Pfad des Python-Interpreters aus den gecachten Einstellungen zurück oder lädt diesen aus der Datei `settings.json`.
+* `GetTextToSpeech` – Gibt die Information, ob [[Text-to-Speech|Text-to-Speech]] aktiviert ist, aus den gecachten Einstellungen zurück oder lädt sie aus der Datei `settings.json`.
+* `GetTfModelMode` – Gibt das aktuell ausgewählte Datenmodell zur [[Objekterkennung|Objekterkennung]] aus den gecachten Einstellungen zurück oder lädt dieses aus der Datei `settings.json`.</pre>
 </div>
 <div created="20180821094416898" modified="20180821094654766" tags="GradientDescent" title="Stochastic Gradient Descent">
 <pre>1 WAS IST DER GRADIENT DESCENT?
@@ -11058,18 +11211,21 @@ neue Minima zu finden, welche eventuell besser sind.</pre>
 
 &lt;/div&gt;</pre>
 </div>
-<div created="20180806113703452" modified="20180806113931223" tags="Tensorflow" title="Tensorflow">
-<pre>Tensorflow ist ein vom „Google Brain Team“ entwickeltes Open-Source-Framework zur Entwicklung von Programmstrukturen aus dem Bereich des maschinellen Lernens bzw. der neuronalen Netze , das erstmals am 9. November 2015 unter der Apache 2.0-Lizenz für die Öffentlichkeit zugänglich gemacht wurde.
+<div created="20180806113703452" modified="20180825221912285" tags="Tensorflow" title="TensorFlow">
+<pre>TensorFlow ist ein vom „Google Brain Team“ entwickeltes Open-Source-Framework zur Entwicklung von Programmstrukturen aus dem Bereich des maschinellen Lernens bzw. der neuronalen Netze , das erstmals am 9. November 2015 unter der Apache 2.0-Lizenz für die Öffentlichkeit zugänglich gemacht wurde.
 
-Neben den Grundfunktionen die durch die Entwickler zur Verfügung gestellt werden, gibt es eine Vielzahl von Erweiterungen, Schnittstellen und fertigen Modellen die von anderen Entwicklerteams oder einzelnen Nutzern veröffentlicht wurden und die Programmbibliothek erweitern.
+Neben den Grundfunktionen, die durch die Entwickler zur Verfügung gestellt werden, gibt es eine Vielzahl von Erweiterungen, Schnittstellen und fertigen Modellen die von anderen Entwicklerteams oder einzelnen Nutzern veröffentlicht wurden und die Programmbibliothek erweitern.
 
-Seit Anfang 2018 und Version 1.5 ist mit TensorflowLite das Ausführen (nicht aber Training) von Tensorflowmodellen auch auf mobilen Endgeräten möglich.
+Seit Anfang 2018 und Version 1.5 ist mit ~TensorFlowLite das Ausführen (nicht aber Training) von TensorFlow-Modellen auch auf mobilen Endgeräten möglich.
 
 
 siehe auch : Guide to Tensorflow</pre>
 </div>
-<div created="20180824181647602" modified="20180824181735242" tags="C# Logic" title="Text-to-Speech">
-<pre></pre>
+<div created="20180824181647602" modified="20180825175457637" tags="C# Logic" title="Text-to-Speech">
+<pre>Sobald die Objekterkennung durchgeführt wurde und ein Ergebnis (oder ein Fehler) vorliegt, wird dieses akustisch wiedergegeben.
+
+Die zuständige Methode `InvokeAsyncTextToSpeech` in der Klasse `TextToSpeech` nimmt einen zu sprechenden Text als Parameter entgegen. Es werden die unter Windows vorinstallierten Sprachen iteriert und die erste deutsche Sprache, die auf dem System installiert ist, wird verwendet, um //Traicy// eine Stimme zu verleihen.
+Zur Ausgabe der Sprache wird ein `SpeechSynthesizer` verwendet.</pre>
 </div>
 <div created="20180822144245596" modified="20180822144440654" tags="dataset python TableOfContents $:/tags/SideBar" title="TraicyData">
 <pre>Die Klasse TraicyData wird als Speicher für die von Tensorflow benötigten Arrays gebraucht. Ihr kann man beim Initialiseren sechs Arrays mit Bild- und Labeldaten übergeben.
@@ -11081,11 +11237,67 @@ siehe auch : Guide to Tensorflow</pre>
 * eval_label - Evaluierungslabels
 * test_label - Testlabels</pre>
 </div>
-<div created="20180824174659689" modified="20180824175935934" tags="view GUI C#" title="View">
-<pre>Die View umfasst alle Klassen, die für das Darstellen der Benutzeroberfläche verantwortlich sind.</pre>
+<div created="20180824174659689" modified="20180825191449225" tags="GUI C#" title="View">
+<pre>Die View umfasst alle Klassen, die für das Darstellen der Benutzeroberfläche mit der Sprache [[XAML|XAML]] und das Verwalten der Oberflächenlogik verantwortlich sind. Die zugehörigen Klassen und deren Zweck können der `README.md`-Datei des Ordners &quot;//gui//&quot; des Github-Repositories entnommen werden.</pre>
 </div>
-<div created="20180824181627888" modified="20180824182344369" tags="C# View" title="ViewModel">
-<pre></pre>
+<div created="20180824181627888" modified="20180825230849416" tags="C# View" title="ViewModel">
+<pre>Es gibt jeweils ein ViewModel pro Fenster in der View, welches jeweils die Verarbeitung der Logik der View darstellt.
+
+! ~MainViewModel
+
+Das `MainViewModel` verarbeitet alle Eingaben der Benutzeroberfläche. Dazu gehören vor allem das Behandeln des Verbindes der Kamera, das Laden von Bildern von der Festplatte des ausführenden Rechners, die [[Objekterkennung|Objekterkennung]] und das Öffnen des Einstellungsdialogs.
+
+!! Kameramodul
+
+Um die Kamera anzusprechen, wird die //Metricam SDK// verwendet. Bei der Umsetzung wurde sich an dem Tutorial zum Verwalten einer Webcam orientiert (siehe http://www.metricam.net/tutorials/webcam-integration/). 
+
+Die Kamera wird über einen //~BackgroundWorker// verwaltet. Dieser ermöglicht es mittels der Events `DoWork`, `RunWorkerCompleted` und `ProgressChanged` die Prozesse der Webcam zu steuern.
+
+Möchte der Nutzer die Kamera verbinden, indem er auf die dafür vorgesehene Schaltfläche klickt, wird der Command `ButtonConnectWebcamClickCommand `ausgelöst, der dazu führt, dass der //~BackgroundWorker// seine Arbeit aufnimmt. Dieser überprüft, ob die Kamera verbunden ist und aktualisiert das Bild der Kamera, wobei jeder Frame als Bild auf der linken Seite der Benutzeroberfläche dargestellt wird. Das Event `ProgressChanged` sorgt für eine Aktualsierung des Bildes der Webcam.
+Wird der //~BackgroundWorker// beendet, so wird die Verbindung zur Kamera getrennt und das Live-Bild auf der linken Seite der Benutzeroberfläche ändert sich zu einem Icon, welches angibt, dass die Kamera nicht verbunden ist.
+
+!!Laden eines Bildes von der Festplatte
+Klickt der Nutzer auf die Schaltfläche, die das Kamera-Icon enthält, wird der Command `ButtonLoadPictureClickCommand` ausgelöst, welcher die Methode `LoadPicture` aufruft. 
+Es wird ein //~OpenFileDialog// geöffnet, mit welchem der Nutzer ein Bild von der Festplatte des Zielrechners auswählen kann, welches erkannt werden soll. Dieses Bild wird auf der rechten Seite der Benutzteroberfläche dargestellt. Danach kann eine [[Objekterkennung |Objekterkennung]]begonnen werden.
+
+!!Objekterkennung
+
+Betätigt der Nutzer den Button zum Starten der Objekterkennung oder drückt die Taste //P//, so wird der Command  `ButtonStartObjectDetectionClickCommand` bzw. `KeyDownObjectDetectionCommand` ausgelöst, welcher wiederum die Methode `BeginObjectDetection` aufruft, die die [[Objekterkennung |Objekterkennung]]startet. Das Ergebnisbild, insofern kein Fehler auftrat, wird auf der rechten Seite der Oberfläche angezeigt und mittels [[Text-to-Speech|Text-to-Speech]] ausgegeben, wenn diese Option aktiviert ist.
+
+!!Einstellungen verwalten
+
+Möchte der Nutzer die Einstellungen verwalten, so muss er die Schaltfläche mit dem Zahnradsymbol klicken. Dadurch wird der `ButtonOpenSettingsClickCommand` aufgerufen, der wiederum die Methode `ShowSettingsWindow` ausführt, die eine neue Instanz eines Einstellungsfensters öffnet.
+
+! ~SettingsViewModel
+
+Das `SettingsViewModel` ist verantwortlich für das Verwalten der Einstellungen. Im Einstellungsfenster können die Einstellungen der Benutzeroberfläche aber auch der Bildfilter der Python-Komponente angepasst werden. 
+
+Die meisten Einstellungen werden über Werte verändert, die in Textboxen eingetragen werden können, welche mittels Bindings an die Oberfläche gebunden sind und bei Änderungen das `ProptertyChanged`-Event auslösen.
+
+Andere Einstellungswerte hingegen werden über //~ToggleButtons// angepasst, die zwischen zwei Zuständen (wahr oder falsch) wechseln können. So kann [[Text-to-Speech|Text-to-Speech]] entweder aktiviert oder deaktiviert sein. Außerdem kann das TensorFlow-Datenmodell zur [[Objekterkennung|Objekterkennung]] nur zwei Werte annehmen: Ziffer (true) oder Buchstabe (false). Diese Werte müssen vor dem Setzen zu Strings [[geparst|PythonOutputParser]] werden. Eine weitere Ausnahme stellt der Pfad des Python-Interpreters dar, welcher mittels eines //OpenFileDialogs// durch den Nutzer gefunden werden kann und danach als String vorliegt. Diese Einstellungen werden mittels Commands geändert, welche bei Button-Klick ausgelöst werden.
+
+Sobald der Nutzer Änderungen vorgenommen hat und diese durch einen Klick auf den Button &quot;//Speichere Einstellungen//&quot; bestätigt, werden die Änderungen in der zugehörigen Einstellungsdatei `settings.json` gespeichert bzw. überschrieben.
+
+ 
+
+
+
+
+
+
+</pre>
+</div>
+<div created="20180825212407426" modified="20180825230737269" tags="Parsing C#" title="WebcamHelper">
+<pre>!!Methoden
+
+Es handelt sich um statische Methoden, die ohne das Erzeugen einer Instanz der Klasse verwendet werden können, da es sich nur um eine Hilfsklasse handelt.
+
+* `ImageSourceForBitmap` – Nimmt eine `Bitmap` als Bild entgegen und wandelt es in eine durch die GUI verarbeitbare `ImageSource` um.
+* `TakePicture` – Nimmt eine `Bitmap` als Bild entgegen und speichert dieses mittels Zeitstempel und Datum im Ordner &quot;//images//&quot;. Dieses Bild dient als Eingabebild für die [[Objekterkennung|Objekterkennung]].
+* `GetBitmapImageFromSource` – Liest das Bild aus dem übergebenen Bildpfad ein und wandelt es in eine `Bitmap` um.</pre>
+</div>
+<div created="20180825185444282" modified="20180825185852024" tags="View C#" title="XAML">
+<pre>Die //Extensible Application Markup Language// ist eine Beschreibungssprache zur Gestaltung grafischer Benutzeroberflächen unter Verwendung des Grafikframeworks WPF, die von Microsoft entwickelt wurde. Es werden Tags verwendet, um Oberflächenelemente zu erstellen.</pre>
 </div>
 <div created="20180806120450423" modified="20180806125518719" tags="PatternRecognitionAndMachineLearning" title="Zusammenfassung : Pattern Recognition And Machine Learning">
 <pre>Kapitel 1 : Einleitung

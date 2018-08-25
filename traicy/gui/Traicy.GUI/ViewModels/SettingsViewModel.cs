@@ -46,7 +46,7 @@ namespace Traicy.GUI.ViewModels
 		}
 
         private string _tfModelMode;
-        public string TFModelMode
+        public string TfModelMode
         {
             get => _tfModelMode;
             set
@@ -54,7 +54,7 @@ namespace Traicy.GUI.ViewModels
                 if (_tfModelMode == value)
                     return;
                 _tfModelMode = value;
-                OnPropertyChanged(nameof(TFModelMode));
+                OnPropertyChanged(nameof(TfModelMode));
             }
         }
 
@@ -287,12 +287,12 @@ namespace Traicy.GUI.ViewModels
 		/*-------------------------commands--------------------------*/
 		private ICommand _toggleSpeechButtonClickCommand;
 		private ICommand _choosePythonInterpreterButtonClickCommand;
-		private ICommand _toggleTFModelButtonClickCommand;
+		private ICommand _toggleTfModelButtonClickCommand;
 		private ICommand _saveSettingsButtonClickCommand;
 
 		public ICommand ToggleSpeechButtonClickCommand => _toggleSpeechButtonClickCommand ?? (_toggleSpeechButtonClickCommand = new DelegateCommand(ClickToggleSpeechButton));
 		public ICommand ChoosePythonInterpreterButtonClickCommand => _choosePythonInterpreterButtonClickCommand ?? (_choosePythonInterpreterButtonClickCommand = new DelegateCommand(ChoosePythonInterpreterButton));
-		public ICommand ToggleTFModelButtonClickCommand => _toggleTFModelButtonClickCommand ?? (_toggleTFModelButtonClickCommand = new DelegateCommand(ClickTFModelModeButton));
+		public ICommand ToggleTfModelButtonClickCommand => _toggleTfModelButtonClickCommand ?? (_toggleTfModelButtonClickCommand = new DelegateCommand(ClickTfModelModeButton));
         public ICommand SaveSettingsButtonClickCommand => _saveSettingsButtonClickCommand ?? (_saveSettingsButtonClickCommand = new DelegateCommand(SaveSettings));
 
 		/// <summary>
@@ -304,7 +304,7 @@ namespace Traicy.GUI.ViewModels
 
 			//set gui settings
 			TextToSpeechEnabled = PythonOutputParser.ParseToString(_jsonSettingsModel.GuiSettings.TextToSpeechIsEnabled);
-			TFModelMode = _jsonSettingsModel.GuiSettings.TFModelMode;
+			TfModelMode = _jsonSettingsModel.GuiSettings.TfModelMode;
 			PythonInterpreterText = _jsonSettingsModel.GuiSettings.PythonInterpreterPath;
 
 			//set image settings
@@ -352,12 +352,12 @@ namespace Traicy.GUI.ViewModels
         /// 
         /// </summary>
         /// <param name="obj"></param>
-        private void ClickTFModelModeButton(object obj)
+        private void ClickTfModelModeButton(object obj)
         {
             var isEnabled = (bool)obj;
             //toggle between 
-            TFModelMode = PythonOutputParser.ParseToModelMode(isEnabled);
-            _jsonSettingsModel.GuiSettings.TFModelMode = TFModelMode;
+            TfModelMode = PythonOutputParser.ParseToModelMode(isEnabled);
+            _jsonSettingsModel.GuiSettings.TfModelMode = TfModelMode;
             SettingsHaveBeenSaved = false;
         }
 

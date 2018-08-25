@@ -32,7 +32,7 @@ namespace Traicy.GUI.Logic
 				ChunkBorder = 5
 			};
 
-			GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, PythonInterpreterPath = Properties.Resources.StandardPythonInterpreterPath, TFModelMode = Properties.Resources.ModelNumber };
+			GuiSettings guiSettings = new GuiSettings { TextToSpeechIsEnabled = true, PythonInterpreterPath = Properties.Resources.StandardPythonInterpreterPath, TfModelMode = Properties.Resources.ModelNumber };
 
 			ImageSettings imageSettings = new ImageSettings { Border = 2, Dimension = 28, DimensionSmall = 26 };
 
@@ -125,13 +125,13 @@ namespace Traicy.GUI.Logic
 		/// Returns the information which TFModelMode is set from the cached settings or reads them if there aren't any cached settings.
 		/// </summary>
 		/// <returns>Information which TFModelMode is set as string.</returns>
-        public string GetTFModelMode()
+        public string GetTfModelMode()
         {
             if (CachedSettings != null)
             {
-                return CachedSettings.GuiSettings.TFModelMode;
+                return CachedSettings.GuiSettings.TfModelMode;
             }
-            return GetSettings().GuiSettings.TFModelMode;
+            return GetSettings().GuiSettings.TfModelMode;
         }
     }
 }

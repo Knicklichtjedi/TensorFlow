@@ -41,7 +41,7 @@
 
 		<Button Background="#E1E1E1" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Height="20px" Width="200px" Name="ButtonStartObjectDetection" Command="{Binding ButtonStartObjectDetectionClickCommand}" Content="{Binding StartObjectDetectionButtonText, Mode=TwoWay}"></Button>
 
-		<Button Name="ButtonTakePicture" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent"  Height="20px" Command="{Binding ButtonTakePictureClickCommand}">
+		<Button Name="ButtonLoadPicture" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent"  Height="20px" Command="{Binding ButtonLoadPictureClickCommand}">
             <StackPanel Orientation="Horizontal" >
                 <Image Source="/resources/photo-camera.png" Width="16" Height="16" Margin="10,0"/>
             </StackPanel>

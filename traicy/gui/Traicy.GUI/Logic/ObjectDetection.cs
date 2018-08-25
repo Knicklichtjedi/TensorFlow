@@ -60,7 +60,7 @@ namespace Traicy.GUI.Logic
 		/// <returns>ProcessStartInfo that is used when starting the process.</returns>
 		private ProcessStartInfo InitProcessStartInfo(string command, string args)
 		{
-            var tfModelMode = new SettingsController().GetTFModelMode();
+            var tfModelMode = new SettingsController().GetTfModelMode();
 
 			ProcessStartInfo processStartInfo = new ProcessStartInfo
 			{

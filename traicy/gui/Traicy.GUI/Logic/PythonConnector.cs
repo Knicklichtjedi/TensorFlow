@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace Traicy.GUI.Logic
 {
@@ -33,7 +31,7 @@ namespace Traicy.GUI.Logic
 			{
 				var parsedPrediction = PythonOutputParser.ParseToListOfPredictions(result);
                 //bool isNumber = Directory.GetDirectories(Properties.Resources.PythonModelPath).Any(d => d.Contains(Properties.Resources.ModelNumber));
-                bool isNumber = new SettingsController().GetTFModelMode() == Properties.Resources.ModelNumber ? true : false;
+                bool isNumber = new SettingsController().GetTfModelMode() == Properties.Resources.ModelNumber;
                 StringBuilder stringBuilder = new StringBuilder();
 
 				if (parsedPrediction.Count == 0)

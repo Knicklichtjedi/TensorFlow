@@ -57,7 +57,7 @@
 					<Button Grid.Column="2" Grid.Row="1" Width="20px" Height="20px" Name="ChoosePythonInterpreterButton" Command="{Binding ChoosePythonInterpreterButtonClickCommand}" Content="..." Margin="5,5"></Button>
 
                     <Label  Grid.Column="0" Grid.Row="2" Content="TensorFlow-Modell:" HorizontalAlignment="Right" Margin="5,5" ></Label>
-                    <ToggleButton Grid.Column="1" Grid.Row="2" Height="20px" Name="ButtonTFModel" Command="{Binding ToggleTFModelButtonClickCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Content="{Binding TFModelMode, Mode=TwoWay}" Margin="5,5" Width="60px" HorizontalAlignment="Left"></ToggleButton>
+                    <ToggleButton Grid.Column="1" Grid.Row="2" Height="20px" Name="ButtonTFModel" Command="{Binding ToggleTfModelButtonClickCommand}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Content="{Binding TfModelMode, Mode=TwoWay}" Margin="5,5" Width="60px" HorizontalAlignment="Left"></ToggleButton>
                 </Grid>
 
 			</GroupBox>
