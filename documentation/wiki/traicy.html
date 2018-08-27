@@ -152,8 +152,6 @@ Error message and password prompt
 
 <li>$:/state/image-picker/system-1189210458</li>
 
-<li>$:/state/Link/--1502361583/search</li>
-
 <li>$:/state/showeditpreview</li>
 
 <li>$:/state/sidebar</li>
@@ -271,6 +269,8 @@ Error message and password prompt
 <li>initialize_dataset.py</li>
 
 <li>JsonParser</li>
+
+<li>JSONSetiings</li>
 
 <li>Kontrakte</li>
 
@@ -8922,9 +8922,6 @@ Error message and password prompt
 <div created="20180825155552761" modified="20180825155705902" title="$:/state/image-picker/system-1189210458">
 <pre>hide</pre>
 </div>
-<div created="20180827132905582" modified="20180827132906730" title="$:/state/Link/--1502361583/search">
-<pre>neuronal</pre>
-</div>
 <div created="20180502214934355" modified="20180827133412162" title="$:/state/showeditpreview">
 <pre>yes</pre>
 </div>
@@ -8952,8 +8949,8 @@ Error message and password prompt
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
-<div created="20180824174640368" modified="20180827152210442" title="$:/state/toc/TableOfContents-GUI--81657105">
-<pre>close</pre>
+<div created="20180824174640368" modified="20180827193311542" title="$:/state/toc/TableOfContents-GUI--81657105">
+<pre>open</pre>
 </div>
 <div created="20180827192151300" modified="20180827192612536" title="$:/state/toc/TableOfContents-Literatursammlung--81657105">
 <pre>close</pre>
@@ -8961,8 +8958,8 @@ Error message and password prompt
 <div created="20180827153239264" modified="20180827191808111" title="$:/state/toc/TableOfContents-MNIST--81657105">
 <pre>close</pre>
 </div>
-<div created="20180827191648822" modified="20180827193005751" title="$:/state/toc/TableOfContents-Python Komponenten--81657105">
-<pre>close</pre>
+<div created="20180827191648822" modified="20180827193129629" title="$:/state/toc/TableOfContents-Python Komponenten--81657105">
+<pre>open</pre>
 </div>
 <div created="20180827175900872" modified="20180827191549714" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
 <pre>close</pre>
@@ -8988,7 +8985,7 @@ Error message and password prompt
 <div created="20180827191733517" modified="20180827191833793" title="$:/state/toc/TableOfContents/Python Komponenten-image_filter.py--81657105">
 <pre>open</pre>
 </div>
-<div list="[[TensorFlow Komponenten]] GUI [[Zusammenfassung TFLearn]] [[Zusammenfassung : Pattern Recognition And Machine Learning]] [[Stochastic Gradient Descent]] [[Hinge Loss]] [[Guide to Tensorflow]] [[Google Tesseract]] [[Fundamentals of Deep Learning - Zusammenfassung]] [[FilloutImage Algorithmus (Schmiering)]] [[Capsule Network]] [[Big Book Of Concepts - Zusammenfassung]] [[Activation Function]] Literatursammlung center_of_mass_and_fillout.py [[ChromakeyingV3 Algorithmus]] binary_filters.py collect_data.py contours.py cropping_scaling_borders.py MNIST Optimizer TraicyData initialize_dataset.py image_filter.py [[Python Komponenten]]" title="$:/StoryList">
+<div list="JSONSetiings [[Python Komponenten]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -11436,6 +11433,98 @@ Zum vereinfachten Verwalten von JSON-Dateien wird das Paket //Newtonsoft.Json// 
 * `SerializeToJson` – Ist eine statische generische Methode, die das Schreiben eines Objektes in eine angegebene JSON-Datei erlaubt. 
 
 * `DeserializeFromJson` – Ist ebenfalls eine statische generische Methode, die aus der angegebenen Datei (`filepath`) ein JSON-Objekt liest, deserialisiert und es zurück an die aufrufende Komponente gibt.</pre>
+</div>
+<div created="20180827193134840" modified="20180827193456994" tags="[[Python Komponenten]] python JSON" title="JSONSetiings">
+<pre>!! Die Struktur
+
+```
+{
+  &quot;image&quot;: {
+    &quot;dimension&quot;: 28,
+    &quot;dimension_small&quot;: 26,
+    &quot;border&quot;: 2
+  },
+  &quot;filter&quot;: {
+    &quot;canny&quot;: 0.5,
+    &quot;binary_gauss&quot;: 0.5,
+    &quot;binary_threshold&quot;: 0.5,
+    &quot;green_low&quot;: 50,
+    &quot;green_high&quot;: 170,
+    &quot;green_saturation&quot;: 0.5,
+    &quot;green_brightness&quot;: 0.25,
+    &quot;schmiering&quot;: 2,
+    &quot;contours_length&quot;: 9000,
+    &quot;chunk_border&quot;: 5
+  },
+  &quot;gui&quot;: {
+    &quot;text_to_speech_enabled&quot;: true,
+    &quot;python_interpreter_path&quot;: &quot;C:\\Anaconda\\envs\\tensorflow\\python.exe&quot;
+  },
+  &quot;loading&quot;: {
+    &quot;possible_filename&quot;: [
+      &quot;png&quot;,
+      &quot;jpg&quot;
+    ]
+  }
+}
+```
+
+
+Die JSON-Datei ist in Zuständigkeitsbereiche unterteilt. So beeinflussen die Werte unter //image //direkt das am Ende ausgegebene Bild des [[image_filters|image_filter.py]] auf struktueller Ebene. Hingegen Wertänderungen im Bereich filter sorgen für ein anderes Aussehen des Bildes nach dem Filterprozess. 	
+Zuletzt hat auch die [[GUI |GUI]]eigene Daten, als auch der Ladealgorithmus für die Bilder im //image_filter//.
+Die Bereiche sind jeweils JSON-Objekte, während ihre Werte ihre Variablen sind. Im Unterschied zu den anderen enthält loading eine Variable, die eine Liste von Werten enthält.
+
+!! Lesen und Übergeben von Werten
+JSON-Dateien können von Python nativ geladen werden, sobald das json-Modul importiert wurde.
+
+```
+with open(filename, encoding='utf-8') as data_file:
+
+    data = json.loads(data_file.read())     
+```
+
+
+Wenn die Daten geladen sind, stehen sie als Dictionary zur Verfügung und lassen sich so navigieren. Jeder Zugriff auf das Dictionary geht auf die nächste Objektebene der JSON-Datei.
+
+```
+image_access = data['image']
+
+if image_access is not None:
+    __i_dim__ = image_access['dimension']
+    __i_dim_s__ = image_access['dimension_small']
+    __i_border__ = image_access['border']
+```
+
+
+Über eine zuvor angelegte Enum-Klasse, namentlich //JSONValues //erfolgt der bestimmte Zugriff und die Rückgabe der gelesenen Werte.
+
+```
+if json_value == JSONValues.IMAGE_DIMENSION:
+    return __i_dim__
+```
+
+!! Schreiben von Werten	
+Werte werden geschrieben indem die Werte des Dictionarys überschrieben und sie danach gespeichert werden.	
+
+```
+if json_value == JSONValues.IMAGE_DIMENSION:
+    __data__['image']['dimension'] = value
+    __i_dim__ = value
+```
+
+
+Nach dem Überschreiben folgt das ebenfalls nativ unterstütze Speichern der Datei.
+
+```
+with open(filename, 'wb') as outfile:
+    json.dump(__data__, codecs.getwriter('utf-8')(outfile), indent=4, ensure_ascii=False)
+    outfile.flush()
+    outfile.close()
+```
+
+
+Durch den Parameter //indent=4// wird sichergestellt, dass die Formatierung der JSON-Datei beim Speichern nicht verloren geht.
+</pre>
 </div>
 <div created="20180824183019950" modified="20180825171539681" tags="C# Contracts GUI" title="Kontrakte">
 <pre>Die Kontrakte sind eine Menge von Basisklassen (oder Interfaces), die angeben, welche Funktionalitäten implementiert werden müssen oder vererbt werden.
