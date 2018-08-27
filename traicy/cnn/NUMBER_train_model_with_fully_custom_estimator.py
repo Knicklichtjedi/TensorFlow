@@ -46,7 +46,7 @@ def densely_connected(layer, size, neurons):
     return dense
 
 
-def dropout_layer(layer, rate,  mode):
+def dropout_layer(layer, rate, mode):
     """
     Creates a dropout layer
     :param layer: input tensor
