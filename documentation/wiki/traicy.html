@@ -132,6 +132,8 @@ Error message and password prompt
 
 <li>$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/home</li>
 
+<li>$:/config/RelinkOnRename</li>
+
 <li>$:/config/ViewToolbarButtons/Visibility/$:/core/ui/Buttons/more-tiddler-actions</li>
 
 <li>$:/core</li>
@@ -173,6 +175,8 @@ Error message and password prompt
 <li>$:/state/toc/TableOfContents-GUI--81657105</li>
 
 <li>$:/state/toc/TableOfContents-MNIST--81657105</li>
+
+<li>$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105</li>
 
 <li>$:/state/toc/TableOfContents/GUI-Data--81657105</li>
 
@@ -296,7 +300,7 @@ Error message and password prompt
 
 <li>TensorFlow</li>
 
-<li>Tensorflow Komponenten</li>
+<li>TensorFlow Komponenten</li>
 
 <li>Text-to-Speech</li>
 
@@ -341,6 +345,9 @@ Error message and password prompt
 </div>
 <div created="20180502212835777" modified="20180502212836304" title="$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/home">
 <pre>hide</pre>
+</div>
+<div created="20180827175849629" modified="20180827175849629" title="$:/config/RelinkOnRename">
+<pre>yes</pre>
 </div>
 <div created="20180502212449750" modified="20180502212832681" title="$:/config/ViewToolbarButtons/Visibility/$:/core/ui/Buttons/more-tiddler-actions">
 <pre>show</pre>
@@ -8931,8 +8938,8 @@ Error message and password prompt
 <div created="20180823140049366" modified="20180823140150173" title="$:/state/tab/moresidebar-401116514">
 <pre>$:/core/ui/MoreSideBar/Recent</pre>
 </div>
-<div created="20180502211811908" modified="20180827153344700" title="$:/state/tab/sidebar--1835078512">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div created="20180502211811908" modified="20180827175758984" title="$:/state/tab/sidebar--1835078512">
+<pre>TableOfContents</pre>
 </div>
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
@@ -8942,6 +8949,9 @@ Error message and password prompt
 </div>
 <div created="20180827153239264" modified="20180827153240345" title="$:/state/toc/TableOfContents-MNIST--81657105">
 <pre>close</pre>
+</div>
+<div created="20180827175900872" modified="20180827175900872" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
+<pre>open</pre>
 </div>
 <div created="20180824175725550" modified="20180824180024541" title="$:/state/toc/TableOfContents/GUI-Data--81657105">
 <pre>open</pre>
@@ -8961,7 +8971,7 @@ Error message and password prompt
 <div created="20180824232021639" modified="20180824232023518" title="$:/state/toc/TableOfContents/GUI/View-ViewModel--81657105">
 <pre>open</pre>
 </div>
-<div list="TraicyData collect_data.py [[Activation Function]] ReLu [[Capsule Network]] [[Hinge Loss]]" title="$:/StoryList">
+<div list="[[TensorFlow Komponenten]] [[Convolutional Neural Network]] Estimator EstimatorSpec" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -8977,7 +8987,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/full&quot;: {
             &quot;title&quot;: &quot;$:/info/url/full&quot;,
-            &quot;text&quot;: &quot;file:///C:/Users/Moritz/Documents/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
+            &quot;text&quot;: &quot;file:///G:/Projekte/GitHub/TensorFlow/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/host&quot;: {
             &quot;title&quot;: &quot;$:/info/url/host&quot;,
@@ -8997,7 +9007,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/pathname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/pathname&quot;,
-            &quot;text&quot;: &quot;/C:/Users/Moritz/Documents/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
+            &quot;text&quot;: &quot;/G:/Projekte/GitHub/TensorFlow/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/search&quot;: {
             &quot;title&quot;: &quot;$:/info/url/search&quot;,
@@ -9005,7 +9015,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/origin&quot;: {
             &quot;title&quot;: &quot;$:/info/url/origin&quot;,
-            &quot;text&quot;: &quot;file://&quot;
+            &quot;text&quot;: &quot;null&quot;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
@@ -9681,7 +9691,7 @@ Die Methode wird am Anfang aufgerufen, um die kleineren Bilder aus den Dateien z
 * //draw_rectangle// - Zeichnet ein Viereck im Bild ein.
 * //draw_red_rectangle// - Zeichnet ein rotes Viereck im Bild ein. Der Farbraum ist durch float-Werte angegeben.</pre>
 </div>
-<div created="20180827133030465" modified="20180827141840868" tags="ConvolutionalNeuralNetwork Tensorflow" title="Convolutional Neural Network">
+<div created="20180827133030465" modified="20180827175834939" tags="[[TensorFlow Komponenten]] ConvolutionalNeuralNetwork Tensorflow" title="Convolutional Neural Network">
 <pre>!! Der Aufbau
 Der Aufbau des neuronalen Netzes wird in einer Methode, der sogenannten //Model-Function// definiert. Es nimmt Eingabedaten, deren Beschriftung und einen Modus über die Methodenparameter entgegen und gibt einen konfigurierten [[EstimatorSpec|EstimatorSpec]] zurück.
 Zu Beginn des Netzes steht eine Eingabeebene.
@@ -9953,7 +9963,7 @@ Die `LoadingSettings` geben an, welche Bildtypen durch die Python-Komponente gel
 
 Diese Klasse ist ein Wrapper, welcher alle oben beschriebenen Klassen kombiniert und dazu dient, als Objekt in die JSON-Datei geschrieben zu werden.</pre>
 </div>
-<div created="20180827133800217" modified="20180827140306517" tags="Tensorflow Estimator" title="Estimator">
+<div created="20180827133800217" modified="20180827175916365" tags="[[TensorFlow Komponenten]] Tensorflow" title="Estimator">
 <pre>Die Estimator-Klasse ermöglicht es ein Modell über eine Model-Function bereitzustellen.
 Eine Model-Function ist eine Methode, die die Struktur des gewünschten Modells beschreibt, Eingabeparameter wie Eingabedaten und Beschriftungen entgegennimmt, Abläufe definiert und daraus einen EstimatorSpec generiert. 
 
@@ -9961,7 +9971,7 @@ Alle Änderungen an dem Modell, die durch den Estimator hervorgerufen werden, wi
 Jede der drei genannten Methoden des Estimators benötigen die Datenübergabe durch eine Input-Function um genutzt zu werden.
 </pre>
 </div>
-<div created="20180827133851308" modified="20180827140304848" tags="Tensorflow EstimatorSpec" title="EstimatorSpec">
+<div created="20180827133851308" modified="20180827175930771" tags="[[TensorFlow Komponenten]] Tensorflow" title="EstimatorSpec">
 <pre>Ein zurückgegebenes Objekt der Model-Function. Es stellt einen Operator, der die Methoden für das Training, die Evaluation und die Voraussage bereitstellt, dar. Intern werden die Abläufe des neuronalen Netzes verwaltet.</pre>
 </div>
 <div created="20180806114141667" modified="20180827153510970" tags="ImageFilter TableOfContents FilloutImageAlgorithm" title="FilloutImage Algorithmus (Schmiering)">
@@ -11748,8 +11758,8 @@ Seit Anfang 2018 und Version 1.5 ist mit ~TensorFlowLite das Ausführen (nicht a
 
 siehe auch : Guide to Tensorflow</pre>
 </div>
-<div created="20180827132054658" modified="20180827142808875" tags="ConvolutionalNeuralNetwork Estimator TableOfContents Tensorflow" title="Tensorflow Komponenten" type="text/vnd.tiddlywiki">
-<pre>Die folgenden Artikel erklären die Funktionweise der von uns benutzten Tensorflow-Komponenten näher.
+<div created="20180827132054658" modified="20180827175858297" tags="TableOfContents Tensorflow" title="TensorFlow Komponenten" type="text/vnd.tiddlywiki">
+<pre>Die folgenden Artikel erklären die Funktionweise der von uns benutzten TensorFlow-Komponenten näher.
 
 !! Convolutional Neural Network
 
