@@ -93,7 +93,8 @@ def prepare_image(image, center_of_mass, skeleton):
     img_scaled = create_scaled_image(img_pil, image_dimension_t_small)
 
     if center_of_mass:
-        img_max_scale = create_com_image(img_scaled, image_dimension, image_dimension_t, image_dimension_small, filter_binary_filter_threshold, image_border)
+        img_max_scale = create_com_image(img_scaled, image_dimension, image_dimension_t, image_dimension_small,
+                                         filter_binary_filter_threshold, image_border)
     else:
         img_max_scale = create_max_extended_image(img_scaled, image_dimension, image_dimension_t)
 

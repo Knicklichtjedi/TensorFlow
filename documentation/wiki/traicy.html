@@ -292,6 +292,8 @@ Error message and password prompt
 
 <li>Prediction</li>
 
+<li>prepare_data.py</li>
+
 <li>Python Komponenten</li>
 
 <li>PythonOutputParser</li>
@@ -8952,8 +8954,8 @@ Error message and password prompt
 <div created="20180824174640368" modified="20180827193311542" title="$:/state/toc/TableOfContents-GUI--81657105">
 <pre>open</pre>
 </div>
-<div created="20180827192151300" modified="20180827192612536" title="$:/state/toc/TableOfContents-Literatursammlung--81657105">
-<pre>close</pre>
+<div created="20180827192151300" modified="20180828095105156" title="$:/state/toc/TableOfContents-Literatursammlung--81657105">
+<pre>open</pre>
 </div>
 <div created="20180827153239264" modified="20180827191808111" title="$:/state/toc/TableOfContents-MNIST--81657105">
 <pre>close</pre>
@@ -8961,8 +8963,8 @@ Error message and password prompt
 <div created="20180827191648822" modified="20180827193129629" title="$:/state/toc/TableOfContents-Python Komponenten--81657105">
 <pre>open</pre>
 </div>
-<div created="20180827175900872" modified="20180827191549714" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
-<pre>close</pre>
+<div created="20180827175900872" modified="20180828095100473" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
+<pre>open</pre>
 </div>
 <div created="20180824175725550" modified="20180824180024541" title="$:/state/toc/TableOfContents/GUI-Data--81657105">
 <pre>open</pre>
@@ -8985,7 +8987,7 @@ Error message and password prompt
 <div created="20180827191733517" modified="20180827191833793" title="$:/state/toc/TableOfContents/Python Komponenten-image_filter.py--81657105">
 <pre>open</pre>
 </div>
-<div list="JSONSetiings [[Python Komponenten]]" title="$:/StoryList">
+<div list="prepare_data.py" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -11634,6 +11636,35 @@ opt.apply_gradients(capped_grads_and_vars)
 * `PredictionValue` – Ist ein String, der je nach gewähltem Datenmodell den erkannten Buchstaben oder die erkannte Ziffer enthält
 * `PredictionPercentage` – Ist ein String, der die Wahrscheinlichkeit enthält, mit dem das gefundene Objekt als solches erkannt wurde (z.B. Wahrscheinlichkeit, dass der gefundene Buchstabe ein &quot;//A//&quot; ist, beträgt 75,5%)
 </pre>
+</div>
+<div created="20180828095418259" modified="20180828101005429" tags="[[Python Komponenten]] python" title="prepare_data.py">
+<pre>!! Variablen
+
+`path` - Pfad zu dem Hauptordner (traicy) der Anwenung.
+
+`data_path_raw` - Pfad zu den Bildern, die aufbereitet werden sollen (Ausschnitte von collect_data.py).
+
+`data_path_prepared_data` - Pfad an dem die Daten gespeichert werden sollen. Legt Ordnerstrukturen an.
+
+`data_json_path ` - Pfad zu der //settings.json//-Datei.
+
+
+Die Pfade, wie sie in der Anwendung sind:
+
+```
+path = abspath(__file__ + &quot;/../../&quot;)  # change directory to traicy
+data_path_raw = path + &quot;/data/data_cut/&quot;  # read from folder
+data_path_prepared_data = path + &quot;/cnn/TRAICY_data/
+data_json_path = str(path) + &quot;/configs/settings.json&quot;
+```
+
+!! Methoden
+
+* `main` - Startet die Aufbereitung der Bilder in //data_path_raw//.
+* `create_binary_image` - Konvertiert ein Graustufenbild in ein Binärbild.
+* `prepare_image` - Bereitet ein einzelnes Bild vor. Nutzt Center of Mass oder Skeletonize, falls aktiviert.
+* `prepare_image_data_list` - Verwaltet eine Liste von Dateien, um sie an //prepare_image //zu geben.
+* `set_lists` - Lädt alle Daten aus den Ordnern.</pre>
 </div>
 <div created="20180827191551777" modified="20180827192954255" tags="$:/tags/SideBar TableOfContents python" title="Python Komponenten">
 <pre>Dieser Tiddler enthält die wichtigsten Komponenten, die in den Python-Skripten genutzt wurden.
