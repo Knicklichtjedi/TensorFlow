@@ -8951,8 +8951,8 @@ Error message and password prompt
 <div created="20180502212441434" modified="20180502213752259" title="$:/state/tabs/controlpanel/toolbars-1345989671">
 <pre>$:/core/ui/ControlPanel/Toolbars/ViewToolbar</pre>
 </div>
-<div created="20180824174640368" modified="20180827193311542" title="$:/state/toc/TableOfContents-GUI--81657105">
-<pre>open</pre>
+<div created="20180824174640368" modified="20180831130342689" title="$:/state/toc/TableOfContents-GUI--81657105">
+<pre>close</pre>
 </div>
 <div created="20180827192151300" modified="20180828095105156" title="$:/state/toc/TableOfContents-Literatursammlung--81657105">
 <pre>open</pre>
@@ -8960,11 +8960,11 @@ Error message and password prompt
 <div created="20180827153239264" modified="20180827191808111" title="$:/state/toc/TableOfContents-MNIST--81657105">
 <pre>close</pre>
 </div>
-<div created="20180827191648822" modified="20180827193129629" title="$:/state/toc/TableOfContents-Python Komponenten--81657105">
-<pre>open</pre>
+<div created="20180827191648822" modified="20180831130330719" title="$:/state/toc/TableOfContents-Python Komponenten--81657105">
+<pre>close</pre>
 </div>
-<div created="20180827175900872" modified="20180828095100473" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
-<pre>open</pre>
+<div created="20180827175900872" modified="20180831130335884" title="$:/state/toc/TableOfContents-TensorFlow Komponenten--81657105">
+<pre>close</pre>
 </div>
 <div created="20180824175725550" modified="20180824180024541" title="$:/state/toc/TableOfContents/GUI-Data--81657105">
 <pre>open</pre>
@@ -8987,7 +8987,7 @@ Error message and password prompt
 <div created="20180827191733517" modified="20180827191833793" title="$:/state/toc/TableOfContents/Python Komponenten-image_filter.py--81657105">
 <pre>open</pre>
 </div>
-<div list="prepare_data.py" title="$:/StoryList">
+<div list="[[Guide to Tensorflow]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -9003,7 +9003,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/full&quot;: {
             &quot;title&quot;: &quot;$:/info/url/full&quot;,
-            &quot;text&quot;: &quot;file:///G:/Projekte/GitHub/TensorFlow/TensorFlow/documentation/wiki/traicy.html&quot;
+            &quot;text&quot;: &quot;file:///C:/Users/Moritz/Documents/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/host&quot;: {
             &quot;title&quot;: &quot;$:/info/url/host&quot;,
@@ -9023,7 +9023,7 @@ Error message and password prompt
         },
         &quot;$:/info/url/pathname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/pathname&quot;,
-            &quot;text&quot;: &quot;/G:/Projekte/GitHub/TensorFlow/TensorFlow/documentation/wiki/traicy.html&quot;
+            &quot;text&quot;: &quot;/C:/Users/Moritz/Documents/GitHub/TensorFlow/documentation/wiki/traicy.html&quot;
         },
         &quot;$:/info/url/search&quot;: {
             &quot;title&quot;: &quot;$:/info/url/search&quot;,
@@ -10199,7 +10199,7 @@ Die grafische Benutzeroberfläche wurde mit dem Grafikframework WPF (Windows Pre
 Sie besteht aus den Komponenten [[View|View]], [[Data|Data]] und [[Logic|Logic]] und den [[Kontrakten|Kontrakte]].
 </pre>
 </div>
-<div created="20180806115237581" modified="20180827192308678" tags="Literatursammlung Tensorflow" title="Guide to Tensorflow">
+<div created="20180806115237581" modified="20180831133251295" tags="Literatursammlung Tensorflow" title="Guide to Tensorflow">
 <pre>!1 GETTING STARTED – VOCABULARY
 
 !!1.1 Tensorflow
@@ -10218,8 +10218,8 @@ tf.float32 ist implizit
 !!1.3 Print Tensors:
 
 ```
-Tensor( &amp;quot;Const:0&amp;quot;, shape = (), dtype = float32)
-Tensor( &amp;quot;Const_1:0&amp;quot;, shape = (), dtype = float32)
+Tensor( &quot;Const:0&quot;, shape = (), dtype = float32)
+Tensor( &quot;Const_1:0&quot;, shape = (), dtype = float32)
 ```
 
 Print der Tensoren von oben liefern nicht 3.0 und 4.0, da die Tensoren ausgegeben
@@ -10391,7 +10391,7 @@ Evaluierung der Genauigkeit des Trainings
 
 ```
 curr_W, curr_b, curr_loss = sess.run([W, b, loss], {x: x_train, y:y_train})
-print(&amp;quot;W: %s b: %s loss: %s&amp;quot;%(curr_W, curr_b, curr_loss))
+print(&quot;W: %s b: %s loss: %s&quot;%(curr_W, curr_b, curr_loss))
 ```
 
 
@@ -10414,7 +10414,7 @@ import tensorflow as tf
 Angabe von möglichen Eigenschaften
 
 ```
-feature_columns = [tf.feature_column.numeric_column( &amp;quot;x&amp;quot;,shape=[1])]
+feature_columns = [tf.feature_column.numeric_column( &quot;x&quot;,shape=[1])]
 ```
 
 Lineare Regression
@@ -10446,7 +10446,7 @@ Definieren der Daten für das Testen
 
 ```
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
-{&amp;quot;x&amp;quot;: x_train}, y_train, batch_size=4, num_epochs=1000,
+{&quot;x&quot;: x_train}, y_train, batch_size=4, num_epochs=1000,
 shuffle=False
 )
 
@@ -10456,7 +10456,7 @@ Definieren der Daten für das Validieren
 
 ```
 eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-{&amp;quot;x&amp;quot;: x_eval}, y_eval, batch_size=4, num_epochs=1000, shuffle=False
+{&quot;x&quot;: x_eval}, y_eval, batch_size=4, num_epochs=1000, shuffle=False
 )
 ```
 
@@ -10472,11 +10472,11 @@ Ausgabe der Ergebnisse
 train_metrics = estimator.evaluate(input_fn=train_input_fn)
 
 eval_metrics = estimator.evaluate(input_fn=eval_input_fn)
-print(&amp;quot;train metrics: %r&amp;quot;% train_metrics)
-print(&amp;quot;eval metrics: %r&amp;quot;% eval_metrics)
+print(&quot;train metrics: %r&quot;% train_metrics)
+print(&quot;eval metrics: %r&quot;% eval_metrics)
 Ausgabe:
-train metrics: { &amp;#39;average_loss&amp;#39;: 1.4833182e-08, &amp;#39;global_step&amp;#39;: 1000, &amp;#39;loss&amp;#39;: 5.9332727e-08 }
-eval metrics: {&amp;#39;average_loss&amp;#39;: 0.0025353201, &amp;#39;global_step&amp;#39;: 1000, &amp;#39;loss&amp;#39;: 0.01014128 }
+train metrics: { 'average_loss': 1.4833182e-08, 'global_step': 1000, 'loss': 5.9332727e-08 }
+eval metrics: {'average_loss': 0.0025353201, 'global_step': 1000, 'loss': 0.01014128 }
 ```
 
 Zu Beginn deklarieren wir die Anzahl an Eigenschaften, die erkannt werden sollen. Da in
@@ -10512,7 +10512,7 @@ und 1 besteht.
 from tensorflow.examples.tutorials.mnist import input_data
 
 ```
-mnist = input_data.read_data_sets(&amp;quot;MNIST_data/&amp;quot;, one_hot=True)
+mnist = input_data.read_data_sets(&quot;MNIST_data/&quot;, one_hot=True)
 ```
 
 So wird ein Datensatz von 55.000 Trainingsdaten, 10.000 Testdaten und 5.000
@@ -10647,7 +10647,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 from skimage.io import imread
 import numpy as np
-mnist = input_data.read_data_sets(&amp;quot;MNIST_data/&amp;quot;, one_hot=True)
+mnist = input_data.read_data_sets&quot;MNIST_data/&quot;, one_hot=True)
 ```
 
 
@@ -10688,7 +10688,7 @@ sess.run(train_step,
 
 feed_dict={x: batch_xs, y_: batch_ys})
 
-if e % 1000 == 0: print(&amp;quot;Training Step &amp;quot; + str(e/1000) + &amp;quot;k&amp;quot;)
+if e % 1000 == 0: print(&quot;Training Step&quot; + str(e/1000) + &quot;k&quot;)
 ```
 
 Testen des Modells, Genauigkeit
@@ -10696,7 +10696,7 @@ Testen des Modells, Genauigkeit
 ```
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(
-tf.cast(correct_prediction, tf.float32), name=&amp;quot;accuracy&amp;quot;)
+tf.cast(correct_prediction, tf.float32), name=&quot;accuracy&quot;)
 ```
 
 Print des Ergebnisses
@@ -10709,14 +10709,14 @@ feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
 Speichern des Modells
 
 ```
-saver.save(sess, &amp;quot;model/softmax_regression&amp;quot;)
+saver.save(sess, &quot;model/softmax_regression&quot;)
 ```
 
 Predict Methode, um leichter Bilder bewerten zu lassen
 
 ```
 def predict(img_flat):
-print(&amp;quot;Acc:&amp;quot;)
+print(&quot;Acc:&quot;)
 for i in range(0, 9):
 predict = accuracy.eval(
 
@@ -10727,24 +10727,24 @@ session=sess)
 
 
 ```
-if predict &amp;gt; 0.5: 
+if predict &gt;; 0.5: 
 ```
-Wenn Wahrscheinlichkeit für Zahl x &amp;gt;50%
+Wenn Wahrscheinlichkeit für Zahl x &gt; 50%
 
 ```
 print(dict_poss[i].reshape(1, 10))
-print(&amp;quot;Number &amp;quot; + str(i))
-print(&amp;quot;\n&amp;quot;)
+print(&quot;Number &quot; + str(i))
+print(&quot;\n&quot;)
 ```
 
 
 Einlesen von Bildern
 
 ```
-img5 = imread(&amp;quot;images/5_28x28.png&amp;quot;, as_grey=True)
+img5 = imread(&quot;images/5_28x28.png&quot;, as_grey=True)
 img_flat_5 = img5.flatten().reshape(1, 784)
 
-img4 = imread(&amp;quot;images/4_28x28.png&amp;quot;, as_grey=True)
+img4 = imread(&quot;images/4_28x28.png&quot;, as_grey=True)
 img_flat_4 = img4.flatten().reshape(1, 784)
 ```
 
@@ -10811,11 +10811,11 @@ die Größe der Felder an, während „Stride“ den Offset des Zugriffs definie
 
 ```
 def conv2d(x, W):
-return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=&amp;#39;SAME&amp;#39;)
+return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
 def max_pool_2x2(x):
 return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
-strides=[1, 2, 2, 1], padding=&amp;#39;SAME&amp;#39;)
+strides=[1, 2, 2, 1], padding='SAME')
 ```
 
 
@@ -10952,13 +10952,13 @@ with tf.Session() as sess:
     if i % 100 == 0:
       train_accuracy = accuracy.eval(feed_dict={
           x: batch[0], y_: batch[1], keep_prob: 1.0})
-      print(&amp;#39;step %d, training accuracy %g&amp;#39; % (i, train_accuracy))
+      print('step %d, training accuracy %g' % (i, train_accuracy))
     train_step.run(feed_dict={
 
 x: batch[0],
 y_: batch[1],
 keep_prob: 0.5})
-  print(&amp;#39;test accuracy %g&amp;#39; % accuracy.eval(
+  print('test accuracy %g' % accuracy.eval(
 feed_dict={
 x: mnist.test.images,
 y_: mnist.test.labels, keep_prob: 1.0}))
@@ -10990,11 +10990,11 @@ initial = tf.constant(0.1, shape=shape)
 return tf.Variable(initial)
 
 def conv2d(x, W):
-return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=&amp;#39;SAME&amp;#39;)
+return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME';)
 
 def max_pool_2x2(x):
 return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2,
-1], padding=&amp;#39;SAME&amp;#39;)
+1], padding='SAME')
 
 def first_c_layer(x):
 W_conv1 = weight_variable([5, 5, 1, 32])
@@ -11065,7 +11065,7 @@ batch = mnist.train.next_batch(50)
 if i % 100 == 0:
 train_accuracy = accuracy.eval(feed_dict={
 x: batch[0], y_: batch[1], keep_prob: 1.0})
-print(&amp;#39;step %d, training accuracy %g&amp;#39;
+print('step %d, training accuracy %g'
 % (i, train_accuracy))
 
 train_step.run(feed_dict={
@@ -11074,13 +11074,13 @@ x: batch[0],
 y_: batch[1],
 keep_prob: 0.5})
 
-print(&amp;#39;test accuracy %g&amp;#39; % accuracy.eval(feed_dict={
+print('test accuracy %g' % accuracy.eval(feed_dict={
 x: mnist.test.images,
 y_:mnist.test.labels,
 keep_prob: 1.0}))
 
 im1, im2 = load_cust_images()
-print(&amp;quot;pred 1&amp;quot;)
+print(&quot;pred 1&quot;)
 predict(im1, accuracy, x, y_, keep_prob)
 predict(im2, accuracy, x, y_, keep_prob)
 
@@ -11093,7 +11093,7 @@ x: img_flat,
 y_: dict_poss[i].reshape(1, 10),
 keep_prob: 1.0})
 
-print(&amp;quot;Guessing: &amp;quot; + str(prediction) + &amp;quot; &amp;quot; + str(i))
+print(&quot;Guessing: &quot; + str(prediction) + &quot; &quot; + str(i))
 
 def create_poss():
 
@@ -11112,10 +11112,10 @@ dict_poss = np.array([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9])
 return dict_poss
 
 def load_cust_images():
-img5 = imread(&amp;quot;images/5_28x28.png&amp;quot;, as_grey=True)
+img5 = imread(&quot;images/5_28x28.png&quot;, as_grey=True)
 img_flat_5 = img5.flatten().reshape(1, 784)
 
-img4 = imread(&amp;quot;images/4_28x28.png&amp;quot;, as_grey=True)
+img4 = imread(&quot;images/4_28x28.png&quot;, as_grey=True)
 img_flat_4 = img4.flatten().reshape(1, 784)
 
 return img_flat_5, img_flat_4
@@ -11127,9 +11127,9 @@ START PROGRAM
 ```
 def main():
 
-mnist = input_data.read_data_sets(&amp;#39;MNIST_data&amp;#39;, one_hot=True)
-x = tf.placeholder(tf.float32, [None, 784], name=&amp;#39;x&amp;#39;)
-y_ = tf.placeholder(tf.float32, [None, 10], name=&amp;#39;y_&amp;#39;)
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+x = tf.placeholder(tf.float32, [None, 784], name='x')
+y_ = tf.placeholder(tf.float32, [None, 10], name='y_')
 
 net, keep_prob = create_network(x)
 cross_entropy, train_step, correct_prediction, accuracy =
@@ -11139,11 +11139,11 @@ start_training(mnist, accuracy, train_step, keep_prob, x, y_)
 
 # NOW AFTER TRAINING
 # im1, im2 = load_cust_images()
-# print(&amp;quot;pred 1&amp;quot;)
+# print(&quot;pred 1&quot;)
 # predict(im1, accuracy, x, y_, keep_prob)
 # predict(im2, accuracy, x, y_, keep_prob)
 
-if __name__ == &amp;quot;__main__&amp;quot;:
+if __name__ == &quot;__main__&quot;:
 main()
 ```</pre>
 </div>
@@ -12318,10 +12318,8 @@ Erstellen von gemischten Dichte-Netzwerken
 5.1.1 Gewichtsraum-Symmetrien (Weightspace symmetries)
 </pre>
 </div>
-<div created="20180806121256162" modified="20180827192434868" tags="Literatursammlung TFLearn Tensorflow" title="Zusammenfassung TFLearn">
-<pre>-------------------GUIDE TO TF-LEARN--------------------------
-
-
+<div created="20180806121256162" modified="20180831131457521" tags="Literatursammlung TFLearn Tensorflow" title="Zusammenfassung TFLearn">
+<pre>
 !1 INTRODUCTION
 
 Bevor man mit TFLearn arbeiten will, muss TensorFlow installiert sein.
@@ -12334,16 +12332,15 @@ Operationen durchgeführt.
 Zum Vergleich, die lineare Regression mittels TFLearn:
 
 ```
-&amp;quot;&amp;quot;&amp;quot; Linear Regression Example &amp;quot;&amp;quot;&amp;quot;
+ Linear Regression Example 
 from __future__ import absolute_import, division, print_function
 import tflearn
+
 # Regression data
-X =
-[3.3,4.4,5.5,6.71,6.93,4.168,9.779,6.182,7.59,2.167,7.042,10.791,5.313,7.99
-7,5.654,9.27,3.1]
-Y =
-[1.7,2.76,2.09,3.19,1.694,1.573,3.366,2.596,2.53,1.221,2.827,3.465,1.65,2.9
-04,2.42,2.94,1.3]
+
+X =[3.3,4.4,5.5,6.71,6.93,4.168,9.779,6.182,7.59,2.167,7.042,10.791,5.313,7.997,5.654,9.27,3.1]
+
+Y =[1.7,2.76,2.09,3.19,1.694,1.573,3.366,2.596,2.53,1.221,2.827,3.465,1.65,2.904,2.42,2.94,1.3]
 ```
 
 Linear Regression graph
@@ -12351,18 +12348,14 @@ Linear Regression graph
 ```
 input_ = tflearn.input_data(shape=[None])
 linear = tflearn.single_unit(input_)
-regression = tflearn.regression(linear, optimizer=&amp;#39;sgd&amp;#39;,
-loss=&amp;#39;mean_square&amp;#39;,
-metric=&amp;#39;R2&amp;#39;, learning_rate=0.01)
+regression = tflearn.regression(linear, optimizer='sgd',loss=';mean_square',metric='R2', learning_rate=0.01)
 m = tflearn.DNN(regression)
 m.fit(X, Y, n_epoch=1000, show_metric=True, snapshot_epoch=False)
 print(&amp;quot;\nRegression result:&amp;quot;)
-print(&amp;quot;Y = &amp;quot; + str(m.get_weights(linear.W)) +
-&amp;quot;*X + &amp;quot; + str(m.get_weights(linear.b)))
-print(&amp;quot;\nTest prediction for x = 3.2, 3.3, 3.4:&amp;quot;)
+print(&quot;Y =&quot; + str(m.get_weights(linear.W)) +&quot;*X + &quot; + str(m.get_weights(linear.b)))
+print(&quot;\nTest prediction for x = 3.2, 3.3, 3.4;&quot;)
 print(m.predict([3.2, 3.3, 3.4]))
-# should output (close, not exact) y = [1.5315033197402954,
-1.5585315227508545, 1.5855598449707031]
+# should output (close, not exact) y = [1.5315033197402954,1.5585315227508545, 1.5855598449707031]
 
 ```
 
@@ -12380,12 +12373,11 @@ einen convolutional layer braucht man:
 So sieht das in TensorFlow aus:
 
 ```
-with tf.name_scope(&amp;#39;conv1&amp;#39;):
-W = tf.Variable(tf.random_normal([5, 5, 1, 32]), dtype=tf.float32,
-name=&amp;#39;Weights&amp;#39;)
+with tf.name_scope('conv1'):
+W = tf.Variable(tf.random_normal([5, 5, 1, 32]), dtype=tf.float32,name='Weights')
 b = tf.Variable(tf.random_normal([32]), dtype=tf.float32,
-name=&amp;#39;biases&amp;#39;)
-x = tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=&amp;#39;SAME&amp;#39;)
+name='biases')
+x = tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 x = tf.add_bias(x, b)
 x = tf.nn.relu(x)
 ```
@@ -12394,7 +12386,7 @@ x = tf.nn.relu(x)
 So sieht das in TFLearn aus:
 
 ```
-tflearn.conv_2d(x, 32, 5, activation=&amp;#39;relu&amp;#39;, name=&amp;#39;conv1&amp;#39;)
+tflearn.conv_2d(x, 32, 5, activation='relu', name='conv1')
 ```
 
 
@@ -12411,8 +12403,8 @@ weshalb man entsprechend einfach Models trainieren kann (mit der DNN Model-Klass
 
 ```
 network = ... (some layers) ...
-network = regression(network, optimizer=&amp;#39;sgd&amp;#39;,
-loss=&amp;#39;categorical_crossentropy&amp;#39;)
+network = regression(network, optimizer='sgd',
+loss='categorical_crossentropy')
 model = DNN(network)
 model.fit(X, Y)
 ```
@@ -12423,7 +12415,7 @@ Geht auch für das Treffen von Vorhersagen und die Evaluierung:
 ```
 network = ...
 model = DNN(network)
-model.load(&amp;#39;model.tflearn&amp;#39;)
+model.load('model.tflearn')
 model.predict(X)
 ```
 
@@ -12449,9 +12441,9 @@ Modell-Klasse:
 
 ```
 # Save a model
-model.save(&amp;#39;my_model.tflearn&amp;#39;)
+model.save('my_model.tflearn')
 # Load a model
-model.load(&amp;#39;my_model.tflearn&amp;#39;)
+model.load('my_model.tflearn')
 
 ```
 
@@ -12459,14 +12451,14 @@ Das Abrufen von Layer-Variablen kann über den Layer-Namen geschehen oder indem 
 „W“ und „b“ als Attribute des vom Layer zurückgegebenen Tensors:
 
 ```
-# Let&amp;#39;s create a layer
-fc1 = fully_connected(input_layer, 64, name=&amp;quot;fc_layer_1&amp;quot;)
+# Let's create a layer
+fc1 = fully_connected(input_layer, 64, name=&quot;fc_layer_1&quot;)
 # Using Tensor attributes (Layer will supercharge the returned Tensor with
 weights attributes)
 fc1_weights_var = fc1.W
 fc1_biases_var = fc1.b
 # Using Tensor name
-fc1_vars = tflearn.get_layer_variables_by_name(&amp;quot;fc_layer_1&amp;quot;)
+fc1_vars = tflearn.get_layer_variables_by_name(&quot;fc_layer_1&quot;)
 fc1_weights_var = fc1_vars[0]
 fc1_biases_var = fc1_vars[1]
 Setzen und Erhalten von Werten kann man mit „get_weights“ und „set_weigts“ oder direkt
@@ -12494,10 +12486,10 @@ unabhängig funktionieren:
 X = tf.placeholder(shape=(None, 784), dtype=tf.float32)
 net = tf.reshape(X, [-1, 28, 28, 1])
 # Using TFLearn convolution layer.
-net = tflearn.conv_2d(net, 32, 3, activation=&amp;#39;relu&amp;#39;)
-# Using Tensorflow&amp;#39;s max pooling op.
+net = tflearn.conv_2d(net, 32, 3, activation='relu')
+# Using Tensorflow's max pooling op.
 net = tf.nn.max_pool(net, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1],
-padding=&amp;#39;SAME&amp;#39;)
+padding='SAME')
 
 ```
 
@@ -12514,11 +12506,7 @@ TFLearn vereinfacht das Anlegen von Variablen:
 
 ```
 import tflearn.variables as vs
-my_var = vs.variable(&amp;#39;W&amp;#39;,
-shape=[784, 128],
-initializer=&amp;#39;truncated_normal&amp;#39;,
-regularizer=&amp;#39;L2&amp;#39;,
-device=&amp;#39;/gpu:0&amp;#39;)
+my_var = vs.variable('W&amp;',shape=[784, 128],initializer='truncated_normal',regularizer='L2',device='/gpu:')
 ```
 
 </pre>
